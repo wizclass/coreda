@@ -418,7 +418,7 @@ a.btn {
 a.btn_secondary,
 .btn_secondary {
     background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.8));
-    color: #546b93;
+    color: $main-colors;
     font-weight: bold;
     border-radius: 8px;
     border: none;
@@ -432,14 +432,14 @@ a.btn_secondary,
 
 a.btn_primary,
 .btn_primary {
-    background: linear-gradient(90deg, #89a3d3, #4d678f);
+    background: linear-gradient(90deg, $main-color, $sub-color);
     border-radius: 8px;
     border: none;
     color: #fff;
     transition: all .4s;
 
     &:hover {
-        background: linear-gradient(90deg, #4d678f, #4d678f) !important;
+        background: linear-gradient(90deg, $main-color, $main-color) !important;
         border: none;
     }
 }

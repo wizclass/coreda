@@ -94,7 +94,7 @@ $token = get_token();
     #mining_log dd{border-left:1px solid #eee;}
 </style>
 
-<!-- <?php
+ <?php
     $sql = "select `day`,sum(benefit) as benefit from soodang_pay WHERE `day` > date_add(curdate(),interval -10 day) and allowance_name = 'daily' group by `day` order by `day` desc";
     $result = sql_query($sql);
 ?>
@@ -114,7 +114,7 @@ $token = get_token();
             <dd><?=$row['benefit']?></dd>
         </div>
     <?php } ?>
-</div> -->
+</div>
 
 <script>
 

@@ -1,4 +1,5 @@
 @charset "UTF-8";
+/*COREDA 커스텀*/
 h1,
 h2,
 h3,
@@ -35,7 +36,7 @@ body.modal-open {
 }
 
 ::selection {
-  background-color: #ffd965;
+  background-color: #e97100;
   color: #000;
 }
 
@@ -261,15 +262,15 @@ header .top_title #mode_select {
 
 /*인트로*/
 #myBar {
-  background-color: #3b86ff;
+  background-color: #f08300;
 }
 
 .b_main {
-  background: #8734d4 !important;
+  background: #fc9b24 !important;
   color: #fff !important;
 }
 .b_main:hover {
-  background: #3b86ff !important;
+  background: #f08300 !important;
 }
 
 .b_sub {
@@ -293,7 +294,7 @@ a.btn {
 a.btn_secondary,
 .btn_secondary {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8));
-  color: #546b93;
+  color: #e97100;
   font-weight: bold;
   border-radius: 8px;
   border: none;
@@ -307,7 +308,7 @@ a.btn_secondary:hover,
 
 a.btn_primary,
 .btn_primary {
-  background: linear-gradient(90deg, #89a3d3, #4d678f);
+  background: linear-gradient(90deg, #f08300, #fc9b24);
   border-radius: 8px;
   border: none;
   color: #fff;
@@ -315,7 +316,7 @@ a.btn_primary,
 }
 a.btn_primary:hover,
 .btn_primary:hover {
-  background: linear-gradient(90deg, #4d678f, #4d678f) !important;
+  background: linear-gradient(90deg, #f08300, #f08300) !important;
   border: none;
 }
 
@@ -1455,7 +1456,7 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .user:hover {
-  border: 1px solid #ffd965;
+  border: 1px solid #e97100;
 }
 .dark .checkbox-tile {
   background: #212429;
@@ -1628,7 +1629,7 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .enroll_wrap .check_appear_title {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .enroll_wrap .referzone {
   box-shadow: none;
@@ -1639,7 +1640,7 @@ a.btn_cancle,
   border-bottom: none;
 }
 .dark .enroll_wrap .cabinet_inner {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .enroll_wrap .pw_ul .x_li {
   background: url("../../_images/x_icon.png") no-repeat center left;
@@ -1695,7 +1696,7 @@ a.btn_cancle,
   background: #17191d;
 }
 .dark header .left_gnbWrap .left_gnb li:hover .gnb_title_Wrap, .dark header .left_gnbWrap .left_gnb li.active .gnb_title_Wrap {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark header .left_gnbWrap .left_gnb .gnb_img_wrap {
   background: url("../../img/gnb/menu_set_dark.svg");
@@ -1885,7 +1886,7 @@ a.btn_cancle,
   transform: rotateX(360deg);
 }
 .dark header .left_gnbWrap .left_gnb .logout_wrap .terms_icon:hover a {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark header .left_gnbWrap .ri-arrow-down-s-line {
   color: #fff;
@@ -1949,7 +1950,7 @@ a.btn_cancle,
   font-size: 14px;
 }
 .dark .breadcrumb .user-info .total_view_wrap .total_view_top li .value i {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .breadcrumb .user-info .total_view_wrap .total_view_top .remain_mining {
   background: rgba(0, 0, 0, 0.5);
@@ -1976,10 +1977,10 @@ a.btn_cancle,
 }
 .dark .breadcrumb .rank_title {
   background: #17191d;
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .breadcrumb .fold_wrap .collap {
-  color: #ffd965;
+  color: #e97100;
   font-size: 14px;
 }
 .dark .breadcrumb .fold_wrap .fold_img_wrap {
@@ -1990,7 +1991,7 @@ a.btn_cancle,
   background: #ebbd13 !important;
 }
 .dark .history_latest .price {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .profile .person_info .myid .name {
   color: #fff;
@@ -2006,7 +2007,7 @@ a.btn_cancle,
   background: #17191d !important;
 }
 .dark .profile .profile-box ul li label {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .profile .profile-box ul li p {
   color: #fff;
@@ -2018,7 +2019,7 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .mywallet #deposit .desc {
-  color: #ffd965 !important;
+  color: #e97100 !important;
 }
 .dark .mywallet #deposit .bank_info {
   background: #212429;
@@ -2028,12 +2029,12 @@ a.btn_cancle,
   margin-top: 15px;
 }
 .dark .mywallet #deposit .bank_account {
-  color: #ffd965;
+  color: #e97100;
   opacity: 1;
 }
 .dark .mywallet #deposit .line_btn {
   background: none;
-  border: 2px solid #ffd965;
+  border: 2px solid #e97100;
 }
 .dark .mywallet #deposit .line_btn:hover {
   background: rgba(255, 255, 255, 0.2);
@@ -2059,10 +2060,10 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .mywallet #deposit .history_box .hist_con .hist_con_row1 .hist_value {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .mywallet #deposit .history_box .hist_con .hist_con_row1 .bank_info_desc {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .mywallet #deposit .history_box .hist_con .hist_con_row1 .curency_value {
   color: white;
@@ -2077,7 +2078,7 @@ a.btn_cancle,
   color: black;
 }
 .dark .mywallet #withdraw .sub_title {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .mywallet #withdraw .desc {
   color: #fff !important;
@@ -2116,10 +2117,10 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .mywallet #withdraw .history_box .hist_con .hist_con_row1 .hist_value {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .mywallet #withdraw .history_box .hist_con .hist_con_row1 .bank_info_desc {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .mywallet #withdraw .history_box .hist_con .hist_con_row1 .hist_name {
   color: #fff;
@@ -2131,7 +2132,7 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .mywallet #withdraw #fee_val {
-  color: #ffd965 !important;
+  color: #e97100 !important;
 }
 .dark .mywallet .b_darkblue {
   background: #fac707 !important;
@@ -2167,10 +2168,10 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .upstairs .pakage_sale .current_currency {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .upstairs .pakage_sale .exchange {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .upstairs .pakage_sale .ex_dollor i {
   color: #000;
@@ -2207,10 +2208,10 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .upstairs .history_box .hist_con .hist_con_row1 .hist_value {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .upstairs .history_box .hist_con .hist_con_row1 .bank_info_desc {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .upstairs .history_box .hist_con .hist_con_row1 .hist_sub_price {
   color: #fff;
@@ -2287,7 +2288,7 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .bonus_history .b_skyblue_round {
-  background: #ffd965;
+  background: #e97100;
 }
 .dark .bonus_history .b_skyblue_round:hover {
   background: #ebbd13 !important;
@@ -2302,10 +2303,10 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .bonus_history .d_sum {
-  color: #ffd965 !important;
+  color: #e97100 !important;
 }
 .dark .bonus_detail .sum {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark #mining .myitemform {
   display: contents;
@@ -2416,7 +2417,7 @@ a.btn_cancle,
   color: #c84a31;
 }
 .dark #mining #mining_withdraw .polding .sub_title {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark #mining #mining_withdraw .polding #max_value {
   background: #eff3f9;
@@ -2449,7 +2450,7 @@ a.btn_cancle,
 }
 .dark #mining_history .mymining_total {
   float: right;
-  color: #ffd965;
+  color: #e97100;
 }
 .dark #mining_history ul {
   background: none;
@@ -2595,7 +2596,7 @@ a.btn_cancle,
   cursor: pointer;
 }
 .dark .mypool #minings .nav_set ul .nav.active {
-  border-bottom: 2px solid #ffd965;
+  border-bottom: 2px solid #e97100;
 }
 .dark .mypool #minings .nav_con {
   display: none;
@@ -2629,7 +2630,7 @@ a.btn_cancle,
   font-weight: 700;
   font-family: Montserrat, Arial, sans-serif;
   line-height: 30px;
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .mypool #minings .box-body ul .rec_adm {
   font-size: 11px;
@@ -2720,7 +2721,7 @@ a.btn_cancle,
   border: 1px solid #444;
 }
 .dark .structure_wrap .search_btn_wrap .b_skyblue {
-  background: #ffd965 !important;
+  background: #e97100 !important;
 }
 .dark .structure_wrap .search_btn_wrap .b_skyblue:hover {
   background: #cfa831 !important;
@@ -2738,14 +2739,14 @@ a.btn_cancle,
   background: #212429;
 }
 .dark .structure_wrap .legbox .mbId {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .structure_wrap .legbox .mbId:hover {
   color: #000;
   background: #ffd965;
 }
 .dark .structure_wrap .legbox .ri-arrow-right-s-fill {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .structure_wrap .font_red {
   color: #109dff !important;
@@ -2776,7 +2777,7 @@ a.btn_cancle,
   border-radius: 20px;
 }
 .dark .binary_wrap .search_btn_wrap .b_skyblue {
-  background: #ffd965 !important;
+  background: #e97100 !important;
 }
 .dark .binary_wrap .search_btn_wrap .b_skyblue i {
   color: #000;
@@ -2794,14 +2795,14 @@ a.btn_cancle,
   background: #212429;
 }
 .dark .binary_wrap .legbox .mbId {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .binary_wrap .legbox .mbId:hover {
   color: #000;
   background: #ffd965;
 }
 .dark .binary_wrap .legbox .ri-arrow-right-s-fill {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .binary_wrap .tree-container {
   background: #17191d;
@@ -2848,7 +2849,7 @@ a.btn_cancle,
 }
 .dark .binary_wrap .tree-container .lvl-open select {
   background: none;
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .binary_wrap .tree-container .lvl .direct_cnt {
   background: #67757d;
@@ -2868,7 +2869,7 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .news_wrap .news .question .right_wrap i {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .support-container #ticketForm span:not(.input-group-text) {
   color: #fff;
@@ -2902,8 +2903,8 @@ a.btn_cancle,
   border-color: transparent;
 }
 .dark .support-tabs li.active {
-  color: #ffd965;
-  border-color: #ffd965;
+  color: #e97100;
+  border-color: #e97100;
 }
 .dark .chat-box.active {
   background: #212429;
@@ -2940,10 +2941,10 @@ a.btn_cancle,
   color: #eee !important;
 }
 .dark .refer_link_wrap .title {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .refer_link_wrap .url {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .refer_link_wrap .qr_wrap input {
   background: #fac707 !important;
@@ -2988,7 +2989,7 @@ a.btn_cancle,
   color: #fff;
 }
 .dark a.more i {
-  color: #ffd965;
+  color: #e97100;
   margin: 0 5px;
 }
 .dark .day {
@@ -3004,11 +3005,11 @@ a.btn_cancle,
   background: #2c2f34;
 }
 .dark .notice_box a {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .notice_box ul li span {
-  color: #ffd965;
-  border: 1px solid #ffd965;
+  color: #e97100;
+  border: 1px solid #e97100;
 }
 .dark .b_line3 {
   background: none;
@@ -3118,7 +3119,7 @@ a.btn_cancle,
   color: #fff;
 }
 .dark .pop_wrap .current {
-  color: #ffd965;
+  color: #e97100;
 }
 .dark .pop_wrap .pop_close {
   background: #3b454f;

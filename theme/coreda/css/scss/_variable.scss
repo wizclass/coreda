@@ -108,6 +108,7 @@ $white_hover: "../../img/gnb/menu_set_white_hover.svg";
 $dark: "../../img/gnb/menu_set_dark.svg";
 $dark_hover: "../../img/gnb/menu_set_dark_hover.svg";
 
+
 // 테마 백그라운드 설정
 $main-theme-type: white-theme; // 테마 모드 설정 
 
@@ -116,3 +117,11 @@ $main-theme-type: white-theme; // 테마 모드 설정
 } @else if($main-theme-type == dark-theme) {
     $mypool_title: #fff ;
 }
+
+
+
+/*COREDA 커스텀*/
+$main-color: #f08300; //백그라운드
+$sub-color: #fc9b24;
+
+$main-colors: #e97100; // 폰트
