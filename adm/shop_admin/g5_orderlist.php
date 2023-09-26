@@ -479,9 +479,9 @@ if(!sql_query(" select mb_id from {$g5['g5_order_delete_table']} limit 1 ", fals
             <!-- <?php echo number_format($tot_itemcount); ?>건 -->
         </td>
         <th scope="row">합 계</th>
-        <td class="td_numsum" style='text-align:right; padding: 7px 5px'><?=shift_auto($tot_orderprice,$curencys[1])?> <?=$curencys[1]?></td>
-        <td></td>
-        <td style='text-align:right; padding: 7px 5px'><?=shift_auto($tot_receiptprice,$curencys[1])?> <?=$curencys[1]?></td>
+        <td class="td_numsum" style='text-align:right; padding: 7px 5px'><?=shift_auto($tot_orderprice,$curencys[0])?> </td>
+        <td><?=$curencys[0]?></td>
+        <td style='text-align:right; padding: 7px 5px'><?=shift_auto($tot_receiptprice,$curencys[0])?></td>
         <td></td>
         <td></td>
     </tr>

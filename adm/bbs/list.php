@@ -252,5 +252,7 @@ if ($board['bo_use_rss_view']) {
     $rss_href = G5_ADMIN_BBS_URL.'/rss.php?bo_table='.$bo_table;
 }
 
+
+
 $stx = get_text(stripslashes($stx));
 include_once($board_skin_path.'/list.skin.php');

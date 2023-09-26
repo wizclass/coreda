@@ -48,6 +48,12 @@ $result = sql_query($sql);
 $colspan = 12;
 ?>
 
+<?if($member['mb_id'] != 'admin'){?>
+   <style>
+        #container{padding-left:50px;}
+   </style>
+<?}?>
+
 <section>
     <h2>신규가입회원 <?php echo $new_member_rows ?>건 목록</h2>
     <div class="local_desc02 local_desc">

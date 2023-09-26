@@ -81,13 +81,14 @@ include_once (G5_ADMIN_PATH.'/admin.head.php');
 		</td>
 	</tr>
 
-
+	<?if(SHOP_USE){?>
 	<tr>
 		<th scope="row"><label for="nw_shop"> 쇼핑몰 </label></th>
 		<td>
             <p style="padding:0;"><input type="checkbox" id="nw_shop" name="nw_shop" <?if($nw['nw_shop'] == 'Y') {echo "checked";}?>/><label for="nw_shop" style=""><span class="ui"></span><span class="nw_shop_txt">사용 설정</span></label></p>
 		</td>
 	</tr>
+	<?}?>
 
     </tbody>
     </table>

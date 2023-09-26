@@ -15,6 +15,8 @@ define('G5_ADMIN_BBS_PATH',      G5_PATH.'/'.G5_ADMIN_BBS_DIR);
 define('G5_ADMIN_HTTP_BBS_URL',  https_url(G5_ADMIN_BBS_DIR, false));
 define('G5_ADMIN_HTTPS_BBS_URL', https_url(G5_ADMIN_BBS_DIR, true));
 
+
+
 // 스킨디렉토리를 SELECT 형식으로 얻음
 function get_skin_select($skin_gubun, $id, $name, $selected='', $event='')
 {

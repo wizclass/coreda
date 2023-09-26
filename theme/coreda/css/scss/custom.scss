@@ -837,6 +837,10 @@ a.btn_cancle,
                     font-size: 20px;
                 }
             }
+
+            .total_view_top:last-child{
+                height:80px;
+            }
         }
 
         .extra {
@@ -2734,7 +2738,7 @@ a.btn_cancle,
 
             .line_btn {
                 background: none;
-                border: 2px solid $main-colors;
+                // border: 2px solid $main-colors;
                 
                 &:hover{
                     background: rgba(255,255,255,0.2);

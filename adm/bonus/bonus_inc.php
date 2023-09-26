@@ -52,8 +52,8 @@ $week_todate    = date('Y-m-d', $weekla - (86400 * 6)); // 지난주 종료일�
 
 // 트립시아 특수 설정 
 
-$live_bonus_rate = 0.8;
-$shop_bonus_rate = 0.2;
+$live_bonus_rate = 1;
+$shop_bonus_rate = 0;
 
 
 function bonus_pick($val){    
@@ -144,13 +144,15 @@ function it_item_return($it_id,$func){
     }
 }
 
-function soodang_record($mb_id, $code, $bonus_val,$rec,$rec_adm,$bonus_day,$mb_no='',$mb_level = ''){
+function soodang_record($mb_id, $code, $bonus_val,$rec,$rec_adm,$bonus_day,$mb_no='',$mb_level = '',$mb_name ='',$coin_curency){
     global $g5,$debug,$now_datetime;
 
     $soodang_sql = " insert `{$g5['bonus']}` set day='".$bonus_day."'";
     $soodang_sql .= " ,mb_id			= '".$mb_id."'";
+    $soodang_sql .= " ,mb_name		= '".$mb_name."'";
     $soodang_sql .= " ,allowance_name	= '".$code."'";
-    $soodang_sql .= " ,benefit		=  ".$bonus_val;	
+    $soodang_sql .= " ,benefit		=  ".$bonus_val;
+    $soodang_sql .= " ,curency      = {$coin_curency} ";
     $soodang_sql .= " ,rec			= '".$rec."'";
     $soodang_sql .= " ,rec_adm		= '".$rec_adm."'";
     $soodang_sql .= " ,datetime		= '".$now_datetime."'";

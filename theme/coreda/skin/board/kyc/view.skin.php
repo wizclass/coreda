@@ -30,7 +30,7 @@ function wallet_type($val){
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 <script src="<?php echo G5_JS_URL; ?>/viewimageresize.js"></script>
 <style>
-        #container{max-width:1200px;}
+        #container{max-width:100%;}
         #bo_v_con{min-height:100px !important}
         .holder {
             width: 100%;
@@ -114,6 +114,7 @@ function wallet_type($val){
         .regdt{display: block;font-size:11px;margin:10px;}
         #bo_v_con{font-weight:600;line-height:24px;font-size:18px;font-family: "Inter", sans-serif;}
         .wallet_type{display:table;border:1px solid #ccc;padding:5px 10px;font-size:15px;margin-top:10px;}
+        .bo_v_left li{display:inline-block;}
     </style>
 
     <SCRIPT>

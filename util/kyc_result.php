@@ -21,7 +21,7 @@ if ($pre_result) {
 
     $mb_update .= " WHERE mb_id = '{$pre_result['mb_id']}' ";
 
-    // print_R($mb_update);
+    print_R($mb_update);
     $update_result = sql_query($mb_update);
 
    

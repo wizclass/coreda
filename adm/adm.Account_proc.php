@@ -12,8 +12,27 @@ if($_POST['type'] == "update"){
         $bank_account_name = $_POST['bank_account_name'][$i];
 
         $used = $_POST['used'][$i] ? $_POST['used'][$i] : 0;
-        $category_no = $category == "입금" ? 1 : 2;
-    
+        
+
+        if($category == "입금"){
+            $category_no = 1;
+        }else if ($category == "출금"){
+            $category_no = 2;
+        }else if ($category == "코인입금"){
+            $category_no = 3;
+        }
+        
+        $bank_account_fix = " bank_account = '{$bank_account}', ";
+
+        // 사전 확인
+        if($category_no == 3 ){
+            $pre_sql = "SELECT * FROM wallet_account WHERE no = '$no' AND category_no = 3 ";
+            $pre_result = sql_fetch($pre_sql);
+            if($pre_result['bank_account'] != '0x'){
+                $bank_account_fix = '';
+            }
+        }
+
         $update = 
         "update wallet_account set 
         category_no = {$category_no},
@@ -21,11 +40,12 @@ if($_POST['type'] == "update"){
         category = '{$category}',
         account_name = '{$account_name}',
         bank_name = '{$bank_name}',
-        bank_account = '{$bank_account}',
+        {$bank_account_fix}
         bank_account_name = '{$bank_account_name}',
         used = {$used},
         create_dt = now()
         where no = $no";
+
         $result = sql_query($update);
     }
     if( $result){

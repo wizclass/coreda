@@ -30,7 +30,7 @@
         <div class="my_btn_wrap">
             <div class='row'>
                 <div class='col-lg-6 col-12'>
-                    <button type='button' class='btn wd main_btn b_sub' onclick="go_to_url('mywallet');"> USDT 거래소</button>
+                    <button type='button' class='btn wd main_btn b_sub' onclick="go_to_url('mywallet');"> 입출금</button>
                 </div>
                 <div class='col-lg-6 col-12'>
                     <button type='button' class='btn wd main_btn b_main' onclick="go_to_url('upstairs');">패키지구매</button>
@@ -135,7 +135,7 @@
                     <span class='category'><?=strtoupper($row['allowance_name'] == "booster" ? "matching" : $row['allowance_name'])?> BONUS</span>
                 </div>
                 <div class='col-5 text-right'>
-                    <span class='price'><?=shift_auto($row['benefit'],$curencys[0])?> <?=$curencys[0]?> </span>
+                    <span class='price'><?=shift_auto($row['benefit'],$curencys[0])?> <?=$curencys[1]?> </span>
                 </div>
             </div>
 

@@ -1,5 +1,7 @@
 <?php
 if (!defined('G5_USE_SHOP') || !G5_USE_SHOP) return;
+if (!defined('SHOP_USE') || !SHOP_USE) return;
+
 if($member['mb_id'] == 'admin'){
     $menu['menu400'] = array (
         array('400000', '쇼핑몰관리', G5_ADMIN_URL.'/shop_admin/', 'shop_config'),

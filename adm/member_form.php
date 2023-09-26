@@ -779,7 +779,7 @@ $rank_result = sql_fetch($rank_sql);
 						return false;
 					} */
 
-					if (confirm("해당 회원에게 " + item.it_name + " 패키지를 지급하시겠습니까?\n회원 잔고에서 " + Price(item.it_cust_price) + " <?= $curencys[0] ?> (이)가 차감됩니다.")) {} else {
+					if (confirm("해당 회원에게 " + item.it_name + " 패키지를 지급하시겠습니까?\n회원 잔고에서 " + Comma_Number(item.it_cust_price) + " <?= $curencys[0] ?> (이)가 차감됩니다.")) {} else {
 						return false;
 					}
 

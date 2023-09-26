@@ -44,7 +44,8 @@ if($default['de_coin_auto']){
     function _get_coins_price(){
         $result = array();
         $url_list = array(
-            'https://api.upbit.com/v1/ticker?markets=KRW-ETH&markets=USDT-ETH'
+            'https://api.upbit.com/v1/ticker?markets=KRW-ETH&markets=USDT-ETH',
+            "https://www.okx.com/api/v5/public/mark-price?instType=SWAP&instId=CORE-USDT-SWAP"
             );
     
         $data = _multi_curl($url_list);
@@ -53,6 +54,7 @@ if($default['de_coin_auto']){
         $usdt_eth = $data[0][1]['trade_price'];
     
         $result['usdt_krw'] = $eth_krw / $usdt_eth;
+        $result['core_usdt'] = $data[1]['data'][0]['markPx'];
 
         return $result;
     }  

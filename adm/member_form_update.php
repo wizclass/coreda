@@ -104,9 +104,14 @@ if(isset($_POST['b_autopack'])){
 
 $mb_index = "mb_index = (select ifnull(sum(od_cart_price),0)*({$limited}/100) from g5_order where mb_id = '{$mb_id}')";
 $mb_no_sql = "select count(mb_no) as cnt, mb_no from g5_member where mb_id = '{$_POST['mb_recommend']}'";
+
 $mb_no_row = sql_fetch($mb_no_sql);
 
-if($mb_no_row['cnt'] <= 0){alert('존재하지 않는 추천인 정보 입니다.');}
+if($mb_no_row['cnt'] <= 0){
+	alert($mb_no_sql);
+
+	// alert('존재하지 않는 추천인 정보 입니다.');
+}
 
 if($_POST['reg_tr_password']){
 	$sql_tr_password = ", reg_tr_password = '".get_encrypt_string($_POST['reg_tr_password'])."'";
@@ -158,7 +163,6 @@ $sql_common = "  mb_name = '{$_POST['mb_name']}',
 				 account_name = '{$account_name}',
 				 center_use = '{$center_use}',
 				 mb_center = '{$mb_center}',
-				 mb_center_name = '{$mb_center_name}',
 				 mb_block = '{$mb_block}',
 				 kyc_cert = {$kyc_admin},
 				 kyc_regdt = '{$kyc_admin_time}',
@@ -356,7 +360,6 @@ else if ($w == 'u')
 					 {$sql_tr_password}
 					 {$sql_certify}
 				where mb_id = '{$mb_id}' ";
-
 	sql_query($sql);
 }
 else

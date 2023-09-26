@@ -6,9 +6,8 @@ include_once('./bonus_inc.php');
 
 auth_check($auth[$sub_menu], 'r');
 
-if($_GET['debug']){
-	$debug = 1;
-}
+$debug = 1;
+
 
 // 직추천 수당
 

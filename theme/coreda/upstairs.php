@@ -121,6 +121,7 @@ $result = sql_query($sql);
 									$max_count = count($row);
 								}
 
+
 								for ($i = $start_pack; $i <= $max_count; $i++) {
 
 									$origin_price = $usd_price * $row[$i - 1]['it_price'];
@@ -159,7 +160,7 @@ $result = sql_query($sql);
 
 												<div class=" text_wrap">
 													<div class="it_price"><?= shift_auto($row[$i - 1]['it_price'], $curencys[0]) ?> <?= $curencys[0] ?></div>
-													<div class='origin_price' style="font-size:14px;">수익률 : <?= $row[$i - 1]['it_supply_point'] ?> %</div>
+													<!-- <div class='origin_price' style="font-size:14px;">수익률 : <?= $row[$i - 1]['it_supply_point'] ?> %</div> -->
 												</div>
 											</div>
 										</div>
@@ -196,8 +197,9 @@ $result = sql_query($sql);
 					</div>
 
 					<div class='row select_box' id='usd' style='margin-top:10px'>
-						<div class='col-12'>
-							<h3 class='tit'> 구매가능잔고</h3>
+						<div class='col-12' style="display:flex;">
+							<h3 class='tit' > 구매가능잔고</h3>
+							<h3 class='tit' style="text-align:right;margin-left:auto;padding-right:10px;"> 남은잔고</h3>
 						</div>
 
 						<div class='col-5 my_cash_wrap'>
@@ -254,12 +256,15 @@ $result = sql_query($sql);
 							</div>
 
 							<div class="row">
-								<h2 class="pack_name pack_f_<?= substr($od_name, 1, 1) ?>"><?= strtoupper($row['od_name']) ?> <?=$od_name?></h2>
+								<h2 class="pack_name pack_f_<?= substr($od_name, 1, 1) ?>"><?= strtoupper($row['od_name']) ?></h2>
 								<!-- <span class='hist_sub_price'><?= shift_auto($row['od_cash'], $od_settle_case) ?> <?= $od_settle_case ?></span> -->
 
-								<?php if($od_name != "P0" || $od_name != "P8"){?>
+								<?php 
+								if(PACK_UPGADE_USE){
+									$max_item = "P".$max_count;
+									if($od_name != "P0" || $od_name != $max_item){?>
 									<button class="btn upgradeBtn" style="margin: 0 0 0 auto" data-od_id="<?= $row['od_id'] ?>">UPGRADE</button>
-								<?php } ?>
+								<?php }} ?>
 
 							</div>
 						</div>
@@ -360,8 +365,9 @@ $result = sql_query($sql);
 		}); */
 
 		function change_coin_status() {
-			$('#trade_total').val(Price(it_price) + ' <?= $curencys[0] ?>');
-			$('#shift_won').text('VAT 포함 : ' + Price(won_price) + ' <?= $curencys[0] ?>');
+			
+			$('#trade_total').val(Comma_Number(it_price) + ' <?= $curencys[0] ?>');
+			// $('#shift_won').text('VAT 포함 : ' + Price(won_price) + ' <?= $curencys[0] ?>');
 			$('#shift_dollor').val(Price(price_calc));
 
 			// 상품구매로 이동
@@ -493,8 +499,8 @@ $result = sql_query($sql);
 						if (res.result == 'success') {
 							$('.change_title').text('PACKAGE 업그레이드');
 							$('#trade_total').val(res.it_cust_price + ' <?= $curencys[0] ?>')
-							$('#shift_dollor').val(Price(parseFloat(upgrade_price_calc.replace(/,/g , '')) - parseFloat(res.diff_price.replace(/,/g , ''))));
-							$('#shift_won').text('VAT 포함 : ' + Price(res.it_cust_price) + ' <?= $curencys[0] ?>');
+							$('#shift_dollor').val(Comma_Number(parseFloat(upgrade_price_calc.replace(/,/g , '')) - parseFloat(res.diff_price.replace(/,/g , ''))));
+							// $('#shift_won').text('VAT 포함 : ' + Price(res.it_cust_price) + ' <?= $curencys[0] ?>');
 							$('#upgrade').show().attr("disabled", false);
 							$('#purchase').hide().attr("disabled", true);
 							$('#total_coin_val').val(upgrade_price_calc);

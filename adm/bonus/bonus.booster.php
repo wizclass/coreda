@@ -12,7 +12,7 @@ $check_bonus_day_sql = "select count(day) as cnt from soodang_pay where day = '{
 $check_bonus_day = sql_fetch($check_bonus_day_sql)['cnt'];
 
 if (!$check_bonus_day) {
-    echo "<script>alert('{$bonus_day} DAILY 보너스 기록이 없습니다.');
+    echo "<script>alert('{$bonus_day} Staking 보너스 기록이 없습니다.');
     history.back();</script>";
     return false;
 }
@@ -34,11 +34,12 @@ endif;
 
 
 
-// 데일리수당
+// 스테이킹수당
 $bonus_row = bonus_pick($code);
 
 $bonus_rate = explode(",", $bonus_row['layer']);
 $booster_bonus_rate = explode(",", $bonus_row['rate']);
+$bonus_limit = $bonus_row['limit'];
 
 $rate_text = "";
 for ($i = 0; $i < count($bonus_rate); $i++) {
@@ -55,7 +56,7 @@ if ($debug) {
 }
 
 // 설정로그 
-echo "<strong>" . strtoupper($code) . " 지급비율 : " . $rate_text . "   </strong>     <br>지급조건 :" . $pre_condition . "  |    지급한계 : " . $bonus_row['limited'] . "% <br>";
+echo "<strong>" . strtoupper($code) . " 지급비율 : " . $rate_text . "   </strong>     <br>지급조건 :" . $pre_condition . "  |    지급한계 : " . $bonus_limit_tx . " <br>";
 echo "<strong>" . $bonus_day . "</strong><br><br>";
 echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 ?>
@@ -75,8 +76,8 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             echo "<code>{$member_for_paying_sql}</code>";
         }
 
-        $unit = "usdt";
-        $shop_unit = "usdp";
+        $unit = "core";
+        $shop_unit = "";
 
         $member_for_paying_result = sql_query($member_for_paying_sql);
 
@@ -96,8 +97,8 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $mb_id = $row['id'];
             $recommended_cnt = $row['cnt'];
 
-            if ($recommended_cnt >= 5) {
-                $recommended_cnt = 5;
+            if ($recommended_cnt >= 1) {
+                $recommended_cnt = 1;
             }
 
             $recommended_cnt = $bonus_rate[$recommended_cnt - 1];
@@ -105,7 +106,6 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $booster_member = return_down_manager($row['mb_no'], $recommended_cnt);
 
             $recom_member = return_down_manager($row['mb_no'], 20);
-
 
             $recom_sales = array_int_sum($recom_member, 'mb_save_point', 'int');
 
@@ -143,7 +143,12 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
             $clean_number_mb_index = clean_number_format($mb_index);
 
-            echo "<div><span class='title'>{$mb_id} ( 추천인수 : {$row['cnt']}명 [{$recommended_cnt}대] )</span> 현재총수당 : {$clean_number_mb_balance}, 수당한계점 : {$clean_number_mb_index} => 총 수용가능 수당 : {$clean_total_left_benefit}</div><br>";
+            echo "<div><span class='title'>{$mb_id} ( 추천인수 : {$row['cnt']}명 [{$recommended_cnt}대] )</span> 받은총보너스 : {$clean_number_mb_balance}";
+
+            if($bonus_limit > 0){
+                echo ", 수당한계점 : {$clean_number_mb_index} => 총 수용가능 수당 : {$clean_total_left_benefit}</div><br>";
+            }
+            echo "<br>";
 
             foreach ($booster_member as $key => $value) {
 
@@ -158,12 +163,14 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
                 $booster_benefit = $value['mb_my_sales'] * ($bonus_benefit_rate * 0.01);
                 $add_benefit += $booster_benefit;
                 $clean_mb_my_sales = clean_coin_format($value['mb_my_sales']);
-                echo "<span>{$value['mb_id']} ( {$depth} 대 ) => {$clean_mb_my_sales} (DAILY 수당) * ( {$bonus_benefit_rate} (보너스 비율) * 0.01 )) = </span><span class='blue'>{$booster_benefit}</span><br>";
+                echo "<br><span>{$value['mb_id']} ( {$depth} 대 ) => {$clean_mb_my_sales} (Staking) * ( {$bonus_benefit_rate} * 0.01 ) = </span><span class='blue'>{$booster_benefit}</span><br>";
             }
 
             $origin_benefit = $add_benefit;
             $over_benefit_log = "";
-            if ($total_left_benefit < $add_benefit) {
+
+            // 수당한계
+            if ($total_left_benefit < $add_benefit && $bonus_limit > 0) {
 
                 $add_benefit = $total_left_benefit;
                 $over_benefit = $origin_benefit - $total_left_benefit;
@@ -178,7 +185,12 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $live_benefit =  $add_benefit * $live_bonus_rate;
             $shop_benefit =  $add_benefit * $shop_bonus_rate;
 
-            echo "<div style='color:orange;'>발생 수당 : {$origin_benefit}</div><div style='color:red;'> ▶ 수당 지급: {$live_benefit}</div><div style='color:red;'> ▶▶ 쇼핑몰포인트 지급: {$shop_benefit}</div><br><br>";
+            echo "<div style='color:orange;'>발생 수당 : {$origin_benefit}</div><div style='color:red;'> ▶ 수당 지급: {$live_benefit}</div>"; 
+
+            if($shop_bonus_rate > 0){
+                echo "<br><div style='color:red;'> ▶▶ 쇼핑몰포인트지급 : {$shop_benefit} </div>";
+            }
+            echo "<br><br><br>";
 
             if ($update_mb_balance_sql == "") {
                 $update_mb_balance_sql .= "mb_balance = case mb_id ";
@@ -195,15 +207,16 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $update_recom_sales .= "WHEN '{$mb_id}' then {$recom_sales} ";
             $update_where_sql .= "'{$mb_id}',";
 
-            $clean_live_benefit = clean_number_format($live_benefit);
+            $clean_live_benefit = clean_number_format($live_benefit,3);
             $clean_shop_benefit = clean_number_format($shop_benefit);
 
-            $rec = "Matching bonus by step {$recommended_cnt} :: {$clean_live_benefit} {$unit}, Shop bonus : {$clean_shop_benefit} {$shop_unit} {$over_benefit_log}";
-            $rec_adm = "{$rec} (expected : {$origin_benefit} {$unit})";
+            $rec = "Matching bonus by step {$recommended_cnt} :: {$clean_live_benefit} {$unit}";
+            $rec_adm = "{$value['mb_id']} - {$recommended_cnt}대 : {$clean_live_benefit} ";
 
             $log_values_sql .= "('{$code}','{$bonus_day}','{$mb_id}',{$row['mb_no']},{$live_benefit},{$row['mb_level']},{$row['grade']},
-    '{$row['mb_name']}','{$rec}','{$rec_adm}',{$mb_balance},{$row['mb_deposit_point']},now()),";
+            '{$row['mb_name']}','{$rec}','{$rec_adm}',{$mb_balance},{$row['mb_deposit_point']},now()),";
         }
+
         $update_mb_balance_sql .= " else mb_balance end ";
         $update_mb_shop_sql .= " else mb_shop_point end ";
         $update_recom_sales .= " ELSE recom_sales END ";

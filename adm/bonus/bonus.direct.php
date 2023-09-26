@@ -10,7 +10,7 @@ auth_check($auth[$sub_menu], 'r');
 
 //회원 리스트를 읽어 온다.
 $sql_common = " FROM g5_order AS o, g5_member AS m ";
-$sql_search=" WHERE o.mb_id=m.mb_id AND od_date ='".$bonus_day."' AND LENGTH(od_name) < 4 ";
+$sql_search=" WHERE o.mb_id=m.mb_id AND od_soodang_date ='".$bonus_day."' ";
 $sql_mgroup=' GROUP BY m.mb_id ORDER BY m.mb_no asc';
 
 $pre_sql = "select count(*) 
@@ -28,11 +28,19 @@ if($debug){
 $pre_result = sql_query($pre_sql);
 $result_cnt = sql_num_rows($pre_result);
 
+$bonus_rate = $bonus_row['rate'];
+$balance_limit = $bonus_row['limit'];
+
+$coin = _get_coins_price();
+$coin['core_KRW'] = $coin['core_usdt'] *  $coin['usdt_krw'];
+$coin_curency = shift_auto($coin['core_KRW'],'krw');
+
 ob_start();
 
 // 설정로그 
 echo "<span class ='title' style='font-size:20px;'>".$bonus_row['name']." 수당 정산</span><br>";
-echo "<strong>".strtoupper($code)." 수당 지급비율 : ". $bonus_row['rate']."%   </strong> |    지급조건 -".$pre_condition.' | '.$bonus_condition_tx." | ".$bonus_layer_tx." | ".$bonus_limit_tx."<br>";
+echo "<strong> 1 CORE / 원화 시세 :: <span class='red'>".shift_auto($coin['core_KRW'],'krw')."</span> 원</strong><br>";
+echo "<strong>".strtoupper($code)." 수당 지급비율 : ". $bonus_row['rate']."%   </strong> |    지급조건 -".$pre_condition." | ".$bonus_limit_tx."<br>";
 echo "<strong>".$bonus_day."</strong><br>";
 echo "<br><span class='red'> 기준대상자(매출발생자) : ".$result_cnt."</span><br><br>";
 echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
@@ -65,7 +73,7 @@ excute();
 function  excute(){
 
     global $result;
-    global $g5, $bonus_day, $bonus_condition, $code, $bonus_rates, $bonus_rate,$pre_condition_in,$bonus_limit ;
+    global $g5, $bonus_day, $bonus_condition, $code, $bonus_rates, $bonus_rate,$pre_condition_in,$bonus_limit,$balance_limit,$coin_curency ;
     global $debug;
 
 
@@ -110,12 +118,15 @@ function  excute(){
             
             if($pre_condition_in){	
                 
-                $rate_cnt = it_item_return($it_id,'model');
+               /*  $rate_cnt = it_item_return($it_id,'model');
                 
                 if(!$bonus_rate){
                     $bonus_rate = $bonus_rates[$rate_cnt-1]*0.01;
-                }
-                $benefit=($it_bonus*$bonus_rate); // 매출자 * 수당비율
+                } */
+
+                $bonus_rated = $bonus_rate * 0.01;
+                
+                $benefit=($it_bonus*$bonus_rated); // 매출자 * 수당비율
 
                /*  list($mb_balance,$balance_limit,$benefit_limit,$admin_cash) = bonus_limit_check($recom_id,$benefit);
 
@@ -128,17 +139,16 @@ function  excute(){
                 }
                  */
 
-                $benefit_limit = $benefit;
+                $coin_benefit = $benefit/$coin_curency;
+                $benefit_limit = clean_coin_format($coin_benefit,2);
                 
                 $rec=$code.' Recommend Bonus from  '.$mb_id.' | '.$it_name;
-                $rec_adm= $it_name.' | '.$it_bonus.'*'.$bonus_rate.'='.$benefit;
-
-               
-
-                // 수당제한
-                echo $recom_id." | ".Number_format($it_bonus).'*'.$bonus_rate;
+                $rec_adm= $it_name.' | '.clean_number_format($it_bonus).'*'.$bonus_rated.'='.clean_number_format($benefit).'('.clean_number_format($coin_benefit,2).')';
 
                 
+                echo $recom_id." | ".Number_format($it_bonus).'*'.$bonus_rated;
+
+                /* 
                 if($benefit > $benefit_limit && $balance_limit != 0 ){
 
                     $rec_adm .= "<span class=red> |  Bonus overflow :: ".Number_format($benefit_limit - $benefit)."</span>";
@@ -153,13 +163,17 @@ function  excute(){
 
                     echo "<span class=blue> ▶▶ 수당 미발생 </span>";
                 }else{
-                    echo "<span class=blue> ▶▶ 수당 지급 : ".Number_format($benefit)."</span><br>";
-                }
+                    
+
+                } */
+
+                echo "<span > ▶▶ 지급 수당: ".Number_format($benefit)." 원</span>";
+                echo "<span class=blue> ▶▶▶ Core 지급 : ".clean_number_format($coin_benefit,2)." core</span><br>";
 
 
                 if($benefit > 0 && $benefit_limit > 0){
 
-                    $record_result = soodang_record($recom_id, $code, $benefit_limit,$rec,$rec_adm,$bonus_day);
+                    $record_result = soodang_record($recom_id, $code, $benefit_limit,$rec,$rec_adm,$bonus_day,$mb_no,$mb_level,$mb_name,$coin_curency);
 
                     if($record_result){
                         $balance_up = "update g5_member set mb_balance = mb_balance + {$benefit_limit}  where mb_id = '".$recom_id."'";

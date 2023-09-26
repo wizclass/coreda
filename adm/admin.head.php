@@ -88,12 +88,12 @@ if( ! empty($_COOKIE['g5_admin_btn_gnb']) ){
 <style>
 <?if($member['mb_id'] == 'admin'){?>
   
-  #gnb .gnb_li:nth-child(n+6):nth-child(-n+10) .btn_op {
+  #gnb .gnb_li:nth-child(n+4):nth-child(-n+7) .btn_op {
   background-size:20px 18px;}
 
 <?}else{?>
 
-  #gnb .gnb_li:nth-child(n+5):nth-child(-n+8) .btn_op {
+  #gnb .gnb_li:nth-child(n+3):nth-child(-n+6) .btn_op {
   background-size:20px 18px;}
 <?}?>
 </style>

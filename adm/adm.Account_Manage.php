@@ -23,6 +23,7 @@ $account_list = array_bank_account();
 <div class="local_desc01 local_desc">
     <p>
         - 사용여부 체크된것만 사용자에게 노출.<br>
+        - 코인입금주소는 최초 입력이후 변경 불가 => <strong>관리자에게 문의</strong><br>
         - 계좌수정시 기존 입/출금 요청건에는 영향 없음.<br>
 	</p>
 </div>
@@ -54,7 +55,7 @@ $account_list = array_bank_account();
             <td style="text-align: center;"><input type='checkbox' class='checkbox' name='check' <?php echo $row['used'] > 0?'checked':''; ?>>
                 <input type="hidden" name="used[]" class='used' value="<?=$row['used']?>">
             </td>
-            <td style=""><input class='reg_text <?if($row['category_no'] == 1){echo 'border_blue';}else{echo "border_red";}?>' name="category[]"  value="<?=$row['category']?>"></input></td>
+            <td style=""><input class='reg_text <?if($row['category_no'] == 1 || $row['category_no'] == 3){echo 'border_blue';}else{echo "border_red";}?>' name="category[]"  value="<?=$row['category']?>"></input></td>
             <td style=""><input class='reg_text' name="sequence[]"  value="<?=$row['sequence']?>"></input></td>
             <td style=""><input class='reg_text' name="account_name[]"  value="<?=$row['account_name']?>"></input></td>
             <td style=""><input class='reg_text' name="bank_name[]"  value="<?=$row['bank_name']?>"></input></td>

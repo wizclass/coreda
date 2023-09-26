@@ -3,10 +3,16 @@ include_once('./_common.php');
 include_once(G5_THEME_PATH.'/_include/wallet.php');
 include_once(G5_PATH.'/util/purchase_proc.php');
 
+if(BONUS_MOUNTING_DATE != ''){
+	$bonus_mounting_date = BONUS_MOUNTING_DATE;
+}else{
+	$bonus_mounting_date = 'now';
+}
+
 // $debug = 1;
 $now_datetime = date('Y-m-d H:i:s');
 $now_date = date('Y-m-d');
-$soodang_date = date('Y-m-d', strtotime("+3 day"));
+$soodang_date = date('Y-m-d', strtotime($bonus_mounting_date));
 
 $mb_id = $member['mb_id'];
 $mb_no = $member['mb_no'];

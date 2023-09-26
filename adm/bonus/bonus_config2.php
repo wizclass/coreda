@@ -58,7 +58,7 @@ $token = get_token();
     
     <td style=""><input class='bonus_input' name="kind[]"  value="<?=$row['kind']?>"></input></td>
 	<td style=""><input class='bonus_input' name="limited[]"  value="<?=$row['limited']?>"></input></td>
-	<td style=""><input class='bonus_input <?if($row['code'] == 'daily'){echo 'strong';}?>' name="rate[]"  value="<?=$row['rate']?>"></input></td>
+	<td style=""><input class='bonus_input <?if($row['code'] == 'staking'){echo 'strong';}?>' name="rate[]"  value="<?=$row['rate']?>"></input></td>
     <td style=""><input class='bonus_input' name="layer[]"  value="<?=$row['layer']?>"></input></td>
     <td style="">
         <select id="bonus_source" class='bonus_source' name="source[]">
@@ -95,15 +95,15 @@ $token = get_token();
 </style>
 
  <?php
-    $sql = "select `day`,sum(benefit) as benefit from soodang_pay WHERE `day` > date_add(curdate(),interval -10 day) and allowance_name = 'daily' group by `day` order by `day` desc";
+    $sql = "select `day`,rate from soodang_pay WHERE `day` > date_add(curdate(),interval -10 day) and allowance_name = 'staking' group by `day` order by `day` desc";
     $result = sql_query($sql);
 ?>
 
 <div id='mining_log'>
-    데일리 지급량 기록 (최근 10일)
+    스테이킹 지급량 기록 (최근 10일)
     <div class='head'>
         <dt style='color:white'>지급일</dt>
-        <dd style='color:white'>데일리보너스지급량 (<?=$minings[$now_mining_coin]?>)</dd>
+        <dd style='color:white'>스테이킹리워드지급량 [%] (<?=$curencys[1]?>)</dd>
     </div>
     <?php if(sql_num_rows($result) <= 0){ ?>
         <dt>자료가 없습니다.</dt>
@@ -111,7 +111,7 @@ $token = get_token();
     <?php for($i = 0; $i < $row = sql_fetch_array($result); $i++){?>
         <div class='body'>     
             <dt><?=$row['day']?></dt>
-            <dd><?=$row['benefit']?></dd>
+            <dd><?=$row['rate']?></dd>
         </div>
     <?php } ?>
 </div>

@@ -13,17 +13,16 @@ auth_check($auth[$sub_menu], 'r');
 if (empty($fr_date)) $fr_date = date("Y-m-d", strtotime(date("Y-m-d")));
 if (empty($to_date)) $to_date = G5_TIME_YMD;
 
+
 $max_date = "select MAX(day) FROM soodang_pay";
 
 if($_GET['start_dt']){
 	$fr_date = $_GET['start_dt'];
 	$max_date = "'{$fr_date}'";
 }
-// if($_GET['end_dt']){
-	$to_date = $fr_date;
-	// $to_date = $_GET['end_dt'];
-// }
 
+
+if($_GET['to_date']){$to_date = $_GET['to_date']; }
 $sql = "select * from {$g5['bonus_config']} where used > 0 order by no asc";
 $list = sql_query($sql);
 
@@ -133,9 +132,8 @@ $qstr.='&aaa='.$aaa;
 
 $max_day_sql = "SELECT 
 IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE allowance_name = 'booster' and day =({$max_date})),0) AS booster,
-IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE allowance_name = 'daily' and day =({$max_date})),0) AS daily,
-IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE allowance_name = 'sales' and day =({$max_date})),0) AS sales,
-IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE allowance_name = 'grade' and day =({$max_date})),0) AS grade,
+IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE allowance_name = 'staking' and day =({$max_date})),0) AS staking,
+IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE allowance_name = 'direct' and day =({$max_date})),0) AS direct,
 IFNULL((SELECT SUM(benefit) FROM soodang_pay WHERE day =({$max_date})),0) AS total, 
 ({$max_date}) as last_day LIMIT 0,1";
 
@@ -166,7 +164,7 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 <div class="local_desc01 local_desc">
     <p>
 		공통 : 보너스기준일자로 각 보너스지급버튼 클릭<br>
-		<strong>지급량 합계 :</strong>검색기간 날짜 선택후 검색시 지급량 합계표시 - 단위 USDT<br>
+		<strong>지급량 합계 :</strong>검색기간 날짜 선택후 검색시 지급량 합계표시 - 단위 CORE<br>
 		<!-- <span style='margin-left:155px;'></span>② 21일~ 말일 실행시 - 이번달 2분기(15~말일) 매출로 정산<br>
 		<span style='margin-left:155px;'></span>③  1일 ~ 13일 실행시 - 지난달 2분기(15~말일) 매출로 정산
  -->
@@ -275,10 +273,9 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
     <span class="ov_listall">전체 <?php echo number_format($total_count) ?> 건 </span>
 	<strong><?=$max_day_row['last_day']?> </strong>
 	<span class="ov_listall">총지급 : <strong><?=shift_auto($max_day_row['total'],$curencys[1])?></strong></span>
-	<span class="ov_listall">데일리 : <strong><?=shift_auto($max_day_row['daily'],$curencys[1])?></strong></span>
+	<span class="ov_listall">추천 : <strong><?=shift_auto($max_day_row['direct'],$curencys[1])?></strong></span>
+	<span class="ov_listall">스테이킹 : <strong><?=shift_auto($max_day_row['staking'],$curencys[1])?></strong></span>
 	<span class="ov_listall">추천매칭 : <strong><?=shift_auto($max_day_row['booster'],$curencys[1])?></strong></span>
-	<span class="ov_listall">세일즈 : <strong><?=shift_auto($max_day_row['sales'],$curencys[1])?></strong></span>
-	<span class="ov_listall">직급 수당(월 해당일) : <strong><?=shift_auto($max_day_row['grade'],$curencys[1])?></strong></span>
 </div>
 <div class="tbl_head01 tbl_wrap">
     <table id='table'>
@@ -287,9 +284,11 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
     <tr>
 		<th scope="col">보너스날짜</th>
 		<th scope="col">회원아이디</th>
+		<th scope="col">회원이름</th>
         <th scope="col">보너스이름</th>
         <th scope="col">발생보너스</th>
-		<th scope="col">보너스단위</th>
+		<th scope="col">단위</th>
+		<th scope="col">시세</th>
 		<th scope="col">보너스근거</th>
 		<th scope="col">지급시간</th>				
     </tr>
@@ -309,13 +308,13 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 		<td width="100" style='text-align:center'>
 			<a href='/adm/member_form.php?w=u&mb_id=<?=$row['mb_id']?>'><?php echo get_text($row['mb_id']); ?></a>
 		</td>
-
+		<td width='80' style='text-align:center'><?=get_text($row['mb_name']); ?></td>
 		<td width='80' style='text-align:center'><?=get_text($row['allowance_name']); ?></td>
-		<td width="100" class='bonus'><?=Number_format($soodang,BONUS_NUMBER_POINT) ?></td>
-		<td width="30" class='bonus'><?=$curencys[0]?></td>
-		
+		<td width="100" class='bonus' style="text-align:right;"><?=shift_auto($soodang,3) ?></td>
+		<td width="30" class='bonus'><?=$curencys[1]?></td>
+		<td width="30" ><?=$row['curency']?></td>
 
-		<td width="300"><?= $row['rec']."<br> <span class='adm'> [".$row['rec_adm']."]</span>" ?></td>
+		<td width="300" style="text-align:left;font-size:11px;"><?= $row['rec']."<br> <span class='adm'> [".$row['rec_adm']."]</span>" ?></td>
 		<td width="100" class='date'><?=$row['datetime']?></td>
     </tr>
 
@@ -328,10 +327,9 @@ include_once(G5_PLUGIN_PATH.'/jquery-ui/datepicker.php');
 	<tfoot>
 	<tr class="<?php echo $bg; ?>">
 		<td colspan=3>TOTAL :</td>
+		<td ></td>
 		<td width="150" class='bonus' style='color:red'><?=number_format($soodang_sum,BONUS_NUMBER_POINT)?></td>
-        <td ></td>
-		<td ></td>
-		<td ></td>
+        <td colspan="4"></td>
     </tr>
 	</tfoot>
     </table>

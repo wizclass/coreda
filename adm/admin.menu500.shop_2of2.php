@@ -1,5 +1,7 @@
 <?php
 if (!defined('G5_USE_SHOP') || !G5_USE_SHOP) return;
+if (!defined('SHOP_USE') || !SHOP_USE) return;
+
 if($member['mb_id'] == 'admin'){
     $menu['menu500'] = array (
         array('500000', '쇼핑몰현황/기타', G5_ADMIN_URL.'/shop_admin/itemsellrank.php', 'shop_stats'),

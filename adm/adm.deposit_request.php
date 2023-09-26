@@ -51,7 +51,7 @@ if($_GET['ord']!=null && $_GET['ord_word']!=null){
 }
 
 
-$colspan = 12;
+$colspan = 13;
 // $to_date = date("Y-m-d", strtotime(date("Y-m-d")."+1 day"));
 
 $sql_common = " from {$g5['deposit']} as A";
@@ -268,8 +268,8 @@ $result = sql_query($sql);
     <tr>
         <th scope="col" width='5%'>no</th>
         <th scope="col" width='7%'>아이디</th>
-        <th scope="col" width='7%'>추천인</th>
         <th scope="col" width='5%'>이름</th>
+        <th scope="col" width='7%'>추천인</th>
         <!-- <th scope="col" width='5%'>센터</th> -->
         <th scope="col" width='15%'>입금정보</th>
         <th scope="col" width='5%'>입금요청금액</th>
@@ -307,8 +307,8 @@ $result = sql_query($sql);
     <tr class="bg0">
         <td ><?php echo $row['uid'] ?></td>
         <td class='td_id'><a href='/adm/member_form.php?sst=&sod=&sfl=&stx=&page=&w=u&mb_id=<?=$row['mb_id']?>' target='_blank'><?=$row['mb_id'] ?></a></td>
-        <td style='color:#666'><?=$member_result['mb_recommend']?></td>
         <td style='color:#666'><?=$member_result['mb_name']?></td>
+        <td style='color:#666'><?=$member_result['mb_recommend']?></td>
         <!-- <td style='color:#666'><?=$member_result['mb_center']?></td> -->
 
         <td style='color:#666'>
@@ -318,7 +318,7 @@ $result = sql_query($sql);
         <td><?=shift_auto($row['amt'])?></td>
         <td class='coin'><?=$row['coin']?></td>
         <td><input type='text' class='reg_text input_amt_val' style='font-weight:600;color:blue;text-align:right' value='<?=shift_auto($row['in_amt'],$curencys[0])?>'></td>
-        <td><?=$row['cost']?></td>
+        <td><?=shift_auto($row['cost'],'krw')?></td>
         <td>
             <!-- <?=status($row['status'])?> -->
             <select name="status" uid="<?=$row['uid']?>" class='sel_<?=$row['status']?>' <?=$row['status'] == 1 ? 'disabled':'';?>>
@@ -364,7 +364,7 @@ $result = sql_query($sql);
         <td class="text-right"><?=shift_auto($total_amt)?></td>
         <td></td>
         <td class="text-right"><?=shift_auto($total_inamt,2)?></td>
-        <td colspan="5"></td>
+        <td colspan="6"></td>
     </tr>
     </tfoot>
     </tbody>

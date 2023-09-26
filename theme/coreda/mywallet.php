@@ -11,16 +11,20 @@ if ($nw['nw_with'] == 'N') {
   alert("현재 서비스를 이용할수없습니다.");
 }
 
-$coin = get_coins_price();
-// print_R($coin);
 
-$withdrawal_price = shift_coin($coin['usdt_krw'],KRW_NUMBER_POINT);
-$withdrawal_price_sell = shift_coin($default['de_token_sell_price'],KRW_NUMBER_POINT);
-$shift_auto_withdrawal_price = shift_auto($coin['usdt_krw'], 'krw');
+$coin = get_coins_price();
+$coin['core_KRW'] = $coin['core_usdt'] *  $coin['usdt_krw'];
+
+$withdrawal_price = shift_coin($coin['core_KRW'],KRW_NUMBER_POINT);
+// $withdrawal_price_sell = shift_coin($default['de_token_sell_price'],KRW_NUMBER_POINT);
+$withdrawal_price_sell = $withdrawal_price;
+
+
+$shift_auto_withdrawal_price = shift_auto($coin['core_KRW'], 'krw');
 $shift_auto_withdrawal_price_sell = shift_auto($default['de_token_sell_price'],'krw');
 
-$coin_eth_usdt = $coin['eth_usdt'];
-$coin_usdt_etc = $coin['usdt_etc'];
+// $coin_eth_usdt = $coin['eth_usdt'];
+// $coin_usdt_etc = $coin['usdt_etc'];
 
 
 // 입금설정
@@ -241,7 +245,7 @@ function curency_txt($value, $kind = 'deposit')
 
 
 <!-- <link rel="stylesheet" href="<?= G5_THEME_CSS_URL ?>/withdrawal.css"> -->
-<!-- <script type="text/javascript" src="./js/qrcode.js"></script> -->
+<script type="text/javascript" src="./js/qrcode.js"></script>
 
 <? include_once(G5_THEME_PATH . '/_include/breadcrumb.php'); ?>
 <!-- <link rel="stylesheet" href="<?= G5_THEME_CSS_URL ?>/scss/page/<?= $_GET['id'] ?>.css"> -->
@@ -400,10 +404,10 @@ function curency_txt($value, $kind = 'deposit')
     <div class="my_btn_wrap">
       <div class="row mywallet_btn">
         <div class='col-lg-6 col-12'>
-          <button type='button' class='btn wd main_btn b_darkblue round' onclick="switch_func('deposit')"> 입금 (USDT구매)</button>
+          <button type='button' class='btn wd main_btn b_darkblue round' onclick="switch_func('deposit')"> 입금</button>
         </div>
         <div class='col-lg-6 col-12'>
-          <button type='button' class='btn wd main_btn b_skyblue round' onclick="switch_func('withdraw')">출금 (USDT판매)</button>
+          <button type='button' class='btn wd main_btn b_skyblue round' onclick="switch_func('withdraw')">출금</button>
         </div>
       </div>
     </div>
@@ -417,14 +421,14 @@ function curency_txt($value, $kind = 'deposit')
         </div> -->
       <!-- </h3> -->
       <div class="checkbox-group">
-        <div class='checkbox-tile'>1 USDT = <span id='curency_usdt_eth'><?= $shift_auto_withdrawal_price ?></span> <?= $curencys[1] ?> </div>
+        <div class='checkbox-tile'>1 <?= $curencys[1] ?> = <span id='curency_usdt_eth'><?= $shift_auto_withdrawal_price ?></span> <?= $curencys[0] ?> </div>
       </div>
     </section>
 
     <!-- 입금 -->
     <section id='deposit' class='loadable'>
 
-      <h3 class="wallet_title">입금(구매)계좌 선택</h3>
+      <h3 class="wallet_title">입금 통화 선택</h3>
 
       <section id="account_select" class="account_select">
         <?
@@ -432,18 +436,27 @@ function curency_txt($value, $kind = 'deposit')
         $i = 0;
         while ($i < count($deposit_array)) { ?>
 
-          <div class="content-box round account_card" data-id=<?= $deposit_array[$i]['no'] ?>>
+          <div class="content-box round account_card" data-id="<?= $deposit_array[$i]['no'] ?>" data-currency="<?=$deposit_array[$i]['currency']?>">
             <p class="card_title"><?= $deposit_array[$i]['account_name'] ?></p>
 
-            <p class="cabinet">
+            <p class="cabinet" >
+              <?if($deposit_array[$i]['currency'] == '원'){?>
+                <span class="bank_name"><?= $deposit_array[$i]['bank_name'] ?></span>
+                <span class="bank_account_num"><?= $deposit_array[$i]['bank_account'] ?></span>
+                <span class="bank_account_name"><?= $deposit_array[$i]['bank_account_name'] ?></span>
 
-              <span class="bank_name"><?= $deposit_array[$i]['bank_name'] ?></span>
-              <span class="bank_account_num"><?= $deposit_array[$i]['bank_account'] ?></span>
-              <span class="bank_account_name"><?= $deposit_array[$i]['bank_account_name'] ?></span>
-
-              <button class="btn wd line_btn mt20 " id="accountCopy" style="background: #212429" onclick="copy_bank_account_num(this)">
-                <span style="color: #fff"> 계좌복사 </span>
-              </button>
+                <button class="btn wd line_btn mt20 " id="accountCopy" style="background: #212429" onclick="copy_bank_account_num(this)">
+                  <span style="color: #fff"> 계좌복사 </span>
+                </button>
+              <?}else{
+                $company_wallet = $deposit_array[$i]['bank_account'];
+                ?>
+                <span class="bank_account_num"><?= $deposit_array[$i]['bank_account'] ?></span>
+                
+                <button class="btn wd line_btn mt20 " id="accountCopy" style="background: #212429" onclick="copy_bank_account_num(this)">
+                  <span style="color: #fff"> 주소복사 </span>
+                </button>
+              <?}?>
             </p>
           </div>
 
@@ -494,7 +507,7 @@ function curency_txt($value, $kind = 'deposit')
       <hr class="hr_dash"></hr>
 
       <div class="col-sm-12 col-12 content-box round mt20" id="eth">
-        <h3 class="wallet_title">입금(구매)신청 </h3> <span class='desc'> - 선택된 구좌로 1회만 요청해주세요.</span>
+        <h3 class="wallet_title">입금신청 </h3> <span class='desc'> - 입금후 1회만 요청해주세요.</span>
         <div style="clear:both"></div>
         <div class="row">
 
@@ -514,7 +527,8 @@ function curency_txt($value, $kind = 'deposit')
 
           <div class="btn_ly qrBox_right "></div>
           <div class="col-sm-12 col-12 withdraw mt20">
-            <!-- <input type="text" id="deposit_name" class='b_ghostwhite' placeholder="TXID를 입력해주세요"> -->
+
+            <input type="text" id="deposit_name" class='b_ghostwhite' placeholder="TXID를 입력해주세요">
 
             <input type="text" id="deposit_value" class='b_ghostwhite' placeholder="입금액을 입력해주세요" inputmode=numeric>
             <label class='currency-right' id="deposit-currency-right"><?= $curencys[1] ?></label>
@@ -527,12 +541,12 @@ function curency_txt($value, $kind = 'deposit')
           </div>
 
           <div class='col-sm-12 col-12 '>
-            <button class="btn btn_wd font_white deposit_request deposit_value" data-currency="<?= $curencys[1] ?>">
-              <span>입금(구매)신청</span>
+            <button class="btn btn_wd font_white deposit_request deposit_value" id="deposit_request" data-currency="">
+              <span>입금신청</span>
             </button>
 
             <div class='txt-box deposit_alert col-12'>
-              입금(구매)신청 후 내역에 입금(구매) 정보가 확인됩니다.<br>
+              입금신청 후 내역에 입금 정보가 확인됩니다.<br>
               신청금액과 실제 입금액이 다른경우 처리가 지연될수 있습니다.
             </div>
           </div>
@@ -543,7 +557,9 @@ function curency_txt($value, $kind = 'deposit')
 
       <!-- 입금 요청 내역 -->
       <div class="history_box content-box">
-        <h3 class="hist_tit wallet_title">입금(구매) 신청 내역 <span style="font-size:11px;font-weight:300;">- 내역의 계좌번호 클릭시 복사</span></h3>
+        <h3 class="hist_tit wallet_title">입금 신청 내역 
+          <!-- <span style="font-size:11px;font-weight:300;">- 내역의 계좌번호 클릭시 복사</span> -->
+        </h3>
 
         <div class="b_line2"></div>
         <? if (sql_num_rows($result_deposit) == 0) { ?>
@@ -571,8 +587,11 @@ function curency_txt($value, $kind = 'deposit')
                     break;
                 }
                 ?>
-                <span class="hist_value"><?= $row['amt'] == '0' ? '' : shift_auto($row['amt']) . ' ' . $curencys[1];?></span>
-                <span class="curency_value" > <?= $row['in_amt'] . ' ' . $curencys[0] ?></span>
+                <span class="hist_value"><?= $row['amt'] == '0' ? '' : shift_auto($row['amt']) . ' ' . $row['coin'];?></span>
+                
+                <span class="curency_value" > 
+                  <?if($row['coin'] != '원'){ echo shift_auto($row['in_amt']) . ' ' . $curencys[0];} ?>
+                </span>
 
               </div>
 
@@ -597,9 +616,10 @@ function curency_txt($value, $kind = 'deposit')
       </div>
     </section>
 
+
     <!-- 출금 -->
     <section id='withdraw' class='loadable'>
-      <!-- <h3 class="wallet_title">출금(판매)계좌 선택</h3>
+      <!-- <h3 class="wallet_title">출금계좌 선택</h3>
       <section id="account_select" class="account_select">
         <?
         
@@ -629,8 +649,8 @@ function curency_txt($value, $kind = 'deposit')
       -->
 
       <div class="col-sm-12 col-12 content-box round mt20">
-        <h3 class="wallet_title">출금(판매) 신청</h3>
-        <span class="desc"> 총 출금 가능액 : <?= shift_auto($withdrwal_total, $curencys[1]) ?> <?= $curencys[0] ?></span>
+        <h3 class="wallet_title">출금 신청</h3>
+        <span class="desc"> 총 출금 가능액 : <?= shift_auto($withdrwal_total, $curencys[1]) ?> <?= $curencys[1] ?></span>
         
         <div class="row">
           <!-- <div class="col-12 coin_select_wrap mb20">
@@ -646,7 +666,7 @@ function curency_txt($value, $kind = 'deposit')
             선택된 출금코인은 ETH (BEP-20) 입니다.<br> ETH (ERC-20) 주소 기재시 정상출금 되지 않으니 반드시 주소 확인후 기재 바랍니다.
           </div> -->
 
-          <div class='col-12'><label class="sub_title">- 출금정보 (최초 1회입력)</label></div>
+          <!-- <div class='col-12'><label class="sub_title">- 출금정보 (최초 1회입력)</label></div>
           <div class='col-6'>
             <input type="text" id="withdrawal_bank_name" class="b_ghostwhite " placeholder="은행명" value="<?= $member['bank_name'] ?>" <?if($bank_withrawal_info){echo " readonly ";}?>>
           </div>
@@ -654,16 +674,20 @@ function curency_txt($value, $kind = 'deposit')
             <input type="text" id="withdrawal_account_name" class="b_ghostwhite " placeholder="예금주" value="<?= $member['account_name'] ?>" <?if($bank_withrawal_info){echo " readonly ";}?>>
           </div>
           <div class='col-12'>
-            <!-- <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 계좌번호를 입력해주세요" value="<?= Decrypt($member['eth_my_wallet'], $member['mb_id'], 'x'); ?>"> -->
+            <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 계좌번호를 입력해주세요" value="<?= Decrypt($member['eth_my_wallet'], $member['mb_id'], 'x'); ?>">
             <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 계좌번호를 입력해주세요" value="<?= $member['bank_account'] ?>" <?if($bank_withrawal_info){echo " readonly ";}?>>
+          </div> -->
+          <div class='col-12'><label class="sub_title">- 출금정보 (최초 1회입력)</label></div>
+          <div class='col-12'>
+            <input type="text" id="withdrawal_bank_account" class="b_ghostwhite " placeholder="출금 지갑주소를 입력해주세요" value="<?= Decrypt($member['eth_my_wallet'], $member['mb_id'], 'x'); ?>">
           </div>
         </div>
 
         <div class="input_shift_value mb10 pb5">
           <label class="sub_title">- 출금금액 (수수료:<?= $withdrwal_fee ?>%)</label>
-          <span style='display:inline-block;float:right;'><button type='button' id='max_value' class='btn inline' value=''>max</button></span>
-          <input type="text" id="sendValue" class="send_coin b_ghostwhite " placeholder="출금 수량을 입력해주세요">
-          <label class='currency-right'><?= $curencys[0] ?></label>
+          <span style='display:inline-block; float:right;'><button type='button' id='max_value' class='btn inline' value=''>max</button></span>
+          <input type="text" id="sendValue" class="send_coin b_ghostwhite " placeholder="출금 수량을 입력해주세요" inputmode='numeric'>
+          <label class='currency-right'><?= $curencys[1] ?></label>
           <!-- <div class='fee' style='color:black;padding-right:3px;letter-spacing:-0.5px'>
               <span>실 출금 금액(수수료 제외) : </span><span id='fee_val' style='color:red;margin-right:10px;font-size:14px;font-weight:bold'></span>
             </div> -->
@@ -693,18 +717,18 @@ function curency_txt($value, $kind = 'deposit')
             <button id="pin_open" class="btn wd yellow form-send-button">인증</button>
           </div>
           <div class="col-7">
-            <button type="button" class="btn wd btn_wd form-send-button" id="Withdrawal_btn" data-toggle="modal" data-target="" data-currency="<?= $curencys[0]; ?>" disabled>출금(판매) 신청</button>
+            <button type="button" class="btn wd btn_wd form-send-button" id="Withdrawal_btn" data-toggle="modal" data-target="" data-currency="<?= $curencys[0]; ?>" disabled>출금 신청</button>
           </div>
         </div>
       </div>
 
       <!-- 출금내역 -->
       <div class="history_box content-box">
-        <h3 class="hist_tit wallet_title">출금(판매) 신청내역</h3>
+        <h3 class="hist_tit wallet_title">출금 신청내역</h3>
         <div class="b_line2"></div>
 
         <? if (sql_num_rows($result_withdraw) == 0) { ?>
-          <div class="no_data">출금(판매) 신청내역이 존재하지 않습니다</div>
+          <div class="no_data">출금 신청내역이 존재하지 않습니다</div>
         <? } ?>
 
         <? while ($row = sql_fetch_array($result_withdraw)) {
@@ -736,7 +760,7 @@ function curency_txt($value, $kind = 'deposit')
 
               <div class="row">
                 <span class="hist_withval">  신청금액 : <?= shift_auto($row['amt_total']) ?> <?= $row['coin'] ?> / <label>수수료 : </label> <?= shift_auto($row['fee']) ?> <?= $row['coin'] ?></span>
-                <span class="hist_value status"><?= shift_auto($row['out_amt']) ?> <?= $curencys[0] . ' ' . $result ?></span>
+                <span class="hist_value status"><?= shift_auto($row['out_amt']) ?> <?= $row['coin'] . ' ' . $result ?></span>
               </div>
 
               <!-- <div class="row">
@@ -786,7 +810,7 @@ function curency_txt($value, $kind = 'deposit')
   function switch_func(n) {
     $('.loadable').removeClass('active');
     $('#' + n).toggleClass('active');
-    $('#curency_usdt_eth').text(n == "deposit" ? '<?=$shift_auto_withdrawal_price?>' : '<?=$shift_auto_withdrawal_price_sell?>');
+    // $('#curency_usdt_eth').text(n == "deposit" ? '<?=$shift_auto_withdrawal_price?>' : '<?=$shift_auto_withdrawal_price_sell?>');
   }
 
   function switch_func_paging(n) {
@@ -839,7 +863,7 @@ function curency_txt($value, $kind = 'deposit')
     } 
   */
 
-  /* QR코드 사용안함
+  
     function generateQrCode(qrImg, text, width, height) {
       return new QRCode(document.getElementById(qrImg), {
         text: text,
@@ -850,7 +874,7 @@ function curency_txt($value, $kind = 'deposit')
         correctLevel: QRCode.CorrectLevel.H
       });
     } 
-  */
+  
 
   collapseClosed();
 </script>
@@ -869,13 +893,13 @@ function curency_txt($value, $kind = 'deposit')
     } */
 
     
-    /* 회사 지갑사용
-      var eth_wallet_addr = '<?= $company_wallet ?>';
+    /* 회사 지갑사용*/
+     /*  var eth_wallet_addr = '<?= $company_wallet ?>';
       if (eth_wallet_addr != '') {
         $('#eth_wallet_addr').val(eth_wallet_addr);
         generateQrCode("my_eth_qr", eth_wallet_addr, 80, 80);
-      }
-    */
+      } */
+    
 
     
     /* 입금 전용 지갑사용
@@ -887,12 +911,13 @@ function curency_txt($value, $kind = 'deposit')
     */
 
     /* 출금*/
-
+    var phone_auth = '<?=PHONE_AUTH?>';    
     var curency_tmp = '<?= $curencys[1] ?>';
     var usdt_curency = '<?= $curencys[0] ?>';
-    var eth_curency = '<?= $curencys[0] ?>';
-    var etc_curency = '<?= $curencys[4] ?>';
-    var erc20_curency = '<?= $curencys[3] ?>';
+
+    // var eth_curency = '<?= $curencys[0] ?>';
+    // var etc_curency = '<?= $curencys[4] ?>';
+    // var erc20_curency = '<?= $curencys[3] ?>';
     
     /* 입출금 서비스 사용여부*/
     var nw_with = '<?= $nw_with ?>'; // 출금서비스 가능여부
@@ -900,8 +925,6 @@ function curency_txt($value, $kind = 'deposit')
     var personal_with = '<?= $member['mb_leave_date'] ?>'; // 별도구분회원 여부
     var mb_id = '<?=$member['mb_id']?>';
     
-    // 주 통화설정
-
 
     // 출금설정
     var out_fee = (<?= $withdrwal_fee ?> * 0.01);
@@ -910,8 +933,8 @@ function curency_txt($value, $kind = 'deposit')
     var out_day_limit = '<?= $withdrwal_day_limit ?>';
 
     var withdrawal_price = <?= $withdrawal_price ?>;
-    var coin_eth_usdt = <?= $coin_eth_usdt ?>;
-    var coin_usdt_etc = <?= $coin_usdt_etc ?>;
+    // var coin_eth_usdt = <?= $coin_eth_usdt ?>;
+    // var coin_usdt_etc = <?= $coin_usdt_etc ?>;
 
 
     // 최대출금가능금액
@@ -927,27 +950,34 @@ function curency_txt($value, $kind = 'deposit')
       const real_withdraw_val = input_value - real_fee_val;
 
       let shift_coin_value = <?= BONUS_NUMBER_POINT ?>;
-      /* let swap_coin_price = (real_withdraw_val * <?= $coin['usdt_krw'] ?>) / withdrawal_price;
-      let swap_fee_val = (real_fee_val * <?= $coin['usdt_krw'] ?>) / withdrawal_price;
 
-      if (curency_tmp == eth_curency) {
-        shift_coin_value = <?= ASSETS_NUMBER_POINT ?>;
-        swap_coin_price = real_withdraw_val / coin_eth_usdt;
-        swap_fee_val = real_fee_val / coin_eth_usdt;
-      } else if (curency_tmp == etc_curency) {
-        shift_coin_value = <?= ASSETS_NUMBER_POINT ?>;
-        swap_coin_price = real_withdraw_val / coin_usdt_etc;
-        swap_fee_val = real_fee_val / coin_usdt_etc;
-      } else if (curency_tmp == usdt_curency) {
-        shift_coin_value = <?= ASSETS_NUMBER_POINT ?>;
-        swap_coin_price = real_withdraw_val;
-        swap_fee_val = real_fee_val;
-      } */
+      /* 
+        let swap_coin_price = (real_withdraw_val * <?= $coin['usdt_krw'] ?>) / withdrawal_price;
+        let swap_fee_val = (real_fee_val * <?= $coin['usdt_krw'] ?>) / withdrawal_price;
+
+        if (curency_tmp == eth_curency) {
+          shift_coin_value = <?= ASSETS_NUMBER_POINT ?>;
+          swap_coin_price = real_withdraw_val / coin_eth_usdt;
+          swap_fee_val = real_fee_val / coin_eth_usdt;
+        } else if (curency_tmp == etc_curency) {
+          shift_coin_value = <?= ASSETS_NUMBER_POINT ?>;
+          swap_coin_price = real_withdraw_val / coin_usdt_etc;
+          swap_fee_val = real_fee_val / coin_usdt_etc;
+        } else if (curency_tmp == usdt_curency) {
+          shift_coin_value = <?= ASSETS_NUMBER_POINT ?>;
+          swap_coin_price = real_withdraw_val;
+          swap_fee_val = real_fee_val;
+        } 
+      */
       
       if (curency_tmp == '원' && curency_tmp != usdt_curency) {
         shift_coin_value = 0;
         swap_coin_price = (real_withdraw_val * <?= $withdrawal_price_sell ?>);
         swap_fee_val = (real_fee_val * <?= $withdrawal_price_sell ?>);
+      }else{
+        shift_coin_value = 0;
+        swap_coin_price = (real_withdraw_val);
+        swap_fee_val = (real_fee_val);
       }
       
       swap_val = Number(input_value*<?= $withdrawal_price_sell ?>).toFixed(shift_coin_value)
@@ -955,7 +985,7 @@ function curency_txt($value, $kind = 'deposit')
       fixed_fee = Number(swap_fee_val).toFixed(shift_coin_value);
 
       if (input_value != "") {
-        $(".swap_amt").text("= " +Comma_Number(swap_val) + ' ' +curency_tmp);
+        $(".swap_amt").text("= " +Comma_Number(swap_val) + ' ' +usdt_curency);
         $('.fee').css('display', 'flex');
         $('#fee_val').text(`${Comma_Number(fixed_fee)} ${curency_tmp}`);
         $('#active_amt').text(`실 출금 금액(수수료 제외) : ${Comma_Number(fixed_amt)} ${curency_tmp}`);
@@ -1154,13 +1184,17 @@ function curency_txt($value, $kind = 'deposit')
       }
 
       //KYC 인증 
-      /* var out_count = Number("<?= $auth_cnt ?>");
-      var kyc_cert = Number("<?= $kyc_cert ?>");
+      var KYC_STATES = <?=KYC_STATES?>;
 
-      if (out_count < 1 && kyc_cert != 1) {
-        dialogModal('KYC 인증 미등록/미승인 ', "<strong> KYC인증이 미등록 또는 미승인 상태입니다.<br>안전한 출금을 위해 최초 1회 KYC 인증을 진행해주세요<br><a href='/page.php?id=profile' class='btn btn-primary'>KYC인증</a></strong>", 'warning');
-        return false;
-      } */
+      if(KYC_STATES > 0){
+        var out_count = Number("<?= $auth_cnt ?>");
+        var kyc_cert = Number("<?= $kyc_cert ?>");
+
+        if (out_count < 1 && kyc_cert != 1) {
+          dialogModal('KYC 인증 미등록/미승인 ', "<strong> KYC인증이 미등록 또는 미승인 상태입니다.<br>안전한 출금을 위해 최초 1회 KYC 인증을 진행해주세요<br><a href='/page.php?id=profile' class='btn btn-primary'>KYC인증</a></strong>", 'warning');
+          return false;
+        }
+      }
 
       // 출금서비스 이용가능 여부 확인
       if (nw_with == 'N') {
@@ -1191,13 +1225,13 @@ function curency_txt($value, $kind = 'deposit')
 
       // 최소 금액 확인
       if (out_min_limit != 0 && inputVal < Number(out_min_limit)) {
-        dialogModal('금액 입력 확인', '<strong> 최소가능금액은 ' + Price(out_min_limit) + ' ' + usdt_curency + '입니다.</strong>', 'warning');
+        dialogModal('금액 입력 확인', '<strong> 최소가능금액은 ' + Price(out_min_limit) + ' ' + curency_tmp + '입니다.</strong>', 'warning');
         return false;
       }
 
       //최대 금액 확인
       if (out_max_limit != 0 && inputVal > Number(out_max_limit)) {
-        dialogModal('금액 입력 확인', '<strong> 1회 출금 가능금액은 ' + Price(out_max_limit) + ' ' + usdt_curency + '입니다.</strong>', 'warning');
+        dialogModal('금액 입력 확인', '<strong> 1회 출금 가능금액은 ' + Price(out_max_limit) + ' ' + curency_tmp + '입니다.</strong>', 'warning');
         return false;
       }
 
@@ -1244,8 +1278,16 @@ function curency_txt($value, $kind = 'deposit')
 
 
     function process_pin_mobile(){
+      console.log("result : "+ phone_auth);
 
-      return new Promise(
+      if(phone_auth < 1 || !phone_auth){
+        return new Promise(
+          function (resolve,reject){
+            resolve();
+          }
+        )
+      }else{
+        return new Promise(
         function(resolve,reject){
         dialogModal('본인인증', "<p>"+maskingFunc.phone(mb_hp)+"<br>모바일로 전송된 인증코드 6자리를 입력해주세요<br><input type='text' class='modal_input' id='auth_mobile_pin' name='auth_mobile_pin'></input><span class='time_remained'></span><span class='processcode'></span></p>", 'confirm');
 
@@ -1299,7 +1341,9 @@ function curency_txt($value, $kind = 'deposit')
         }else{
           alert('잠시 후 다시 시도해주세요.');
         }
-      });
+        
+        });
+      }
     } 
 
 
@@ -1317,25 +1361,40 @@ function curency_txt($value, $kind = 'deposit')
   /* 입금 */
   $(function() {
   
-    // P2P 입금 계좌 카드 선택
-    var select_account_card_id = -1;
+    // 입금 카드 선택
+    var select_account_card_id = 0;
     var deposit_array = <?= json_encode($deposit_array)?>;
 
-    // P2P 형태 계좌
+    // 입금 선택 카드
     function account_card_open() {
       var card_id = $(this).data('id');
+      var card_currency = $(this).data('currency');
+
       if (select_account_card_id != card_id) {
+        
         $('.cabinet').css('display', 'none');
         $('.account_card').removeClass('active');
-        // 계좌 노출 미사용
-        // $(this).children('.cabinet').slideDown();
+        
         $(this).addClass('active');
         $(this).children('.cabinet').css('display', 'block');
+
+        $('#deposit-currency-right').text(card_currency);
+        $('#deposit_request').data('currency',card_currency);
+        
+        if(card_currency == '원'){
+          $('#deposit_name').attr('placeholder','입금자명을 입력해주세요');
+        }else{
+          $('#deposit_name').attr('placeholder','TXID를 입력해주세요');
+        }
       }
+      
       select_account_card_id = card_id;
     }
 
     $('.account_card').bind('click', account_card_open);
+
+
+
 
     // 입금액 대비 환산
     document.querySelector('#deposit_value').addEventListener('keyup', (e) => {
@@ -1347,22 +1406,26 @@ function curency_txt($value, $kind = 'deposit')
       let deposit_amount = uncomma(e.target.value);
       let swap_coin_price = deposit_amount * <?= $withdrawal_price ?>;
 
-      if(symbol == '원') {
-        swap_coin_price = deposit_amount/<?=$withdrawal_price?>;
-        fixed_amt = Number(swap_coin_price).toFixed(2);
-        $('.in_coin').css('display', 'block');
-        $('#active_in').text(`${number_with_commas(fixed_amt)} USDT`);
 
+      if(symbol == '원') {
+        // swap_coin_price = deposit_amount/<?=$withdrawal_price?>;
+        swap_coin_price = deposit_amount;
+
+        fixed_amt = Number(swap_coin_price);
+        /*$('.in_coin').css('display', 'block');
+        $('#active_in').text(`${number_with_commas(fixed_amt)} 원`); */
+        
       }else{
 
-        if (symbol == eth_curency) {
+        /* if (symbol == eth_curency) {
           swap_coin_price = deposit_amount * <?= $coin['eth_krw'] ?>;
         } else if (symbol == etc_curency) {
           swap_coin_price = deposit_amount * <?= $coin['etc_krw'] ?>;
         } else if (symbol == usdt_curency) {
           swap_coin_price = deposit_amount * <?= $withdrawal_price ?>;
-        } 
+        }  */
 
+        swap_coin_price = deposit_amount * <?= $coin['core_KRW'] ?>;
         fixed_amt = Number(swap_coin_price).toFixed(0);
         $('.in_coin').css('display', 'block');
         $('#active_in').text(`${number_with_commas(fixed_amt)} 원`);
@@ -1425,38 +1488,48 @@ function curency_txt($value, $kind = 'deposit')
     $('.deposit_request').on('click', function(e) {
       
       var mb_id = '<?=$member['mb_id']?>';
-
+      
       if(Number(select_account_card_id) < 1){
-        dialogModal('<p>입금(구매) 구좌 선택</p>', '<p>입금(구매)구좌를 선택해주세요.</p>', 'warning');
+        dialogModal('<p>입금 통화 선택</p>', '<p>입금통화를 선택해주세요.</p>', 'warning');
         return false;
       }
 
       var selected_account_card = deposit_array[select_account_card_id-1];
       
-      // var d_name = $('#deposit_name').val(); // 입금자
-      var d_name = selected_account_card.no;
+      var d_name = $('#deposit_name').val(); // 입금자 Or TXID
+      // var d_name = selected_account_card.no;
       var d_price = conv_number($('#deposit_value').val()); // 입금액
       var coin = $(this).data('currency');
 
       // 입금설정
       var in_fee = (<?= $deposit_fee ?> * 0.01);
-      var in_min_limit = <?= $deposit_min_limit ?> * <?=shift_coin($withdrawal_price,KRW_NUMBER_POINT)?>;
+      
+      var in_min_limit = <?= $deposit_min_limit ?>;
+      var min_limit_core = (in_min_limit / <?=$withdrawal_price?>).toFixed(2);
+
       var in_max_limit = <?= $deposit_max_limit ?> * <?=shift_coin($withdrawal_price,KRW_NUMBER_POINT)?>;
       var in_day_limit = '<?= $deposit_day_limit ?>';
 
       console.log(` in_min_limit : ${in_min_limit}\n in_max_limit:${in_max_limit}\n in_day_limit:${in_day_limit}\n in_fee: ${in_fee}`);
-      console.log(' 선택계좌 : ' + selected_account_card.bank_account_name + ' || 입금액 :' + d_price);
+      console.log(' 선택계좌 : ' + selected_account_card.bank_account + ' || 통화 : ' + coin + '입금액 :' + d_price + ' || ' + fixed_amt);
+      
       
       if (d_price == '') {
         dialogModal('<p>입금 요청값 확인</p>', '<p>입금요청 항목을 입력해주시고 다시 시도해주세요.</p>', 'warning');
         return false;
       }
 
-      // 입금액 fixed_amt d_price
-      if (in_min_limit > 0 && Number(d_price) < Number(in_min_limit)) {
-        dialogModal('<p>최소 입금액 확인</p>', '<p>최소 입금 확인 금액은 ' + Price(Number(in_min_limit)) + ' 원 ('+ '<?= $deposit_min_limit ?>' + ' USDT) 입니다. </p>', 'warning');
+      if (coin.toLowerCase() == 'core' && d_name.length < 5) {
+        dialogModal('<p>TXID 입력값 확인 </p>', '<p> 전송후 받은 TX Hash 값을 정확하게 입력해주세요</p>', 'warning');
         return false;
       }
+
+      // 입금액 fixed_amt d_price
+      if (in_min_limit > 0 && Number(fixed_amt) < Number(in_min_limit)) {
+        dialogModal('<p>최소 입금액 확인</p>', '<p>최소 입금 확인 금액은 ' + Price(min_limit_core) + ' core ('+ Price(Number(in_min_limit)) + ' 원) 입니다. </p>', 'warning');
+        return false;
+      }
+
 
       $.ajax({
         url: '/util/request_deposit.php',
@@ -1472,7 +1545,7 @@ function curency_txt($value, $kind = 'deposit')
         },
         success: function(result) {
           if (result.response == "OK") {
-            dialogModal('입금(구매) 신청', '입금(구매) 신청이 정상처리되었습니다.', 'success');
+            dialogModal('입금 신청', '입금 신청이 정상처리되었습니다.', 'success');
             $('.closed').click(function() {
               location.reload();
             });
@@ -1484,6 +1557,7 @@ function curency_txt($value, $kind = 'deposit')
           if (debug) dialogModal('ajax ERROR', 'IO ERROR', 'failed');
         }
       });
+
     });
   ///////////
 

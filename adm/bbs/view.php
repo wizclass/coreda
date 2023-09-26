@@ -140,6 +140,10 @@ if ($board['bo_use_signature'] && $view['mb_id']) {
     $signature = conv_content($signature, 1);
 }
 
+if($bo_table == 'kyc'){
+    $board_skin_path = G5_THEME_PATH.'/skin/board/kyc/';
+}
+
 include_once($board_skin_path.'/view.skin.php');
 
 @include_once($board_skin_path.'/view.tail.skin.php');

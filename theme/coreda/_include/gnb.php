@@ -92,7 +92,7 @@ $(document).ready(function(){
 				<a href="/page.php?id=mywallet">
 					<div class="gnb_img_wrap"></div>
 					<div class="gnb_title_Wrap">
-						<span >USDT 거래소</span>
+						<span >입출금</span>
 					</div>
 				</a>
 			</li> 
@@ -206,12 +206,14 @@ $(document).ready(function(){
 				</a>
 			</li>
 			<?}?>
-
+			
+			<?if(Multi_languge_USE){?>
 			<div class='gnb_bottom text-center hidden'><i class="ri-arrow-down-s-line" style='font-size:20px;vertical-align:top'></i></div>
 			<div id='gnb_language'>
 				<p class='f_small title'>언어선택</p>
 				<?include_once(G5_THEME_PATH.'/_include/lang.html')?>
 			</div>
+			<?}?>
 			
 			<div class="logout_wrap">
 				<a href="javascript:void(0);" class="logout_pop_open"><i class="ri-logout-box-r-line"></i><span>로그아웃</span></a>

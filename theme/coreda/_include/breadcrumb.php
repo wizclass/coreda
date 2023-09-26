@@ -145,15 +145,15 @@ $title = 'Dashboard';
 					<ul class="row top">
 						<li class="col-4">
 							<dt class="title" >총 누적 보너스</dt>
-							<dd class="value" style='font-size:15px;'><?=shift_auto($total_bonus,$curencys[0])?><span class='currency'><?=$curencys[0]?></span></dd>
+							<dd class="value" style='font-size:15px;'><?=shift_auto($total_bonus,$curencys[1])?><span class='currency'><?=$curencys[1]?></span></dd>
 						</li>
 						<li class="col-4">
-							<dt class="title" >구매 가능 USDT </dt>
+							<dt class="title" >구매 가능 원화 </dt>
 							<dd class="value" style='font-size:15px;'><?=shift_auto($available_fund,$curencys[0])?><span class='currency'><?=$curencys[0]?></span></dd>
 						</li>
 						<li class="col-4">
-							<dt class="title" >출금 가능 USDT </dt>
-							<dd class="value" style='font-size:15px;'><?=shift_auto($total_withraw,$curencys[0])?><span class='currency'><?=$curencys[0]?></span></dd>
+							<dt class="title" >출금 가능 <?=$curencys[1]?> </dt>
+							<dd class="value" style='font-size:15px;'><?=shift_auto($total_withraw,$curencys[1])?><span class='currency'><?=$curencys[1]?></span></dd>
 						</li>
 						<!-- <li class="col-4">
 							<dt class="title">출금 가능 코인</dt>
@@ -179,17 +179,21 @@ $title = 'Dashboard';
 						<li class="col-4">
 							<dt class="title" >나의구매등급</dt>
 							<dd class="value"><?=$member['rank_note']?><?=rank_name($member['rank_note'])?></dd>
-							<dd class="value">(<?=shift_auto($rank_note_price['it_price'], $curencys[0])?> <?=$curencys[0]?>)</dd>
 						</li>
 
-						<li class="col-4">
-							<dt class="title">승급대상 USDT</dt>
+						<!-- <li class="col-4">
+							<dt class="title">승급대상 포인트</dt>
 							<dd class="value"><?=Number_format($member['recom_sales'])?> </dd>
+						</li> -->
+
+						<li class="col-4">
+							<dt class="title">구매총액</dt>
+							<dd class="value"><?=Number_format($member['mb_save_point'])?> <?=$curencys[0]?></dd>
 						</li>
 
 					</ul>
 
-					<ul class="row" style="margin:0 10px;">
+					<!-- <ul class="row" style="margin:0 10px;">
 						<li class="col-12">
 							
 							<dd class="value">
@@ -206,9 +210,9 @@ $title = 'Dashboard';
 							</dd>
 							<dt class="title" style="font-size:10px;" >수당한계 (<?=$boner_per_tx?>%)</dt>
 						</li>
-					</ul>
+					</ul> -->
 
-					<ul class="row mb10">
+					<!-- <ul class="row mb10">
 						<li class="rank_title">다음승급조건달성</li>
 
 						<li class="col-4">
@@ -219,7 +223,7 @@ $title = 'Dashboard';
 						</li>
 
 						<li class="col-4">
-							<dt class="title">승급대상 USDT</dt>
+							<dt class="title">승급대상 포인트</dt>
 							<dd class="value">
 								<?=check_value($member['mb_7'])?>
 							</dd>
@@ -232,7 +236,7 @@ $title = 'Dashboard';
 								<?=check_value($member['mb_9'])?>
 							</dd>
 						</li>
-					</ul>
+					</ul> -->
 					</div>
 				</div>
 				<div class="fold_wrap">
@@ -263,7 +267,7 @@ $title = 'Dashboard';
 			if ($(id).css("display") == "none") {
 				$(id).css("display", "block");
 				$(id).animate({
-					height: user_height + 210
+					height: user_height + 80
 				}, 500, function() {
 					$('.fold_wrap p').text('접기');
 				});

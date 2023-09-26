@@ -188,8 +188,10 @@
 						</li>
 					</ul>
 				</div>
-
-				<!-- <div class='col-sm-12 col-12 profile-box certificate'>
+				
+				<?if(KYC_STATES){?>
+				<div class='col-sm-12 col-12 profile-box certificate'>
+					
 					<h3 class='title b_line'>
 						<i class="ri-account-box-line kyc_icon"></i>
 						<span >KYC 인증 정보</span>
@@ -213,22 +215,13 @@
 							<button class="reg_btn btn" data-name="ch_tax"> 등록/변경</button>
 						</li>
 					</ul>
-
-					<ul class='row'>
-						<li class='col-sm-9 col-8'>
-							<label >환불계좌(실명계좌) 등록</label>
-							<p ><?=get_name($member['mb_center'])?></p>
-						</li>
-						<li class='col-sm-3 col-4 text-right'>
-							<span class="reg_btn" data-name="ch_cert_bank"> 변경</span>
-						</li>
-					</ul>
-
-					<div class="google-auth-top-qr" id="qrcode"></div>
-				</div> -->
-
+					
+				</div> 
+				<?}?>
+				
+				<!-- 
 				<div class='col-sm-12 col-12 profile-box certificate'>
-					<!-- <h3 class='title b_line'>
+					<h3 class='title b_line'>
 						<i class="ri-wallet-2-line kyc_icon" style="font-weight:300;"></i>
 						<span >HJA 주소 등록</span>
 					</h3>
@@ -241,9 +234,9 @@
 						<li class='col-sm-3 col-3 text-right' style="">
 							<button class="addr_btn btn" data-name="ch_addr" style="margin:30px 5px 10px 0;"> 등록/변경</button>
 						</li>
-					</ul> -->
+					</ul>
 
-					<!-- <ul class='row'>
+					<ul class='row'>
 						<li class='col-sm-9 col-8'>
 							<label >환불계좌(실명계좌) 등록</label>
 							<p ><?=get_name($member['mb_center'])?></p>
@@ -251,10 +244,11 @@
 						<li class='col-sm-3 col-4 text-right'>
 							<span class="reg_btn" data-name="ch_cert_bank"> 변경</span>
 						</li>
-					</ul> -->
+					</ul>
 
-					<!-- <div class="google-auth-top-qr" id="qrcode"></div> -->
+					 <div class="google-auth-top-qr" id="qrcode"></div> 
 				</div>
+				-->
 
 				<!-- <div class='col-sm-12 col-12 profile-box'>
 					<h3 class='title b_line'>

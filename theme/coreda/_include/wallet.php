@@ -453,6 +453,7 @@ function expire_date($start){
 // 		return shift_coin($val);
 // 	}
 // }
+
 // 코인 표시
 function shift_coin($val, $decimal = ASSETS_NUMBER_POINT){
 	$_num = (int)str_pad("1",$decimal+1,"0",STR_PAD_RIGHT);
@@ -489,7 +490,8 @@ function get_coins_price(){
 	$url_list = array(
 		'https://api.upbit.com/v1/ticker?markets=KRW-ETH&markets=KRW-ETC&markets=USDT-ETH&markets=USDT-ETC',
 		"https://pro-api.coinmarketcap.com/v1/tools/price-conversion?CMC_PRO_API_KEY=9a0e9663-df7f-431b-9561-d46935376d5b&amount=1&symbol=eth",
-		"https://api.bitforex.com/api/v1/market/ticker?symbol=coin-usdt-hja"
+		"https://www.okx.com/api/v5/public/mark-price?instType=SWAP&instId=CORE-USDT-SWAP"
+		// "https://api.bitforex.com/api/v1/market/ticker?symbol=coin-usdt-hja"
 		);
 
 	$data = multi_curl($url_list);
@@ -499,13 +501,18 @@ function get_coins_price(){
 	$usdt_eth = $data[0][2]['trade_price'];
 	$usdt_etc = $data[0][3]['trade_price'];
 
-	$result['usdt_krw'] = $default['de_coin_auto'] ? $eth_krw / $usdt_eth : $default['de_token_price'];
+	if(G5_USE_SHOP){
+		$result['usdt_krw'] = $default['de_coin_auto'] ? $eth_krw / $usdt_eth : $default['de_token_price'];
+	}else{
+		$result['usdt_krw'] = $eth_krw / $usdt_eth;
+	}
+
 	$result['usdt_eth'] = $usdt_eth;
 	$result['usdt_etc'] = $usdt_etc;
 	$result['eth_krw'] = $eth_krw;
 	$result['etc_krw'] = $etc_krw;
 	$result['eth_usdt'] = $data[1]['data']['quote']['USD']['price'];
-	$result['hja'] = $data[2]['data']['last'];
+	$result['core_usdt'] = $data[2]['data'][0]['markPx'];
 
 	return $result;
 }
@@ -623,6 +630,23 @@ function string_explode($val,$dived_value = 'member'){
 	$string2 = "<string class='demical'>".$stringArray[1]."</string>";
 	return $string1.$string2;
 } */
+
+function stringCut($str,$length){
+
+	$result="";
+	if(strlen($str) > $length){ 
+	
+		$result = substr($str,0,$length-1); 
+		
+		$result=$result."..."; 
+	
+	}else{
+		$result=$str;
+	}
+	return $result; 
+}
+	
+	 
 
 // 요청결과표시
 function string_shift_code($val){
@@ -800,6 +824,8 @@ function retrun_tx_func($tx,$coin){
 
 	}else if(strtolower($coin) =='fil'){
 		return "<a href ='https://filfox.info/ko/message/".$tx."' target='_blank' style='text-decoration:underline'>".$tx."</a>";
+	}else if(strtolower($coin) == 'core'){
+		return "<a href='https://scan.coredao.org/tx/".$tx."' target='_blank' style='text-decoration:underline' title='{$tx}' >".stringCut($tx,10)."</a>";
 	}else{
 		return $tx;
 	}
@@ -846,7 +872,7 @@ function array_bank_account($category = null, $used = null, $idx = null){
 
 	// 입금, 출금 분리
 	if($category != null){
-		$where  = " WHERE category_no = '{$category}'";
+		$where  = " WHERE category_no = '{$category}' OR category_no = 3";
 		$order = " ORDER BY sequence ASC ";
 	}else{
 		$where  = " ";
