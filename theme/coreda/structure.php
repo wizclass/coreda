@@ -475,7 +475,7 @@ var gradeMap = {
 					row.find('.package').addClass('color'+member.grade);
 					row.find('.package').html("<i class='ri-vip-diamond-fill'></i>" + member.rank);
 					// row.find('.pv').html(" 매출 : <strong class='hp'>" + Price(member.mb_rate)+' mh/s </strong>');
-					row.find('.acc').html("승급USDT : <strong class='pv'>"+ Price(Number(member.recom_sales)) + ' ' + curency  + "</strong>");
+					row.find('.acc').html("하부매출 : <strong class='pv'>"+ Price(Number(member.recom_sales)) + ' ' + curency  + "</strong>");
 
 					vHtml.append(row);
 				});

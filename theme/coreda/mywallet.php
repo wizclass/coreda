@@ -546,7 +546,7 @@ function curency_txt($value, $kind = 'deposit')
             </button>
 
             <div class='txt-box deposit_alert col-12'>
-              입금신청 후 내역에 입금 정보가 확인됩니다.<br>
+              <!-- 입금신청 후 내역에 입금 정보가 확인됩니다.<br> -->
               신청금액과 실제 입금액이 다른경우 처리가 지연될수 있습니다.
             </div>
           </div>
