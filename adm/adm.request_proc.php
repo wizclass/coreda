@@ -46,7 +46,7 @@ if ($func == 'withrawal') {
 
 		// 출금반환처리
 		$update_member_return = "update g5_member set mb_shift_amt = mb_shift_amt - {$in_amt_total}  where mb_id='{$mb_id}' ";
-	
+
 		// else if($coin == strtolower($minings[1])){
 		// 	$coin_target = "mb_mining_1";
 		// 	$amt_target = "mb_mining_1_amt";
@@ -87,7 +87,7 @@ if ($func == 'withrawal') {
 		$mb_id = $ret['mb_id'];
 
 		$coin_target = "mb_deposit_point";
-	
+
 		if ($in_amt > 0 && $refund == 'Y') {
 			$update_member_return = "UPDATE g5_member set mb_deposit_point = mb_deposit_point + {$in_amt}  where mb_id='{$mb_id}' ";
 
@@ -365,11 +365,9 @@ if ($func == 'withrawal') {
 			// 아바타생성프로세스
 			}	
 		} */
-
 	} // 승인인경우
 
 	$sql = "UPDATE {$g5['deposit']} set status = '{$status}' ";
-	$sql .= ", in_amt = {$in_amt}";
 	$sql .= ", update_dt = '{$now_datetime}' ";
 	$sql .= " where uid = {$uid} ";
 
@@ -396,12 +394,12 @@ if ($result) {
 	$msg .= " ,업데이트";
 }
 
-if($auto_brecomend_system === true){
+if ($auto_brecomend_system === true) {
 	if ($recom_update_result) {
 		$msg .= "\n[ {$mb_id} ]\n자동 후원인 등록 = {$now_brecom['id']} - $now_type \n";
 	}
 
-	if($random_recom_update_result){
+	if ($random_recom_update_result) {
 		$msg .= "후원2 레그 등록 = {$now_brecom2['id']} - $now_type2 \n";
 	}
 }
@@ -426,7 +424,7 @@ function array_brecommend($recom_id, $count)
 
 	if ($cnt < 2) {
 		if ($debug) {
-			
+
 			print_R($count . ' :: ' . $recom_id . ' :: ' . $cnt);
 			echo "<br><br>";
 		}

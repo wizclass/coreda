@@ -46,6 +46,10 @@ $sql = "SELECT mb_id, od_id, od_cart_price, od_receipt_time, od_name, od_cash, o
 $sql .= "order by od_receipt_time desc limit {$from_record}, {$rows} ";
 
 $result = sql_query($sql);
+
+$coin = get_coins_price();
+$coin['core_KRW'] = $coin['core_usdt'] *  $coin['usdt_krw'];
+
 ?>
 
 <link rel="stylesheet" href="<?= G5_THEME_URL ?>/css/default.css">
@@ -82,11 +86,11 @@ $result = sql_query($sql);
 		text-align: center;
 	}
 
-	.dark .pack_name{
-    	padding: 2px 10px;
-    	display: block;
-    	border-radius: 8px;
-		width:auto;
+	.dark .pack_name {
+		padding: 2px 10px;
+		display: block;
+		border-radius: 8px;
+		width: auto;
 	}
 </style>
 
@@ -152,15 +156,16 @@ $result = sql_query($sql);
 										<div class="r_card r_card_<?= $i ?>" data-row=<?= json_encode($data_arr, JSON_UNESCAPED_UNICODE) ?>>
 											<p class="title">
 												<span style='vertical-align:middle'><?= $row[$i - 1]['it_name'] ?></span>
-												<span style='font-size:13px;float:right;line-height:36px;'><?= $row[$i - 1]['it_option_subject'] ?></span>
+												<span style='font-size:13px;float:right;line-height:36px;'><?= shift_auto($row[$i - 1]['it_price'], $curencys[0]) ?> <?= $curencys[0] ?></span>
 											</p>
 
 											<div class="b_blue_bottom"></div>
 											<div>
 
 												<div class=" text_wrap">
-													<div class="it_price"><?= shift_auto($row[$i - 1]['it_price'], $curencys[0]) ?> <?= $curencys[0] ?></div>
-													<!-- <div class='origin_price' style="font-size:14px;">수익률 : <?= $row[$i - 1]['it_supply_point'] ?> %</div> -->
+
+													<span class="it_price"><?= shift_auto($row[$i - 1]['it_price'] / shift_auto($coin['core_KRW'], KRW_NUMBER_POINT), COIN_NUMBER_POINT) ?></span><span style="font-size: 16px"> <?= $curencys[1] ?></span>
+													<!-- <div class='origin_price' style="font-size:14px;">수익률 : <?= shift_auto($coin['core_KRW'], 'krw') ?> %</div> -->
 												</div>
 											</div>
 										</div>
@@ -172,17 +177,17 @@ $result = sql_query($sql);
 				</div>
 
 
-				<div class="pakage_sale content-box round mt20" id="pakage_sale">
+				<!-- <div class="pakage_sale content-box round mt20" id="pakage_sale">
 					<ul class="row">
 						<li class="col-12">
 							<h3 class="tit upper change_title">Package 상품구매</h3>
 						</li>
-						<!-- <li class="col-4">
+						<li class="col-4">
 						<select class="form-control" name="" id="coin_select">
 							<option value="eth" selected>ETH</option>
 							<option value="mbm">MBM</option>
 						</select>
-					</li> -->
+					</li>
 					</ul>
 					<div class='row' style="align-items: center;">
 						<div class='col-5 current_currency coin'>선택 상품 금액 </div>
@@ -191,22 +196,22 @@ $result = sql_query($sql);
 
 						<div class='col-6'>
 							<input type="text" id="trade_total" class="trade_money input_price" placeholder="0" min=5 readonly>
-							<!-- <span class='currency-right coin'><?= BALANCE_CURENCY ?></span> -->
+							<span class='currency-right coin'><?= BALANCE_CURENCY ?></span>
 							<div id='shift_won'></div>
 						</div>
 					</div>
 
 					<div class='row select_box' id='usd' style='margin-top:10px'>
 						<div class='col-12' style="display:flex;">
-							<h3 class='tit' > 구매가능잔고</h3>
-							<h3 class='tit' style="text-align:right;margin-left:auto;padding-right:10px;"> 남은잔고</h3>
+							<h3 class='tit'> 구매가능잔고</h3>
+							<h3 class='tit' style="text-align:right;margin-left:auto;padding-right:10px"> 남은잔고</h3>
 						</div>
 
 						<div class='col-5 my_cash_wrap'>
-							<!-- <input type='radio' value='eth' class='radio_btn' name='currency'><input type="text" id="trade_money_eth" class="trade_money" placeholder="0" min=5 data-currency='eth' readonly> -->
+							<input type='radio' value='eth' class='radio_btn' name='currency'><input type="text" id="trade_money_eth" class="trade_money" placeholder="0" min=5 data-currency='eth' readonly>
 							<div>
-								<input type="text" id="total_coin_val" class='input_price' value="<?= shift_auto($available_fund, $curencys[0]) ?>" readonly>
-								<span class="currency-right coin"><?= $curencys[0] ?></span>
+								<input type="text" id="total_coin_val" class='input_price' value="<?= shift_auto($available_fund, $curencys[1]) ?>" readonly>
+								<span class="currency-right coin"><?= $curencys[1] ?></span>
 							</div>
 						</div>
 
@@ -215,8 +220,8 @@ $result = sql_query($sql);
 						</div>
 
 						<div class='col-6'>
-							<input type="text" id='shift_dollor' class='input_price red' readOnly>
-							<span class="currency-right coin "><?= $curencys[0] ?></span>
+							<input type="text" id='shift_dollar' class='input_price red' style="padding-right: 10px" readOnly>
+							<span class="currency-right coin "><?= $curencys[1] ?></span>
 						</div>
 					</div>
 
@@ -226,15 +231,15 @@ $result = sql_query($sql);
 						<button id="go_wallet_btn" class="btn wd main_btn b_green b_skyblue round">입금</button>
 					</div>
 
-				</div>
+				</div> -->
 			</div>
 
-		
-			
-			
+
+
+
 
 			<!-- <div class="col-sm-12 col-12 content-box round secondary mt20" > -->
-				
+
 			<div class="history_box content-box mt40">
 				<h3 class="hist_tit title" style="margin-top: 0;">Package 구매 내역</h3>
 
@@ -243,7 +248,7 @@ $result = sql_query($sql);
 				<? } ?>
 
 				<? while ($row = sql_fetch_array($result)) {
-					
+
 					$od_name = $row['od_cash_no'];
 					$od_settle_case = $row['od_settle_case'];
 				?>
@@ -259,12 +264,13 @@ $result = sql_query($sql);
 								<h2 class="pack_name pack_f_<?= substr($od_name, 1, 1) ?>"><?= strtoupper($row['od_name']) ?></h2>
 								<!-- <span class='hist_sub_price'><?= shift_auto($row['od_cash'], $od_settle_case) ?> <?= $od_settle_case ?></span> -->
 
-								<?php 
-								if(PACK_UPGADE_USE){
-									$max_item = "P".$max_count;
-									if($od_name != "P0" || $od_name != $max_item){?>
-									<button class="btn upgradeBtn" style="margin: 0 0 0 auto" data-od_id="<?= $row['od_id'] ?>">UPGRADE</button>
-								<?php }} ?>
+								<?php
+								if (PACK_UPGADE_USE) {
+									$max_item = "P" . $max_count;
+									if ($od_name != "P0" || $od_name != $max_item) { ?>
+										<button class="btn upgradeBtn" style="margin: 0 0 0 auto" data-od_id="<?= $row['od_id'] ?>">UPGRADE</button>
+								<?php }
+								} ?>
 
 							</div>
 						</div>
@@ -322,27 +328,30 @@ $result = sql_query($sql);
 
 		$('#upgrade').hide()
 
-		$('.r_card').on('click', function() {
+		/* $('.r_card').on('click', function() {
 			data = $(this).data('row');
 
 			it_id = data[0].it_id;
 			it_name = data[0].it_name;
 			it_maker = data[0].it_maker;
-			it_price = data[0].it_price; //상품가격
+			//it_price = data[0].it_price; //상품가격
+			it_price = parseFloat($(this).find('.it_price').text());
 			it_point = data[0].it_point; //PV
 			it_supply_point = data[0].it_supply_point; //MP 
 			won_price = data[0].it_cust_price;
 			func = "new";
 			od_id = "";
-			origin_bal = '<?= shift_auto($available_fund, $curencys[0]) ?>';
-			price_calc = origin_bal.replace(/,/g, '') - won_price.replace(/,/g, '');
+			origin_bal = '<?= shift_auto($available_fund, $curencys[1]) ?>';
+			price_calc = parseFloat(origin_bal.replace(/,/g, '')) - it_price;
 			$('#upgrade').hide().attr("disabled", true);;
 			$('#purchase').show().attr("disabled", false);
 			$('#total_coin_val').val(origin_bal);
 			// change_coin = "원";
 
+			console.log(Comma_Number(origin_bal))
+
 			change_coin_status();
-		});
+		}); */
 
 		/* $('#coin_select').on('change',function(){
 			change_coin_status()
@@ -365,10 +374,10 @@ $result = sql_query($sql);
 		}); */
 
 		function change_coin_status() {
-			
-			$('#trade_total').val(Comma_Number(it_price) + ' <?= $curencys[0] ?>');
+
+			$('#trade_total').val(it_price + ' <?= $curencys[1] ?>');
 			// $('#shift_won').text('VAT 포함 : ' + Price(won_price) + ' <?= $curencys[0] ?>');
-			$('#shift_dollor').val(Price(price_calc));
+			$('#shift_dollar').val(Price(price_calc) + ' <?= $curencys[1] ?>');
 
 			// 상품구매로 이동
 			var scrollPosition = $('#pakage_sale').offset().top;
@@ -440,11 +449,11 @@ $result = sql_query($sql);
 
 							let alert = "패키지 상품 구매처리가 정상 처리되었습니다.";
 							let state = "success";
-							if(data.code == "0001"){
+							if (data.code == "0001") {
 								alert = data.sql;
 								state = "failed";
 							}
-							
+
 							dialogModal('패키지 구매 처리', `<strong>${alert}</strong>`, state);
 
 							$('.closed').on('click', function() {
@@ -465,17 +474,17 @@ $result = sql_query($sql);
 
 		});
 
-	// 입금하기
-	$('#go_wallet_btn').click(function(e){
-		if(won_price > 0){
-			if(price_calc < 0){
-				price_calc = price_calc * -1;
+		// 입금하기
+		$('#go_wallet_btn').click(function(e) {
+			if (won_price > 0) {
+				if (price_calc < 0) {
+					price_calc = price_calc * -1;
+				}
+				go_to_url('mywallet' + '&sel_price=' + price_calc);
+			} else {
+				go_to_url('mywallet');
 			}
-			go_to_url('mywallet'+'&sel_price='+price_calc);
-		}else{
-			go_to_url('mywallet');
-		}
-	});
+		});
 
 		// 상품 업그레이드
 		$('.upgradeBtn').on('click', function() {
@@ -488,8 +497,8 @@ $result = sql_query($sql);
 			dialogModal("패키지 구매", "패키지 업그레이드를 누르면 해당패키지에서 상위패키지로 차액만큼 차감되며, 상위패키지가 적용됩니다.", "confirm")
 
 			$('#modal_confirm').on('click', function() {
-			
-				
+
+
 				$.post("/util/next_package_info.php", {
 						od_id
 					},
@@ -499,7 +508,7 @@ $result = sql_query($sql);
 						if (res.result == 'success') {
 							$('.change_title').text('PACKAGE 업그레이드');
 							$('#trade_total').val(res.it_cust_price + ' <?= $curencys[0] ?>')
-							$('#shift_dollor').val(Comma_Number(parseFloat(upgrade_price_calc.replace(/,/g , '')) - parseFloat(res.diff_price.replace(/,/g , ''))));
+							$('#shift_dollar').val(Comma_Number(parseFloat(upgrade_price_calc.replace(/,/g, '')) - parseFloat(res.diff_price.replace(/,/g, ''))));
 							// $('#shift_won').text('VAT 포함 : ' + Price(res.it_cust_price) + ' <?= $curencys[0] ?>');
 							$('#upgrade').show().attr("disabled", false);
 							$('#purchase').hide().attr("disabled", true);
@@ -518,14 +527,14 @@ $result = sql_query($sql);
 
 					}
 				);
-				
+
 			});
 		});
 
 
 		$('#upgrade').on('click', function() {
 			var nw_purchase = '<?= $nw_purchase ?>'; // 점검코드
-			console.log(parseFloat(upgrade_price_calc.replace(/,/g , '')));
+			console.log(parseFloat(upgrade_price_calc.replace(/,/g, '')));
 			// 부분시스템 점검
 			if (nw_purchase == 'N') {
 				dialogModal('구매 처리 실패', '<strong>현재 이용 가능 시간이 아닙니다.</strong>', 'warning');
@@ -533,7 +542,7 @@ $result = sql_query($sql);
 			}
 
 			// 잔고 확인 
-			if (parseFloat(upgrade_price_calc.replace(/,/g , '')) < it_price-prev_goods_price) {
+			if (parseFloat(upgrade_price_calc.replace(/,/g, '')) < it_price - prev_goods_price) {
 				dialogModal('구매 가능 잔고 확인', '<strong>구매 가능 잔고가 부족합니다.</strong>', 'warning');
 				return false;
 			}
@@ -563,7 +572,7 @@ $result = sql_query($sql);
 							dialogModal('Package 업그레이드 확인', `<strong>${data.message}</strong>`, `${data.result}`);
 
 							$('.closed').on('click', function() {
-								location.href="<?= G5_URL ?>/page.php?id=upstairs";
+								location.href = "<?= G5_URL ?>/page.php?id=upstairs";
 							});
 						},
 						error: function(e) {

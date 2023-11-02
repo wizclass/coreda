@@ -2798,7 +2798,7 @@ input:checked + .slider:before {
   box-shadow: none;
 }
 
-/* .pakage_sale .active .shift_dollor{box-shadow:0 0 0px 4px #3b86ff;} */
+/* .pakage_sale .active .shift_dollar{box-shadow:0 0 0px 4px #3b86ff;} */
 
 .pakage_list .pack_btn {
   margin: 5px;
@@ -2933,7 +2933,7 @@ input:checked + .slider:before {
   text-align: left;
 }
 
-#shift_dollor {
+#shift_dollar {
   font-size: 16px;
   font-weight: 600;
   padding-right: 30px;
@@ -5477,7 +5477,7 @@ input#file-upload-button {
     padding-bottom: 10px;
   }
   /* input[type="text"]+.currency-right {font-size: 10px;margin-top: -58px;}
-	.select_box .shift_dollor {font-size: 12px;}
+	.select_box .shift_dollar {font-size: 12px;}
 	.select_box .trade_money {font-size: 12px;} */
   #mining .m_wrap .view_wrap .date_wrap .form-group input {
     font-size: 9px;

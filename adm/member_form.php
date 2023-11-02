@@ -160,6 +160,8 @@ if (!isset($mb['mb_email_certify2'])) {
 	sql_query(" ALTER TABLE {$g5['member_table']} ADD `mb_email_certify2` varchar(255) NOT NULL DEFAULT '' AFTER `mb_email_certify` ", false);
 }
 
+$coin = get_coins_price();
+$coin['core_KRW'] = $coin['core_usdt'] *  $coin['usdt_krw'];
 
 $bonus_per = bonus_per($mb['mb_id'], $mb['mb_balance'], $mb['mb_index']);
 
@@ -197,19 +199,6 @@ add_javascript(G5_POSTCODE_JS, 0);    //다음 주소 js
 			// var calc = (after - conv_number(before));
 			// $('#be_to').val(Price(calc));
 		});
-
-		function copyAddress(param) {
-			//commonModal("Address copy",'Your Wallet address is copied!',100);
-
-			console.log($(param).text());
-			var $temp = $("<input>");
-			$("body").append($temp);
-			$temp.val($(param).text()).select();
-			document.execCommand("copy");
-			$temp.remove();
-
-			alert('주소가 복사되었습니다.');
-		}
 	});
 </script>
 
@@ -384,8 +373,8 @@ $rank_result = sql_fetch($rank_sql);
 						<? if ($w == "u") { ?>
 							<input type="hidden" name="mb_name" value="<?= $mb['mb_name'] ?>" />
 							<span class="td_id"><?= $mb['mb_name'] ?></span>
-							<? } else { ?>
-								<input type="text" name="mb_name" value="<?php echo $mb['mb_name'] ?>" id="mb_name" class="frm_input" size="15" minlength="3" maxlength="20">
+						<? } else { ?>
+							<input type="text" name="mb_name" value="<?php echo $mb['mb_name'] ?>" id="mb_name" class="frm_input" size="15" minlength="3" maxlength="20">
 						<? } ?>
 
 					</td>
@@ -414,19 +403,22 @@ $rank_result = sql_fetch($rank_sql);
 				</tr>
 				<tr>
 					<th scope="row"><label for="mb_level">회원 레벨</label></th>
-					<td><?php echo get_member_level_select('mb_level', 0, $member['mb_level'], $mb['mb_level']) ?> <div></td>
+					<td><?php echo get_member_level_select('mb_level', 0, $member['mb_level'], $mb['mb_level']) ?> <div>
+					</td>
 					<th scope="row"><label for="grade">회원 등급</label></th>
-					<?php if($w != "u"){$mb['grade'] = 0;}?>
+					<?php if ($w != "u") {
+						$mb['grade'] = 0;
+					} ?>
 					<td><? echo "<img src='/img/" . $mb['grade'] . ".png' style='width:40px;height:40px;'>"; ?><?php echo get_grade_select('grade', 0, $member['grade'], $mb['grade']) ?><?= $rank_result['rank_day'] ?></td>
 				</tr>
 				<tr>
 					<th scope="row">추천인</th>
-						<td colspan="1">
+					<td colspan="1">
 
-							<? //php echo ($mb['mb_recommend'] ? get_text($mb['mb_recommend']) : '없음'); // 081022 : CSRF 보안 결함으로 인한 코드 수정 
-							?>
-							<input type="text" name="mb_recommend" id="mb_recommend" value="<?= $mb['mb_recommend'] ?>" class="frm_input wide" /><span id="ajax_rcm_search" class="btn flexible">검색</span>
-						</td>
+						<? //php echo ($mb['mb_recommend'] ? get_text($mb['mb_recommend']) : '없음'); // 081022 : CSRF 보안 결함으로 인한 코드 수정 
+						?>
+						<input type="text" name="mb_recommend" id="mb_recommend" value="<?= $mb['mb_recommend'] ?>" class="frm_input wide" /><span id="ajax_rcm_search" class="btn flexible">검색</span>
+					</td>
 					<th></th>
 					<td></td>
 				</tr>
@@ -556,7 +548,7 @@ $rank_result = sql_fetch($rank_sql);
 			<?php $sql = "SELECT SUM(in_amt) as amt FROM {$g5['deposit']} WHERE mb_id = '{$mb['mb_id']}' AND status = 1";
 			$deposit_sum = sql_fetch($sql);
 			?>
-			<strong><?= shift_auto($mb['mb_deposit_point'] + $mb['mb_deposit_calc'] + $mb['mb_balance'] - $mb['mb_shift_amt'] - $mb['mb_fee'],$curencys[0]) ?></strong> <?=$curencys[0]?> &nbsp&nbsp (총 입금액 : <?= shift_auto($deposit_sum['amt']) ?> <?=$curencys[0]?>)
+			<strong><?= shift_auto($mb['mb_deposit_point'] + $mb['mb_deposit_calc'] + $mb['mb_balance'] - $mb['mb_shift_amt'], $curencys[1]) ?></strong> <?= $curencys[1] ?> &nbsp&nbsp (총 입금액 : <?= shift_auto($deposit_sum['amt']) ?> <?= $curencys[1] ?>)
 		</td>
 		<th></th>
 		<!-- <td>
@@ -588,33 +580,33 @@ $rank_result = sql_fetch($rank_sql);
 	<tr class="ly_up padding-box fund">
 		<th scope="row">총 받은보너스(수당)</th>
 		<td colspan="1"><span class='strong bonus'>
-		<input type="hidden" class='no-input' name="mb_balance" value="<?= shift_auto($mb['mb_balance'],$curencys[0]) ?>" readonly> <?= shift_auto($mb['mb_balance'],$curencys[0]) ?> </span><?=$curencys[0]?></td>
-		
+				<input type="hidden" class='no-input' name="mb_balance" value="<?= shift_auto($mb['mb_balance'], $curencys[1]) ?>" readonly> <?= shift_auto($mb['mb_balance'], $curencys[1]) ?> </span><?= $curencys[1] ?></td>
+
 		<th scope="row">남은 수당</th>
-		<td colspan="1"><span class='strong amt'><?=shift_auto($mb['mb_balance'] - $mb['mb_shift_amt'] - $mb['mb_fee'],$curencys[0])?></span> <?=$curencys[0]?></td>
+		<td colspan="1"><span class='strong amt'><?= shift_auto($mb['mb_balance'] - $mb['mb_shift_amt'], $curencys[1]) ?></span> <?= $curencys[1] ?></td>
 
 	</tr>
 
 	<tr class="ly_up padding-box fund">
 		<th scope="row">출금 총액</th>
-		<td colspan="1"><span class='strong amt'><?= shift_auto($mb['mb_shift_amt'],$curencys[0])?></span> <?=$curencys[0]?></td>
+		<td colspan="1"><span class='strong amt'><?= shift_auto($mb['mb_shift_amt'], $curencys[1]) ?></span> <?= $curencys[1] ?></td>
 
-		<th scope="row">쇼핑몰 사용</th>
-		<td colspan="1"><span class='strong amt'><?=shift_auto($mb['mb_fee'],$curencys[0])?></span> <?=$curencys[0]?></td>
+		<!-- <th scope="row">쇼핑몰 사용</th>
+		<td colspan="1"><span class='strong amt'><?= shift_auto($mb['mb_fee'], $curencys[1]) ?></span> <?= $curencys[1] ?></td> -->
 	</tr>
 
 
 	<tr class="ly_up padding-box fund">
 		<th scope="row">누적 매출 합계 (PV)</th>
-		<td colspan="1"><span class='strong soodang'><?= number_format($mb['mb_save_point']) ?> </span><?=$curencys[0]?></td>
+		<td colspan="1"><span class='strong soodang'><?= shift_auto($mb['mb_save_point'], $curencys[1]) ?> </span><?= $curencys[1] ?></td>
 
 		<th scope="row">수당제한비율</th>
-			<td colspan="1">
-				<span style="margin-right: 20px;">
-					<input type="checkbox" name="b_autopack" value="1" <?=$mb['b_autopack'] ? "checked" : "" ?>/>
-				</span>
-				<input type="text" value="<?=$mb['q_autopack'] ? $mb['q_autopack'] : $limited?>" class="frm_input wide" name="q_autopack"/> % <span style="color:red;">(제한 : <?=shift_auto($mb['mb_index'], $curencys[0])?>)</span>
-			</td>
+		<td colspan="1">
+			<span style="margin-right: 20px;">
+				<input type="checkbox" name="b_autopack" value="1" <?= $mb['b_autopack'] ? "checked" : "" ?> />
+			</span>
+			<input type="text" value="<?= $mb['q_autopack'] ? $mb['q_autopack'] : $limited ?>" class="frm_input wide" name="q_autopack" /> % <span style="color:red;">(제한 : <?= shift_auto($mb['mb_index'], $curencys[0]) ?>)</span>
+		</td>
 	</tr>
 
 
@@ -668,21 +660,21 @@ $rank_result = sql_fetch($rank_sql);
 				color: red
 			}
 		</style>
-		
-		<td colspan="3">
-		<div style="display: flex; margin-left: 200px; padding: 2px 0px;">
-			<div style="display: flex;width: auto;justify-content: space-between;">
-				<span style="width:80px;">
-					<input type="radio" id="purchase" name="purchase_upgrade" value="purchase" checked/>
-					<label for="purchase">신규구매</label>
-				</span>
 
-				<span style="width:250px;">
+		<td colspan="3">
+			<!-- <div style="display: flex; margin-left: 200px; padding: 2px 0px;">
+				<div style="display: flex;width: auto;justify-content: space-between;">
+					<span style="width:80px;">
+						<input type="radio" id="purchase" name="purchase_upgrade" value="purchase" checked />
+						<label for="purchase">신규구매</label>
+					</span>
+
+					<span style="width:250px;">
 					<input type="radio" id="upgrade" name="purchase_upgrade" value="upgrade"/>
 					<label for="upgrade">패키지 업그레이드</label>
 				</span>
-			</div>
-		</div>
+				</div>
+			</div> -->
 			최고보유 패키지 :
 			<!-- <span class='badge t_white color<?= max_item_level_array($mb['mb_id'], 'number') ?>' style='padding:15px;'><?= max_item_level_array($mb['mb_id']) ?></span> -->
 			<span class='badge t_white <?= rank_return($mb['rank'], 'color') ?>' style='padding:15px;'><?= rank_return($mb['rank']) ?></span>
@@ -709,13 +701,18 @@ $rank_result = sql_fetch($rank_sql);
 			}
 
 			$pack_array = package_have_return($mb['mb_id']);
-			$get_shop_item = get_g5_item(null,0);
+			$get_shop_item = get_g5_item(null, 0);
 			for ($i = 1; $i < count($pack_array); $i++) {
-				
+
 			?>
-				<button type='button' class='btn purchase_btn' value='' data-row='<?= json_encode($get_shop_item[$i], JSON_FORCE_OBJECT) ?>'>
-					<span class='pack_title color<?= $i?>'><?= $get_shop_item[$i]['it_name'] ?></span>
+				<button type='button' class='btn purchase_btn' value='' data-row='<?= json_encode($get_shop_item[$i], JSON_FORCE_OBJECT) ?>' style="margin: 20px 0px">
+					<span class='pack_title color<?= $i ?>'><?= $get_shop_item[$i]['it_name'] ?></span>
 					<div class='pack_have'><span><?= $pack_array[$i] ?>
+							<div class="it_core_price" style="color:cadetblue;font-size:13px;">
+								<?= shift_auto($get_shop_item[$i]['it_price'] / shift_auto($coin['core_KRW'], KRW_NUMBER_POINT), COIN_NUMBER_POINT) ?> <?= $curencys[1] ?>
+							</div>
+					</div>
+
 				</button>
 			<?php } ?>
 
@@ -743,7 +740,7 @@ $rank_result = sql_fetch($rank_sql);
 				$('#math_code').val(value);
 			});
 
-			var total_fund = '<?= $mb['mb_deposit_point'] + $mb['mb_deposit_calc']?>';
+			var total_fund = '<?= $mb['mb_deposit_point'] + $mb['mb_deposit_calc'] ?>';
 			var mb_grade = '<?= $mb['grade'] ?>';
 
 			//패키지구매처리
@@ -754,68 +751,65 @@ $rank_result = sql_fetch($rank_sql);
 				let data = {};
 				let success_alert = "";
 				let item = $(this).data('row');
+				let it_cust_price = parseFloat($(this).find('.it_core_price').text().replace(/,/g, ''));
 
-				document.getElementsByName('purchase_upgrade').forEach((el)=>{
-					if(el.checked == true){
+				document.getElementsByName('purchase_upgrade').forEach((el) => {
+					if (el.checked == true) {
 						is_checked_radio = el.value;
 					}
 				});
 
-				if(is_checked_radio == "purchase"){  // 상품구매
+				var func = 'new';
 
-					var func = 'new';
-					
-					var mb_item_rank = '<?= $mb['rank_note'] ?>';
-					var item_num = item.it_maker.substr(1, 1);
+				var mb_item_rank = '<?= $mb['rank_note'] ?>';
+				var item_num = item.it_maker.substr(1, 1);
 
-					console.log(mb_item_rank);
-					console.log(item_num);
+				console.log(mb_item_rank);
+				console.log(item_num);
 
-					console.log(`total:${total_fund}\nprice:${item.it_cust_price}`);
-					// console.log(`it_id:${item_id}\nit_sp:${item_supply_point}\ncoin:${select_coin}`);
+				console.log(`total:${total_fund}\nprice:${it_cust_price}`);
+				// console.log(`it_id:${item_id}\nit_sp:${item_supply_point}\ncoin:${select_coin}`);
 
-					/* if (mb_item_rank == '' && item_num > 0) {
-						alert("MEMBERSHIP 팩을 보유하지 않았습니다.");
-						return false;
-					} */
+				/* if (mb_item_rank == '' && item_num > 0) {
+					alert("MEMBERSHIP 팩을 보유하지 않았습니다.");
+					return false;
+				} */
 
-					if (confirm("해당 회원에게 " + item.it_name + " 패키지를 지급하시겠습니까?\n회원 잔고에서 " + Comma_Number(item.it_cust_price) + " <?= $curencys[0] ?> (이)가 차감됩니다.")) {} else {
-						return false;
-					}
+				if (confirm("해당 회원에게 " + item.it_name + " 패키지를 지급하시겠습니까?\n회원 잔고에서 " + it_cust_price + " <?= $curencys[1] ?> (이)가 차감됩니다.")) {} else {
+					return false;
+				}
 
-					if (Number(total_fund) < Number(item.it_cust_price)) {
-						alert("회원 잔고가 부족합니다.\n잔고지급후 사용해주세요.");
-						return false;
-					}
+				if (Number(total_fund) < it_cust_price) {
+					alert("회원 잔고가 부족합니다.\n잔고지급후 사용해주세요.");
+					return false;
+				}
 
-					url = "./adm.upstairs_proc.php";
+				url = "./adm.upstairs_proc.php";
 
-					data = {
-							"mb_id": '<?= $mb['mb_id'] ?>',
-							"mb_no": '<?= $mb['mb_no'] ?>',
-							"rank": '<?= $mb['rank'] ?>',
-							"func": func,
-							"input_val": item.it_cust_price,
-							"output_val": item.it_price,
-							"select_pack_name": item.it_name,
-							"select_pack_id": item.it_id,
-							"select_maker": item.it_maker,
-							"it_point": item.it_point,
-							"it_supply_point": item.it_supply_point
-						};
-					
-					success_alert = "구매처리되었습니다.";
+				data = {
+					"mb_id": '<?= $mb['mb_id'] ?>',
+					"mb_no": '<?= $mb['mb_no'] ?>',
+					"rank": '<?= $mb['rank'] ?>',
+					"func": func,
+					"input_val": it_cust_price,
+					"output_val": item.it_price,
+					"select_pack_name": item.it_name,
+					"select_pack_id": item.it_id,
+					"select_maker": item.it_maker,
+					"it_point": item.it_point,
+					"it_supply_point": item.it_supply_point
+				};
 
-	
-				}else{ // 상품 업그레이드
+				success_alert = "구매처리되었습니다.";
+				/* else { // 상품 업그레이드
 
 					if (confirm("해당 회원의 " + item.it_name + " 패키지를 업그레이드 하시겠습니까?")) {} else {
 						return false;
 					}
-					
+
 					const token = get_ajax_token();
 
-					if(!token) {
+					if (!token) {
 						alert("토큰 정보가 올바르지 않습니다.");
 						return false;
 					}
@@ -825,12 +819,12 @@ $rank_result = sql_fetch($rank_sql);
 					data = {
 						"mb_id": '<?= $mb['mb_id'] ?>',
 						"it_id": item.it_id,
-						"token" : token
+						"token": token
 					};
 
 					success_alert = "해당상품이 업그레이드 되었습니다.";
 
-				}
+				} */
 
 				$.ajax({
 					type: "POST",
@@ -847,9 +841,9 @@ $rank_result = sql_fetch($rank_sql);
 
 						} else {
 
-							if(data.message == undefined){
+							if (data.message == undefined) {
 								data.message = "상품을 확인해주세요";
-								
+
 							}
 							alert(data.message);
 							// location.reload();
@@ -866,23 +860,24 @@ $rank_result = sql_fetch($rank_sql);
 		});
 	</script>
 	<tr class='divide-bottom'>
-		<th scope="row">출금계좌정보</th>
-		
-		<?if(USE_WALLET === false){?>
-		<td colspan="3">
-			
-			은행 :<input type="text" name="bank_name" value="<?php echo $mb['bank_name'] ?>" id="bank_name" class="frm_input wide" size="15" style="">
-			&nbsp 계좌번호 : &nbsp<input type="text" name="bank_account" value="<?php echo $mb['bank_account'] ?>" id="bank_account" class="frm_input wide" size="15" style="width:300px;">
-			&nbsp 예금주 : &nbsp<input type="text" name="account_name" value="<?php echo $mb['account_name'] ?>" id="account_name" class="frm_input wide" size="15" style="">
-		</td>
-		<?}else{?>
+		<th scope="row" style="padding-bottom: 10px">출금 <?= $curencys[1] ?> 지갑주소</th>
+
+		<? if (USE_WALLET === false) { ?>
 			<td colspan="3">
-			<?= $curencys[0] ?> 지갑주소 : <input type="text" name="eth_my_wallet" value="<?php echo Decrypt($mb['eth_my_wallet'], $mb['mb_id'], 'x') ?>" id="eth_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;"><br>
-			<?= $curencys[4] ?> 지갑주소 : <input type="text" name="etc_my_wallet" value="<?php echo Decrypt($mb['etc_my_wallet'], $mb['mb_id'], 'x') ?>" id="etc_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;"><br>
-			<?= $curencys[3] ?> 지갑주소 : <input type="text" name="mb_wallet" value="<?php echo Decrypt($mb['mb_wallet'], $mb['mb_id'], 'x') ?>" id="mb_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;"><br>
-			<?= $curencys[0] ?> 지갑주소 : <input type="text" name="usdt_my_wallet" value="<?php echo Decrypt($mb['usdt_my_wallet'], $mb['mb_id'], 'x') ?>" id="usdt_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;">
-		</td>
-		<?}?>
+
+				은행 :<input type="text" name="bank_name" value="<?php echo $mb['bank_name'] ?>" id="bank_name" class="frm_input wide" size="15" style="">
+				&nbsp 계좌번호 : &nbsp<input type="text" name="bank_account" value="<?php echo $mb['bank_account'] ?>" id="bank_account" class="frm_input wide" size="15" style="width:300px;">
+				&nbsp 예금주 : &nbsp<input type="text" name="account_name" value="<?php echo $mb['account_name'] ?>" id="account_name" class="frm_input wide" size="15" style="">
+			</td>
+		<? } else { ?>
+			<td colspan="3" style="padding-bottom: 10px">
+				<!-- <?= $curencys[0] ?> 지갑주소 : <input type="text" name="eth_my_wallet" value="<?php echo Decrypt($mb['eth_my_wallet'], $mb['mb_id'], 'x') ?>" id="eth_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;"><br>
+				<?= $curencys[4] ?> 지갑주소 : <input type="text" name="etc_my_wallet" value="<?php echo Decrypt($mb['etc_my_wallet'], $mb['mb_id'], 'x') ?>" id="etc_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;"><br> -->
+				<input type="text" name="mb_wallet" value="<?php echo Decrypt($mb['mb_wallet'], $mb['mb_id'], 'x') ?>" id="mb_wallet" class="frm_input wide" size="100" readonly>
+				<button type="button" class="copybutton" onclick="copyAddress('#mb_wallet')">복사하기</button>
+				<!-- <?= $curencys[0] ?> 지갑주소 : <input type="text" name="usdt_my_wallet" value="<?php echo Decrypt($mb['usdt_my_wallet'], $mb['mb_id'], 'x') ?>" id="usdt_my_wallet" class="frm_input wide" size="15" style="width:300px; margin-left: 15px;"> -->
+			</td>
+		<? } ?>
 	</tr>
 
 	<!-- <tr>
@@ -912,17 +907,6 @@ $rank_result = sql_fetch($rank_sql);
 			<label for="mb_adult_no">아니오</label>
 		</td>
 	</tr>
-	<script>
-		function copyAddress(param) {
-			commonModal("Address copy", 'Your Wallet address is copied!', 100);
-			var $temp = $("<input>");
-			$("body").append($temp);
-
-			$temp.val($('#' + param).text()).select();
-			document.execCommand("copy");
-			$temp.remove();
-		}
-	</script>
 	<!--
 	<tr >
 		<th scope="row">지갑주소</th>
@@ -1238,9 +1222,17 @@ this.form.mb_intercept_date.value=this.form.mb_intercept_date.defaultValue; }">
 				f.kyc_admin.value = $(this).val();
 			}
 		});
-
-
 		// return true;
+	}
+
+	function copyAddress(param) {
+		var $temp = $("<input>");
+		$("body").append($temp);
+		$temp.val($(param).val()).select();
+		document.execCommand("copy");
+		$temp.remove();
+
+		alert('주소가 복사되었습니다.');
 	}
 </script>
 
