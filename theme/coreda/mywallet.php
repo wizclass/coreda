@@ -1256,40 +1256,42 @@ function curency_txt($value, $kind = 'deposit')
         return false;
       }
 
-      process_pin_mobile().then(function() {
+      $.ajax({
+        type: "POST",
+        url: "./util/withdrawal_proc.php",
+        cache: false,
+        dataType: "json",
+        data: {
+          mb_id: mb_id,
+          func: 'withdraw',
+          total_amt: inputVal,
+          select_coin: curency_tmp,
+          fixed_fee: fixed_fee,
+          fixed_amt: fixed_amt,
+          bank_name: withdrawal_bank_name,
+          bank_account: withdrawal_bank_account,
+          account_name: withdrawal_account_name,
+          rate: <?= $withdrawal_price_sell ?>
 
-        $.ajax({
-          type: "POST",
-          url: "./util/withdrawal_proc.php",
-          cache: false,
-          dataType: "json",
-          data: {
-            mb_id: mb_id,
-            func: 'withdraw',
-            total_amt: inputVal,
-            select_coin: curency_tmp,
-            fixed_fee: fixed_fee,
-            fixed_amt: fixed_amt,
-            bank_name: withdrawal_bank_name,
-            bank_account: withdrawal_bank_account,
-            account_name: withdrawal_account_name,
-            rate: <?= $withdrawal_price_sell ?>
+        },
+        success: function(res) {
+          if (res.result == "success") {
+            dialogModal('출금신청이 정상적으로 처리되었습니다.', '<p>실제 출금까지 24시간 이상 소요될수있습니다.</p>', 'success');
 
-          },
-          success: function(res) {
-            if (res.result == "success") {
-              dialogModal('출금신청이 정상적으로 처리되었습니다.', '<p>실제 출금까지 24시간 이상 소요될수있습니다.</p>', 'success');
-
-              $('.closed').click(function() {
-                location.href = '/page.php?id=mywallet&view=withdraw';
-              });
-            } else {
-              dialogModal('Withdraw Failed', "<p>" + res.sql + "</p>", 'warning');
-            }
+            $('.closed').click(function() {
+              location.href = '/page.php?id=mywallet&view=withdraw';
+            });
+          } else {
+            dialogModal('Withdraw Failed', "<p>" + res.sql + "</p>", 'warning');
           }
-        });
-
+        }
       });
+
+      // process_pin_mobile().then(function() {
+
+
+
+      // });
 
       /* if (!mb_block) {
       } else {

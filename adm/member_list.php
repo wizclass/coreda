@@ -8,10 +8,10 @@ auth_check($auth[$sub_menu], 'r');
 
 $get_shop_item = get_g5_item();
 
-if($_GET['mode'] == 'del'){
+if ($_GET['mode'] == 'del') {
 	$sql_target = 'g5_member_del';
 	$mode = 'del';
-}else{
+} else {
 	$sql_target = 'g5_member';
 }
 
@@ -98,9 +98,9 @@ $row = sql_fetch($sql);
 $total_count = $row['cnt'];
 
 // $rows = $config['cf_page_rows'];
-if($_GET['range'] == 'all'){
+if ($_GET['range'] == 'all') {
 	$range = $total_count;
-}else{
+} else {
 	$range = 50;
 }
 $rows = $range;
@@ -152,7 +152,7 @@ function mining_bonus_rate($mb_id, $mb_rate)
 	global $sql_target;
 
 	$bonus_total_sql = "SELECT SUM(recom_mining + brecom_mining + brecom2_mining + super_mining) as total FROM {$sql_target} WHERE mb_id = '{$mb_id}' ";
-	
+
 	$bonus_total = sql_fetch($bonus_total_sql)['total'];
 
 	if ($mb_rate > 0) {
@@ -263,19 +263,35 @@ $stats_result = sql_fetch($stats_sql); */
 		color: blue !important;
 		font-weight: 600
 	}
-	.icon,.icon img{width:26px;height:26px;font-size:18px;}
 
-	.badge.over{    position: absolute;
-    padding: 2px 5px;
-    background: #eee;
-    font-size: 12px;
-	margin-left:-10px;
-	margin-top:12px;
-    display: inline-block;
-    font-weight: 600;
-    color: black;}
-	.icon{display:inline-block;vertical-align: bottom;}
-	.icon i{vertical-align: -webkit-baseline-middle;}
+	.icon,
+	.icon img {
+		width: 26px;
+		height: 26px;
+		font-size: 18px;
+	}
+
+	.badge.over {
+		position: absolute;
+		padding: 2px 5px;
+		background: #eee;
+		font-size: 12px;
+		margin-left: -10px;
+		margin-top: 12px;
+		display: inline-block;
+		font-weight: 600;
+		color: black;
+	}
+
+	.icon {
+		display: inline-block;
+		vertical-align: bottom;
+	}
+
+	.icon i {
+		vertical-align: -webkit-baseline-middle;
+	}
+
 	#member_depth {
 		background: lightskyblue
 	}
@@ -392,9 +408,13 @@ $stats_result = sql_fetch($stats_sql); */
 	.td_mbgrade select {
 		min-width: 50px;
 		padding: 5px 5px;
-		color:#777;
+		color: #777;
 	}
-	.tbl_head02 tbody{color:#777;}
+
+	.tbl_head02 tbody {
+		color: #777;
+	}
+
 	.tbl_head02 tbody td {
 		padding: 5px;
 	}
@@ -458,7 +478,12 @@ $stats_result = sql_fetch($stats_sql); */
 		width: 26px;
 		height: 26px;
 	}
-	.grade_icon{width:22px;height:22px;opacity: 0.75;}
+
+	.grade_icon {
+		width: 22px;
+		height: 22px;
+		opacity: 0.75;
+	}
 
 	.badge.over {
 		position: absolute;
@@ -472,68 +497,96 @@ $stats_result = sql_fetch($stats_sql); */
 		color: black;
 	}
 
-	.strong{font-weight:600;color:black;}
+	.strong {
+		font-weight: 600;
+		color: black;
+	}
 
 	.td_mbstat {
 		text-align: right;
 		padding-right: 10px !important;
 		font-size: 12px;
 		width: 75px;
-		color:#333;
+		color: #333;
 	}
-	.td_index{
-		min-width:40px;width:40px;text-align:center !important;
-	}
-	.td_grade{
-		width:30px;min-width:30px;
-	}
-	.user_icon i{
-		vertical-align:-webkit-baseline-middle !important;
-	}
-	.no-swap{display:block;color:#bbb;font-size:11px;font-weight:300;width:100%;margin:0;padding:0;line-height:10px;}
 
-    .bg0 {background: #fff}
-    .bg1 {background: #f2f5f9}
-    tbody td { border: 1px solid #ececec;}
-    .badge {
-        border-radius: 0.5rem;
-        padding: 5px 8px;
-        margin-left: 5px;
-    }
-    .local_ov01 {
-        position: relative; 
-        padding: 10px 20px;
-        border-bottom: 1px solid #e9e9e9;
-        background: #f2f5f9;
-    }
+	.td_index {
+		min-width: 40px;
+		width: 40px;
+		text-align: center !important;
+	}
 
+	.td_grade {
+		width: 30px;
+		min-width: 30px;
+	}
+
+	.user_icon i {
+		vertical-align: -webkit-baseline-middle !important;
+	}
+
+	.no-swap {
+		display: block;
+		color: #bbb;
+		font-size: 11px;
+		font-weight: 300;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		line-height: 10px;
+	}
+
+	.bg0 {
+		background: #fff
+	}
+
+	.bg1 {
+		background: #f2f5f9
+	}
+
+	tbody td {
+		border: 1px solid #ececec;
+	}
+
+	.badge {
+		border-radius: 0.5rem;
+		padding: 5px 8px;
+		margin-left: 5px;
+	}
+
+	.local_ov01 {
+		position: relative;
+		padding: 10px 20px;
+		border-bottom: 1px solid #e9e9e9;
+		background: #f2f5f9;
+	}
 </style>
-<link rel="stylesheet" href="<?=G5_THEME_URL?>/css/scss/custom.css">
+<link rel="stylesheet" href="<?= G5_THEME_URL ?>/css/scss/custom.css">
 <style>
 
 </style>
 
 <div class="local_ov01 local_ov">
-    <div style="display: flex; align-items: center">
-	<?php echo $listall ?>
-	총회원수 <strong><?php echo number_format($total_count) ?></strong>명|
-	<?
-	
+	<div style="display: flex; align-items: center">
+		<?php echo $listall ?>
+		총회원수 <strong><?php echo number_format($total_count) ?></strong>명|
+		<?
+
 		echo "<span >총 입금 합계 <strong>" . Number_format($stats_result['deposit']) . " " . $curencys[0] . " </strong></span> | ";
 		echo "<span>총 매출(pv) 합계 <strong>" . Number_format($stats_result['pv']) . "</strong></span><br> ";
-    ?>
-    </div>
-    <?
-		echo "<div class='bonus'>보너스<span> 보유량 : <strong>" . Number_format($stats_result['balance']) . " " . $curencys[1] . " </strong></span> | ";
-		echo "<span>출금 가능 : <span class='f_blue'>" . Number_format($stats_result['balance']) . " " . $curencys[1] . "  </span></span></div>  ";
+		?>
+	</div>
+	<?
+	echo "<div class='bonus'>보너스<span> 보유량 : <strong>" . Number_format($stats_result['balance']) . " " . $curencys[1] . " </strong></span> | ";
+	echo "<span>출금 가능 : <span class='f_blue'>" . Number_format($stats_result['balance']) . " " . $curencys[1] . "  </span></span></div>  ";
 
-		// echo "<div class='bonus mining before'>미변환 <strong>".strtoupper($minings[$before_mining_coin])."</strong><span>보유량 : <strong>" . Number_format($stats_result['B1'], 8) .' '.strtoupper($minings[$before_mining_coin])." </strong></span> | ";
-		// echo "<span>변환 가능 : <span class='f_blue'>" . Number_format($stats_result['B2'], 8) .' '.strtoupper($minings[$before_mining_coin])."  </span></span></div> ";
-		// echo "<div class='bonus mining before'>미변환 <span class='f_blue'>".strtoupper($minings[$before_mining_coin])."</span><span>보유량 : <strong>" . Number_format($stats_result['B2'], 8) .' '.strtoupper($minings[$before_mining_coin])." </strong></span></div>";
+	// echo "<div class='bonus mining before'>미변환 <strong>".strtoupper($minings[$before_mining_coin])."</strong><span>보유량 : <strong>" . Number_format($stats_result['B1'], 8) .' '.strtoupper($minings[$before_mining_coin])." </strong></span> | ";
+	// echo "<span>변환 가능 : <span class='f_blue'>" . Number_format($stats_result['B2'], 8) .' '.strtoupper($minings[$before_mining_coin])."  </span></span></div> ";
+	// echo "<div class='bonus mining before'>미변환 <span class='f_blue'>".strtoupper($minings[$before_mining_coin])."</span><span>보유량 : <strong>" . Number_format($stats_result['B2'], 8) .' '.strtoupper($minings[$before_mining_coin])." </strong></span></div>";
 
-	
+
 	?>
-    
+
 
 	<!-- <a href="?sst=mb_intercept_date&amp;sod=desc&amp;sfl=<?php echo $sfl ?>&amp;stx=<?php echo $stx ?>">
 	차단 <?php echo number_format($intercept_count) ?></a>명,
@@ -632,16 +685,16 @@ $stats_result = sql_fetch($stats_sql); */
 <?php if ($is_admin == 'super') { ?>
 	<div class="btn_add01 btn_add">
 
-		
+
 		<a href="./member_table_depth.php" id="member_depth">회원추천/직추천갱신</a>
 		<a href="./member_table_fixtest.php">추천관계검사</a>
-		<a href="./del_member_list.php" >삭제/탈퇴 회원보기</a>
+		<a href="./del_member_list.php">삭제/탈퇴 회원보기</a>
 		<a href="./member_form.php" id="member_add">회원직접추가</a>
-		<?if($range == 'all'){?>
-			<a href="./member_list.php?range=" >회원전체보기</a>
-		<?}else{?>
-			<a href="./member_list.php?range=all" >회원전체보기</a>
-		<?}?>
+		<? if ($range == 'all') { ?>
+			<a href="./member_list.php?range=">회원전체보기</a>
+		<? } else { ?>
+			<a href="./member_list.php?range=all">회원전체보기</a>
+		<? } ?>
 		<a id="btnExport" data-name='member_info' class="excel" style="padding:10px 10px;">엑셀 다운로드</a>
 	</div>
 <?php } ?>
@@ -688,7 +741,7 @@ while ($l_row = sql_fetch_array($get_lc)) {
 					<th scope="col" rowspan="2" id="mb_list_id" class="td_name center" style="width:150px"><?php echo subject_sort_link('mb_id') ?>아이디</a></th>
 					<th scope="col" rowspan="2" id="mb_list_id" class="td_name center" style="width:50px"><?php echo subject_sort_link('mb_name') ?>이름</a></th>
 					<!--<th scope="col" rowspan="2"  id="mb_list_cert"><?php echo subject_sort_link('mb_certify', '', 'desc') ?>메일인증확인</a></th>-->
-					<?if($mode=='del'){?><th scope="col" rowspan="2" id="mb_list_member" class="td_leave_date"><?php echo subject_sort_link('mb_name') ?>탈퇴일</a></th><?}?>
+					<? if ($mode == 'del') { ?><th scope="col" rowspan="2" id="mb_list_member" class="td_leave_date"><?php echo subject_sort_link('mb_name') ?>탈퇴일</a></th><? } ?>
 					<th scope="col" rowspan="2" id="mb_list_mobile" class="center"><?php echo subject_sort_link('mb_recommend') ?>추천인</th>
 					<th scope="col" rowspan="2" id="mb_list_mobile" class="center"><?php echo subject_sort_link('mb_habu_sum') ?>직추천</th>
 					<!-- <th scope="col" rowspan="2" id="mb_list_mobile" class="center">후원인</th> -->
@@ -705,7 +758,7 @@ while ($l_row = sql_fetch_array($get_lc)) {
 					<th scope="col" id="mb_list_auth2" class="bonus_aa" style='background:white !important' rowspan="2"><?php echo subject_sort_link('mb_bonus_total') ?>마이닝<br>총보너스 (mh/s)</th>
 					<th scope="col" id="mb_list_auth2" class="bonus_aa" style='background:white !important' rowspan="2"><?php echo subject_sort_link('mb_bonus_total_rate') ?>마이닝<br>보너스율 (%)</th> -->
 					<th scope="col" rowspan="2" id="" class="item_title" style='min-width:60px;'><?php echo subject_sort_link('rank') ?>상위보유패키지</th>
-					
+
 					<th scope="col" id="mb_list_member"><?php echo subject_sort_link('mb_today_login', '', 'desc') ?>최종접속</a></th>
 					<th scope="col" rowspan="3" id="mb_list_mng">관리</th>
 				</tr>
@@ -814,34 +867,42 @@ while ($l_row = sql_fetch_array($get_lc)) {
 						</td>
 
 						<td headers="mb_list_member" class="td_mbgrade" rowspan="2" style="width:110px;max-width:110px;">
-							<span class='icon'><?=user_icon($row['mb_id'],'icon')?></span>
+							<span class='icon'><?= user_icon($row['mb_id'], 'icon') ?></span>
 							<?php echo get_member_level_select("mb_level[$i]", 0, $member['mb_level'], $row['mb_level']) ?>
 						</td>
 
-						<td headers="mb_list_id" rowspan="2" class="td_name td_id <?if($row['mb_divide_date'] != ''){echo 'red';}?>" style="min-width:110px; width:auto">
+						<td headers="mb_list_id" rowspan="2" class="td_name td_id <? if ($row['mb_divide_date'] != '') {
+																																				echo 'red';
+																																			} ?>" style="min-width:110px; width:auto">
 							<?php echo $mb_id ?>
 						</td>
 						<td rowspan="2" class="td_name name" style='width:70px;'><?php echo get_text($row['mb_name']); ?></td>
-						<?if($mode=='del'){?><th scope="col" rowspan="2" class="td_mbstat" style='letter-spacing:0;'><?=$row['mb_leave_date']?></th><?}?>
+						<? if ($mode == 'del') { ?><th scope="col" rowspan="2" class="td_mbstat" style='letter-spacing:0;'><?= $row['mb_leave_date'] ?></th><? } ?>
 						<td rowspan="2" class="td_name name" style='width:70px;'><?php echo $row['mb_recommend'] ?></td>
-						<td rowspan="2" class="td_name td_index <? if($row['mb_habu_sum']>=2){echo 'strong';}?>"><?=$row['mb_habu_sum'] ?></td>
+						<td rowspan="2" class="td_name td_index <? if ($row['mb_habu_sum'] >= 2) {
+																											echo 'strong';
+																										} ?>"><?= $row['mb_habu_sum'] ?></td>
 
-						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= Number_format($total_fund) ?></td>
-						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= Number_format($row['mb_deposit_point']) ?></td>
-						<td headers="mb_list_auth" class="td_mbstat" style='color:red' rowspan="2"><?= Number_format($row['mb_deposit_calc']) ?></td>
-						<td headers="mb_list_auth" class="td_mbstat" style='color:red' rowspan="2"><?= Number_format($row['mb_shift_amt']) ?></td>
-						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= Number_format($total_bonus) ?></td>
-						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= Number_format($row['mb_save_point']) ?></td>
-						<!-- <td headers="mb_list_auth" class="td_mbstat" rowspan="2" style="min-width:50px;width:50px;"><?= Number_format($row['mb_rate']) ?></td>
+						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= shift_auto($total_fund) ?></td>
+						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= shift_auto($row['mb_deposit_point']) ?></td>
+						<td headers="mb_list_auth" class="td_mbstat" style='color:red' rowspan="2"><?= shift_auto($row['mb_deposit_calc']) ?></td>
+						<td headers="mb_list_auth" class="td_mbstat" style='color:red' rowspan="2"><?= shift_auto($row['mb_shift_amt']) ?></td>
+						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= shift_auto($total_bonus) ?></td>
+						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= shift_auto($row['mb_save_point']) ?></td>
+						<!-- <td headers="mb_list_auth" class="td_mbstat" rowspan="2" style="min-width:50px;width:50px;"><?= shift_auto($row['mb_rate']) ?></td>
 						<td headers="mb_list_auth" class="td_mbstat strong" rowspan="2" style="min-width:70px;color:black">
 							
 							<?= shift_auto_zero(($row[$mining_target] - $row[$mining_amt_target]), $minings[$now_mining_coin]) ?> 
-							<?if($row['swaped'] == 0 && $row[$before_mining_target] > 0){echo "<span class='no-swap'>".shift_auto_zero(($row[$before_mining_target] - $row[$before_mining_amt_target]), $minings[$before_mining_coin])."</span>";}?>
+							<? if ($row['swaped'] == 0 && $row[$before_mining_target] > 0) {
+								echo "<span class='no-swap'>" . shift_auto_zero(($row[$before_mining_target] - $row[$before_mining_amt_target]), $minings[$before_mining_coin]) . "</span>";
+							} ?>
 						</td>
 						<td headers="mb_list_auth" class="td_mbstat" rowspan="2" ><?= $total_mining ?></td>
 						<td headers="mb_list_auth" class="td_mbstat" rowspan="2"><?= $total_mining_rate ?> %</td> -->
 						<td headers="mb_list_auth" class="text-center" style='width:40px;' rowspan="2"><span class='badge t_white color<?= $row['rank'] ?>'>
-						<? if ($row['rank']) {echo 'P' . $row['rank'];} ?></span></td>
+								<? if ($row['rank']) {
+									echo 'P' . $row['rank'];
+								} ?></span></td>
 
 
 						<!-- <td headers="mb_list_member" class="td_mbgrade" rowspan="2">
@@ -910,7 +971,7 @@ while ($l_row = sql_fetch_array($get_lc)) {
 
 	// 엑셀 다운로드
 	$('#excel_btn').on("click", function() {
-		
+
 		var s_date = $('#s_date').val();
 		var e_date = $('#e_date').val();
 		//var idx_num = $('.select-btn').val();

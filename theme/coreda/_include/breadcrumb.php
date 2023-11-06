@@ -157,7 +157,7 @@ $title = 'Dashboard';
 					</li>
 					<li class="col-4">
 						<dt class="title">구매 가능 <?= $curencys[1] ?> </dt>
-						<dd class="value" style='font-size:15px;'><?= shift_auto($available_fund, $curencys[1]) ?><span class='currency'><?= $curencys[0] ?></span></dd>
+						<dd class="value" style='font-size:15px;'><?= shift_auto($available_fund, $curencys[1]) ?><span class='currency'><?= $curencys[1] ?></span></dd>
 					</li>
 					<li class="col-4">
 						<dt class="title">출금 가능 <?= $curencys[1] ?> </dt>
@@ -195,8 +195,8 @@ $title = 'Dashboard';
 						</li> -->
 
 					<li class="col-4">
-						<dt class="title">구매총액</dt>
-						<dd class="value"><?= Number_format($member['mb_save_point']) ?> <?= $curencys[1] ?></dd>
+						<dt class="title">총 스테이킹 수량</dt>
+						<dd class="value"><?= shift_auto($member['mb_save_point'], $curencys[1]) ?> <?= $curencys[1] ?></dd>
 					</li>
 
 				</ul>
