@@ -17,13 +17,13 @@ function bonus_pick($val)
 	return $list;
 }
 
-function clean_coin_format($val, $decimal = 8)
+function clean_coin_format($val, $decimal = COIN_NUMBER_POINT)
 {
 	$_num = (int)str_pad("1", $decimal + 1, "0", STR_PAD_RIGHT);
 	return floor($val * $_num) / $_num;
 }
 
-function clean_number_format($val, $decimal = 2)
+function clean_number_format($val, $decimal = COIN_NUMBER_POINT)
 {
 	$_decimal = $decimal <= 0 ? 1 : $decimal;
 	$_num = number_format(clean_coin_format($val, $decimal), $_decimal);
@@ -99,7 +99,7 @@ $bonus_day = date('Y-m-d');
 
 $host_name = '127.0.0.1';
 $user_name = 'root';
-$user_pwd = 'cocoplay08@';
+$user_pwd = 'willsoft0780!@';
 // $user_pwd = 'wizclass235689!@';
 $database = 'coreda';
 $conn = mysqli_connect($host_name, $user_name, $user_pwd, $database);
@@ -322,7 +322,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 				// 수당한계 계산
 				if ($total_benefit > $mb_index && $bonus_limit > 0) {
 					$remaining_benefit = $total_benefit - $mb_index;
-					$cut_benefit = ($mb_index - $mb_balance + $mb_balance_ignore) <= 0 ? 0 : clean_coin_format($mb_index - $mb_balance + $mb_balance_ignore, 2);
+					$cut_benefit = ($mb_index - $mb_balance + $mb_balance_ignore) <= 0 ? 0 : clean_number_format($mb_index - $mb_balance + $mb_balance_ignore, 2);
 
 					$origin_benefit = $benefit;
 					if ($benefit - $remaining_benefit > 0) {
@@ -342,7 +342,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 				$clean_shop_benefit = clean_number_format($benefit * $shop_bonus_rate);
 
 				$clean_number_benefit  = clean_number_format($benefit, COIN_NUMBER_POINT);
-				$_benefit = clean_coin_format($benefit * $live_bonus_rate, COIN_NUMBER_POINT);
+				$_benefit = clean_number_format($benefit * $live_bonus_rate, COIN_NUMBER_POINT);
 				$_clean_number_benefit  = clean_number_format($_benefit, COIN_NUMBER_POINT);
 
 				$rec = "staking bonus {$staking_bonus_rate}% : {$_clean_number_benefit} {$unit} ";
@@ -394,6 +394,8 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 			if ($member_where_sql != "" && $log_values_sql != "") {
 				$member_where_sql = substr($member_where_sql, 0, -1) . ")";
 				$log_values_sql = substr($log_values_sql, 0, -1);
+
+				$log_values_sql = rtrim($log_values_sql, ",");
 
 				$member_sql = $member_start_sql . $member_balance_column_sql . $member_my_shop_cloumn_sql . $member_my_sales_cloumn_sql . $member_where_sql;
 				$log_sql = $log_start_sql . $log_values_sql;

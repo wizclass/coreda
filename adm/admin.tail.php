@@ -59,7 +59,7 @@ $print_version = defined('G5_YOUNGCART_VER') ? 'YoungCart Version '.G5_YOUNGCART
   })();
   ChannelIO('boot', {
     "pluginKey": "51140d30-e453-4d07-b997-8a144c03ec0f",
-    "memberId": "TRIPSIA",
+    "memberId": "COREDA",
   });
 </script>
 <!-- End Channel Plugin -->
