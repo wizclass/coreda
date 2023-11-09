@@ -135,7 +135,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $mb_balance = $row['mb_balance'];
             $mb_balance_ignore = $row['mb_balance_ignore'];
 
-            $total_left_benefit = $mb_index - $mb_balance + $mb_balance_ignore <= 0 ? 0 : clean_coin_format($mb_index - $mb_balance + $mb_balance_ignore);
+            $total_left_benefit = $mb_index - $mb_balance + $mb_balance_ignore <= 0 ? 0 : clean_number_format($mb_index - $mb_balance + $mb_balance_ignore);
 
 
             $clean_total_left_benefit = clean_number_format($total_left_benefit);
@@ -145,7 +145,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
             echo "<div><span class='title'>{$mb_id} ( 추천인수 : {$row['cnt']}명 [{$recommended_cnt}대] )</span> 받은총보너스 : {$clean_number_mb_balance}";
 
-            if($bonus_limit > 0){
+            if ($bonus_limit > 0) {
                 echo ", 수당한계점 : {$clean_number_mb_index} => 총 수용가능 수당 : {$clean_total_left_benefit}</div><br>";
             }
             echo "<br>";
@@ -162,7 +162,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
 
                 $booster_benefit = $value['mb_my_sales'] * ($bonus_benefit_rate * 0.01);
                 $add_benefit += $booster_benefit;
-                $clean_mb_my_sales = clean_coin_format($value['mb_my_sales']);
+                $clean_mb_my_sales = clean_number_format($value['mb_my_sales']);
                 echo "<br><span>{$value['mb_id']} ( {$depth} 대 ) => {$clean_mb_my_sales} (Staking) * ( {$bonus_benefit_rate} * 0.01 ) = </span><span class='blue'>{$booster_benefit}</span><br>";
             }
 
@@ -185,9 +185,9 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $live_benefit =  $add_benefit * $live_bonus_rate;
             $shop_benefit =  $add_benefit * $shop_bonus_rate;
 
-            echo "<div style='color:orange;'>발생 수당 : {$origin_benefit}</div><div style='color:red;'> ▶ 수당 지급: {$live_benefit}</div>"; 
+            echo "<div style='color:orange;'>발생 수당 : {$origin_benefit}</div><div style='color:red;'> ▶ 수당 지급: {$live_benefit}</div>";
 
-            if($shop_bonus_rate > 0){
+            if ($shop_bonus_rate > 0) {
                 echo "<br><div style='color:red;'> ▶▶ 쇼핑몰포인트지급 : {$shop_benefit} </div>";
             }
             echo "<br><br><br>";
@@ -207,7 +207,7 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
             $update_recom_sales .= "WHEN '{$mb_id}' then {$recom_sales} ";
             $update_where_sql .= "'{$mb_id}',";
 
-            $clean_live_benefit = clean_number_format($live_benefit,3);
+            $clean_live_benefit = clean_number_format($live_benefit, 3);
             $clean_shop_benefit = clean_number_format($shop_benefit);
 
             $rec = "Matching bonus by step {$recommended_cnt} :: {$clean_live_benefit} {$unit}";
