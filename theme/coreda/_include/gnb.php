@@ -119,7 +119,7 @@ $(document).ready(function(){
 				<a href="/page.php?id=upstairs">
 					<div class="gnb_img_wrap"></div>
 					<div class="gnb_title_Wrap">
-						<span >패키지구매</span>
+						<span >패키지</span>
 					</div>
 				</a>
 			</li> 

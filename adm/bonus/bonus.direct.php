@@ -200,11 +200,17 @@ echo "<div class='btn' onclick='bonus_url();'>돌아가기</div>";
         <? include_once('./bonus_footer.php'); ?>
 
         <?
+        //로그 기록
         if ($debug) {
         } else {
             $html = ob_get_contents();
             //ob_end_flush();
-            $logfile = G5_PATH . '/data/log/' . $code . '/' . $code . '_' . $bonus_day . '.html';
+            $dir = "/var/www/html/coreda/data/log/{$code}/";
+
+            if(!is_dir($dir)){
+                mkdir($dir, '777');
+            }
+            $logfile = "/var/www/html/coreda/data/log/{$code}/{$code}_{$bonus_day}.html";
             fopen($logfile, "w");
             file_put_contents($logfile, ob_get_contents());
         }
