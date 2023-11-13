@@ -32,7 +32,7 @@ $bonus_day = date('Y-m-d');
 
 $host_name = '127.0.0.1';
 $user_name = 'root';
-$user_pwd = 'cocoplay08@';
+$user_pwd = 'willsoft0780!@';
 // $user_pwd = 'wizclass235689!@';
 $database = 'coreda';
 $conn = mysqli_connect($host_name, $user_name, $user_pwd, $database);
@@ -518,7 +518,12 @@ if ($debug) {
 } else {
     $html = ob_get_contents();
     //ob_end_flush();
-    $logfile = '/var/www/html/hwajo/data/log/' . $code . '/' . $code . '_' . $bonus_day . '.html';
+    $dir = "/var/www/html/coreda/data/log/{$code}/";
+
+    if(!is_dir($dir)){
+        mkdir($dir, '777');
+    }
+    $logfile = "/var/www/html/coreda/data/log/{$code}/{$code}_{$bonus_day}.html";
     fopen($logfile, "w");
     file_put_contents($logfile, ob_get_contents());
 }
