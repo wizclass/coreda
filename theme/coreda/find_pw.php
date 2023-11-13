@@ -6,7 +6,7 @@ $title = '비밀번호 재설정';
 include_once(G5_THEME_PATH . '/_include/head.php');
 include_once(G5_THEME_PATH . '/_include/gnb.php');
 $lang_visible = 1;
-include_once(G5_THEME_PATH.'/_include/lang.php');
+include_once(G5_THEME_PATH . '/_include/lang.php');
 
 
 $rand_num = sprintf("%06d", rand(000000, 999999));
@@ -52,7 +52,8 @@ $rand_num = sprintf("%06d", rand(000000, 999999));
 
         <div id="timer_auth" class="position-relative mt-4 mb-5" style="">
             <!-- <div class='timer-down' id='timer_down'></div> -->
-            <input type="text" id='hp_auth' class="b_radius_10 border-bottom-0" placeholder="인증번호 입력">
+            <input type="text" id='hp_auth' class="b_radius_10 border-bottom-0" placeholder="인증번호 입력" maxlength="6">
+            <input type="button" class="btn btn_wd btn--gray b_radius_10" id="hp_auth_check" value="인증번호 확인">
         </div>
 
         <div id="pw_form" style="">
@@ -70,49 +71,91 @@ $rand_num = sprintf("%06d", rand(000000, 999999));
 
 </html>
 <script>
-    $('#mode_select').on('change',function() {
-		mode_change(this.value);	
-	})
-	$('#mode_select').val(Theme).change();
+    $('#mode_select').on('change', function() {
+        mode_change(this.value);
+    })
+    $('#mode_select').val(Theme).change();
 
 
     $(document).ready(function() {
-        if($('#wrapper').parent().hasClass('bf-login') == true ) {
-            $('#wrapper').css('margin-left','0px').css('color','#000');
-            
+        if ($('#wrapper').parent().hasClass('bf-login') == true) {
+            $('#wrapper').css('margin-left', '0px').css('color', '#000');
+
         }
     });
 </script>
 <script>
     function notice_lang(lang, num) {
         if (lang == "eng") {
-            if (num == 1) {return "Please fill in the blanks"}
-            if (num == 2) {return "No such member was found"}
-            if (num == 3) {return "An email has been sent"}
-            if (num == 4) {return "Please enter a password"}
-            if (num == 5) {return "Please enter at least 4 letters and less than 8 digits using a combination of English, numbers or special characters"}
-            if (num == 6) {return "Please double check your password"}
-            if (num == 7) {return "There are spaces in the password"}
+            if (num == 1) {
+                return "Please fill in the blanks"
+            }
+            if (num == 2) {
+                return "No such member was found"
+            }
+            if (num == 3) {
+                return "An email has been sent"
+            }
+            if (num == 4) {
+                return "Please enter a password"
+            }
+            if (num == 5) {
+                return "Please enter at least 4 letters and less than 8 digits using a combination of English, numbers or special characters"
+            }
+            if (num == 6) {
+                return "Please double check your password"
+            }
+            if (num == 7) {
+                return "There are spaces in the password"
+            }
         }
 
         if (lang == "kor") {
-            if (num == 1) {return "빈칸을 채워주세요"}
-            if (num == 2) {return "해당회원을 찾지 못했습니다"}
-            if (num == 3) {return "이메일로 인증번호를 발송하였습니다"}
-            if (num == 4) {return "비밀번호를 입력해주세요"}
-            if (num == 5) {return "영문, 숫자 또는 특수 문자 조합을 사용하여 최소 4 자 이상 8 자리 이하 입력주세요"}
-            if (num == 6) {return "비밀번호를 재확인 해주세요"}
-            if (num == 7) {return "비밀번호에 공백이 포함 되어있습니다"}    
+            if (num == 1) {
+                return "빈칸을 채워주세요"
+            }
+            if (num == 2) {
+                return "해당회원을 찾지 못했습니다"
+            }
+            if (num == 3) {
+                return "이메일로 인증번호를 발송하였습니다"
+            }
+            if (num == 4) {
+                return "비밀번호를 입력해주세요"
+            }
+            if (num == 5) {
+                return "영문, 숫자 또는 특수 문자 조합을 사용하여 최소 4 자 이상 8 자리 이하 입력주세요"
+            }
+            if (num == 6) {
+                return "비밀번호를 재확인 해주세요"
+            }
+            if (num == 7) {
+                return "비밀번호에 공백이 포함 되어있습니다"
+            }
         }
 
         if (lang == "chn") {
-            if (num == 1) {return "请填写空白"}
-            if (num == 2) {return "找不到这样的成员"}
-            if (num == 3) {return "我通过电子邮件发送了验证码"}
-            if (num == 4) {return "请输入密码"}
-            if (num == 5) {return "请使用英文，数字或特殊字符的组合输入至少4个字母且少于8位数字"}
-            if (num == 6) {return "请仔细检查您的密码"}
-            if (num == 7) {return "密码包含空格 "}
+            if (num == 1) {
+                return "请填写空白"
+            }
+            if (num == 2) {
+                return "找不到这样的成员"
+            }
+            if (num == 3) {
+                return "我通过电子邮件发送了验证码"
+            }
+            if (num == 4) {
+                return "请输入密码"
+            }
+            if (num == 5) {
+                return "请使用英文，数字或特殊字符的组合输入至少4个字母且少于8位数字"
+            }
+            if (num == 6) {
+                return "请仔细检查您的密码"
+            }
+            if (num == 7) {
+                return "密码包含空格 "
+            }
         }
     }
 
@@ -146,8 +189,7 @@ $rand_num = sprintf("%06d", rand(000000, 999999));
             async: false,
             data: {
                 mb_id: $('#mb_id').val(),
-                user_email: $('#hp_num').val(),
-                auth_number: <?= $rand_num ?>
+                mb_email: $('#hp_num').val(),
             },
             success: function(res) {
 
@@ -182,7 +224,7 @@ $rand_num = sprintf("%06d", rand(000000, 999999));
 
                 // }, 1000);
 
-           
+
             },
             complete: function(res) {
                 var check = res.hasOwnProperty("responseJSON")
@@ -198,28 +240,43 @@ $rand_num = sprintf("%06d", rand(000000, 999999));
                     $("#hp_num").attr("readonly", true);
                     $('#hp_button').attr('disabled', true);
                     $('#timer_auth').show();
-
-                    $('#hp_auth').on('keyup', function() {
-                    if (<?= $rand_num ?> == $('#hp_auth').val()) {
-                        $('#pw_form').show();
-                        $('#notice_phone').hide();
-                        $('#hp_auth').attr("readonly", true);
-
-                    }
-                })
-
                 }
-
-
-
-
-
             }
+        })
+    })
 
+    $('#hp_auth_check').click(function() {
+
+        if ($('#hp_auth_check').val() == '') {
+            alert("인증번호를 입력해주세요.");
+        }
+
+        $.ajax({
+
+            url: "/util/find_pw_proc.php",
+            type: "POST",
+            dataType: "json",
+            async: false,
+            data: {
+                type: "auth_number_check",
+                mb_id: $('#mb_id').val(),
+                mb_email: $('#hp_num').val(),
+                auth_number: $('#hp_auth').val()
+            },
+            success: function(res) {
+                if (res.code == 200) {
+                    $('#pw_form').show();
+                    $("#mb_id").attr("readonly", true);
+                    $("#hp_num").attr("readonly", true);
+                    $('#hp_auth').attr('disabled', true);
+                    $('#hp_auth_check').attr('disabled', true);
+                } else alert("인증번호가 일치하지 않습니다.")
+            },
         })
     })
 
     $('#confirm_pw').click(function() {
+        console.log("DD");
         var auth_pw = $('#auth_pw').val();
         var re_auth_pw = $('#re_auth_pw').val();
         var blank = /[\s]/g;
@@ -260,12 +317,14 @@ $rand_num = sprintf("%06d", rand(000000, 999999));
             dataType: "json",
             async: false,
             data: {
+                type: "change_password",
                 auth_pw: auth_pw,
                 mb_email: $('#hp_num').val(),
-                mb_id : $('#mb_id').val()
+                mb_id: $('#mb_id').val(),
+                auth_number: $('#hp_auth').val()
             },
             success: function(res) {
-                if (res.code == "00001") {
+                if (res.code == "200") {
                     dialogModal('RESET PASSWORD', 'Your password has been changed', 'success');
                     $('#modal_return_url').click(function() {
                         location.replace('/bbs/login_pw.php');

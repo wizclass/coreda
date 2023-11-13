@@ -86,6 +86,8 @@ $result = sql_query($sql);
 
             $contents = $(this).val();
 
+            console.log($(this).data('category'));
+
             $.ajax({
                 url: './adm.memo.api.php',
                 type: 'POST',

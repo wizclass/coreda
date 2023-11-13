@@ -599,13 +599,13 @@ function curency_txt($value, $kind = 'deposit')
                     break;
                 }
                 ?>
-                <span class="hist_value"><?= $row['amt'] == '0' ? '' : shift_auto($row['amt']) . ' ' . $row['coin']; ?></span>
+                <span class="hist_value"><?= $row['amt'] == '0' ? '' : shift_auto($row['amt']) . ' ' . $curencys[1]; ?></span>
 
-                <span class="curency_value">
+                <!-- <span class="curency_value">
                   <? if ($row['coin'] != '원') {
-                    echo shift_auto($row['in_amt']) . ' ' . $curencys[0];
+                    echo shift_auto($row['in_amt']) . ' ' . $curencys[1];
                   } ?>
-                </span>
+                </span> -->
 
               </div>
 

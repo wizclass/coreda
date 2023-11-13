@@ -25,7 +25,7 @@ if (!$type || !$mb_id || !$mb_email || !$auth_number) {
     return false;
 }
 
-$where = "where mb_id = '{$mb_id}' and mb_email = '{$mb_email}' and mail_invalid = '{$auth_number}'";
+$where = "where mb_id = '{$mb_id}' and mb_email = '{$mb_email}' and mb_lost_certify = '{$auth_number}'";
 
 if ($type == "auth_number_check") {
 

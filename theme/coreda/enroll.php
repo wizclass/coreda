@@ -4,12 +4,12 @@ $email_auth = 1;
 $phone_auth = 0;
 
 
-include_once(G5_THEME_PATH.'/_include/head.php');
-include_once(G5_THEME_PATH.'/_include/gnb.php');
-include_once(G5_THEME_PATH.'/_include/lang.php');
+include_once(G5_THEME_PATH . '/_include/head.php');
+include_once(G5_THEME_PATH . '/_include/gnb.php');
+include_once(G5_THEME_PATH . '/_include/lang.php');
 
-if($nw['nw_enroll'] == 'Y'){
-}else{
+if ($nw['nw_enroll'] == 'Y') {
+} else {
 	alert("현재 서비스를 이용할수없습니다.");
 }
 
@@ -17,12 +17,12 @@ $service_term = get_write("g5_write_agreement", 1);
 $private_term = get_write("g5_write_agreement", 2);
 
 // 추천인링크 타고 넘어온경우
-if ($_GET['recom_referral']){
+if ($_GET['recom_referral']) {
 	$recom_sql = "select mb_id,mb_nick from g5_member where mb_no = '{$_GET['recom_referral']}'";
 	$recom_result = sql_fetch($recom_sql);
 	$mb_recommend = $recom_result['mb_id'];
 
-	if($recom_result['mb_nick'] != ''){
+	if ($recom_result['mb_nick'] != '') {
 		$mb_center = $mb_recommend;
 	}
 }
@@ -32,13 +32,15 @@ if ($_GET['recom_referral']){
 <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
 <style>
-	.gflag{display:none !important;}
+	.gflag {
+		display: none !important;
+	}
 </style>
 
 
 <script type="text/javascript">
-	$('#mode_select').on('change',function() {
-		mode_change(this.value);	
+	$('#mode_select').on('change', function() {
+		mode_change(this.value);
 	})
 	$('#mode_select').val(Theme).change();
 
@@ -47,7 +49,7 @@ if ($_GET['recom_referral']){
 	var verify = false;
 	var recommned = "<?= $mb_recommend ?>";
 	var recommend_search = false;
-	
+
 	var center_search = false;
 
 	if (recommned) {
@@ -58,12 +60,12 @@ if ($_GET['recom_referral']){
 	$(function() {
 
 		// onlyNumber('reg_mb_hp');
-		$('.cabinet').on('click',function(){
-			$(this).next().css('display','contents');
+		$('.cabinet').on('click', function() {
+			$(this).next().css('display', 'contents');
 		});
 
-		$('.cabinet').on('mouseout',function(){
-			$(this).next().css('display','none');
+		$('.cabinet').on('mouseout', function() {
+			$(this).next().css('display', 'none');
 		})
 
 
@@ -108,20 +110,20 @@ if ($_GET['recom_referral']){
 				});
 			});
 		}
-	
-	/* 메일발송 로더 */
-	/* var loading = $('<div id="loading" class="loading"></div><img id="loading_img" src="/img/Spinner-1s-200px2.gif" />');
-	loading.appendTo(document.body).hide(); */
- 	
+
+		/* 메일발송 로더 */
+		/* var loading = $('<div id="loading" class="loading"></div><img id="loading_img" src="/img/Spinner-1s-200px2.gif" />');
+		loading.appendTo(document.body).hide(); */
+
 
 		/*이메일 체크*/
-		$('#EmailChcek').on('click',function(){
+		$('#EmailChcek').on('click', function() {
 			var email = $('#reg_mb_email').val();
 			var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
 
 			if (email == '' || !re.test(email)) {
-				dialogModal("이메일 인증","사용가능한 이메일 주소를 입력해주세요.", "failed");
+				dialogModal("이메일 인증", "사용가능한 이메일 주소를 입력해주세요.", "failed");
 				return false;
 			}
 
@@ -194,7 +196,7 @@ if ($_GET['recom_referral']){
 				$('#reg_mb_email').css('background-color', '#ccc').prop('readonly', true);;
 
 			} else {
-				dialogModal("인증 실패","이메일로 전송된 인증코드를 다시 확인 후 입력해주세요.", "failed");
+				dialogModal("인증 실패", "이메일로 전송된 인증코드를 다시 확인 후 입력해주세요.", "failed");
 			}
 		});
 
@@ -228,13 +230,13 @@ if ($_GET['recom_referral']){
 
 		// 아이디 중복 체크
 		$('#id_check').click(function() {
-			
+
 
 			var registerId = $('#reg_mb_id').val();
 
 			var idReg = /^[a-z]+[a-z0-9]{5,19}$/g;
-			if( !idReg.test( registerId ) ) {
-				dialogModal("아이디 확인","아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다.", "failed");
+			if (!idReg.test(registerId)) {
+				dialogModal("아이디 확인", "아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다.", "failed");
 				return;
 			}
 
@@ -338,7 +340,7 @@ if ($_GET['recom_referral']){
 
 		var pattern = /^((?=.*[a-zA-Z])|(?=.*[!@#$%^&*=+]))(?=.*[0-9]).{4,8}/;
 
-		if (pw.length < 4) {
+		if (pw.length < 4 || pw.length > 8) {
 			$("#pm_1").attr('class', 'x_li');
 		} else {
 			$("#pm_1").attr('class', 'o_li');
@@ -419,9 +421,9 @@ if ($_GET['recom_referral']){
 		var target = etarget;
 		if (type == 1) {
 			var target_type = "#referral";
-		}else if(type == 2) {
+		} else if (type == 2) {
 			var target_type = "#center";
-		}else {
+		} else {
 			var target_type = "#director";
 		}
 		console.log(target + ' === ' + type);
@@ -442,19 +444,19 @@ if ($_GET['recom_referral']){
 
 					$.each(list, function(index, obj) {
 						// vHtml.append($("<div>").addClass('user').html(obj.mb_id));
-						
-						if(type == 2){
-							if(obj.mb_level > 0){
+
+						if (type == 2) {
+							if (obj.mb_level > 0) {
 								vHtml.append($("<div style='text-indent:-999px'>").addClass('user').html(obj.mb_id));
 								vHtml.append($("<label>").addClass('mb_nick').html(obj.mb_nick));
-							}else{
+							} else {
 								vHtml.append($("<div style='color:red;text-indent:-999px'>").addClass('non_user').html(obj.mb_id));
 								vHtml.append($("<label style='color:red'>").addClass('mb_nick').html(obj.mb_nick));
 							}
-						}else{
-							if(obj.mb_level >= 0){
+						} else {
+							if (obj.mb_level >= 0) {
 								vHtml.append($("<div>").addClass('user').html(obj.mb_id));
-							}else{
+							} else {
 								vHtml.append($("<div style='color:red;>").addClass('non_user').html(obj.mb_id));
 							}
 						}
@@ -476,7 +478,7 @@ if ($_GET['recom_referral']){
 
 
 					});
-			
+
 					$(target_type + ' .modal-body').html(vHtml.html());
 					first_select();
 
@@ -485,10 +487,10 @@ if ($_GET['recom_referral']){
 					function first_select() {
 						$(target_type + ' .modal-body .user:nth-child(1)').addClass('selected');
 
-						if(type == 2){
+						if (type == 2) {
 							$('#reg_mb_center_nick').val($(target_type + ' .modal-body .user.selected').html())
 							$(target).val($(target_type + ' .modal-body .user.selected + .mb_nick').html());
-						}else{
+						} else {
 							$(target).val($(target_type + ' .modal-body .user.selected').html());
 						}
 					}
@@ -504,16 +506,16 @@ if ($_GET['recom_referral']){
 
 					$(target_type + ' .modal-footer #btnSave').click(function() {
 
-						if(type == 2){
+						if (type == 2) {
 							$('#reg_mb_center_nick').val($(target_type + ' .modal-body .user.selected').html());
 							$(target).val($(target_type + ' .modal-body .user.selected + .mb_nick').html());
 							center_search = true;
-						}else{
+						} else {
 							$(target).val($(target_type + ' .modal-body .user.selected').html());
 							recommend_search = true;
 							$('#reg_mb_center').val($(target_type + ' .modal-body .user.selected').html());
 						}
-						$(target).attr("readonly",true);
+						$(target).attr("readonly", true);
 						$(target_type).modal('hide');
 					});
 
@@ -553,7 +555,7 @@ if ($_GET['recom_referral']){
 		*/
 
 		/* console.log(`센터검색 : ${center_search}\n센터: ${f.mb_center.value}`); */
-		
+
 
 		//추천인 검사
 		if (f.mb_recommend.value == '' || f.mb_recommend.value == 'undefined') {
@@ -575,7 +577,7 @@ if ($_GET['recom_referral']){
 			commonModal('센터정보 확인', '<strong>센터정보를 검색하여 선택해 주세요.</strong>', 80);
 			return false;
 		} */
-		
+
 		//추천인이 본인인지 확인
 		if (f.mb_id.value == f.mb_recommend.value) {
 			commonModal('조직 관계 입력 확인', '<strong> 자신을 추천인으로 등록할수없습니다. </strong>', 80);
@@ -588,7 +590,7 @@ if ($_GET['recom_referral']){
 			commonModal('이름입력확인', '<strong>이름을 확인해주세요.</strong>', 80);
 			return false;
 		}
-		
+
 		//아이디 중복체크
 		if (check_id == 0) {
 			commonModal('ID 중복확인', '<strong>아이디 중복확인을 해주세요. </strong>', 80);
@@ -598,6 +600,13 @@ if ($_GET['recom_referral']){
 		// 연락처
 		if (f.mb_hp.value == '' || f.mb_hp.value == 'undefined') {
 			commonModal('휴대폰번호확인', '<strong>휴대폰 번호가 잘못되거나 누락되었습니다. </strong>', 80);
+			return false;
+		}
+
+		var pattern = /^((?=.*[a-zA-Z])|(?=.*[!@#$%^&*=+]))(?=.*[0-9]).{4,8}/;
+		var pattern_pw = $('#reg_mb_password').val();
+		if (!pattern.test(pattern_pw)) {
+			commonModal('비밀번호 규칙 확인', '<strong> 로그인 패스워드를 확인해주세요.</strong>', 80);
 			return false;
 		}
 
@@ -675,11 +684,11 @@ if ($_GET['recom_referral']){
 				<div class="btn_input_wrap">
 					<input type="text" name="mb_recommend" id="reg_mb_recommend" value="<?= $mb_recommend ?>" required placeholder="추천인 아이디" />
 					<div class='in_btn_ly2'>
-						<button type='button' class="btn_round check " onclick="getUser('#reg_mb_recommend',1);" ><span>검색</span></button>
+						<button type='button' class="btn_round check " onclick="getUser('#reg_mb_recommend',1);"><span>검색</span></button>
 					</div>
-					
+
 				</div>
-				
+
 			</section>
 
 			<!-- 센터 정보 -->
@@ -687,7 +696,9 @@ if ($_GET['recom_referral']){
 				<section class='referzone'>
 					<div class="btn_input_wrap">
 						<input type="hidden" name="mb_center_nick" id="reg_mb_center_nick" value=""  required  />
-						<input type="text" name="mb_center" id="reg_mb_center" value="<? if($mb_center){echo $mb_center;}?>" placeholder="센터명 또는 센터아이디" required  />
+						<input type="text" name="mb_center" id="reg_mb_center" value="<? if ($mb_center) {
+																																						echo $mb_center;
+																																					} ?>" placeholder="센터명 또는 센터아이디" required  />
 
 						<div class='in_btn_ly2'>
 							<button type='button' class="btn_round check " onclick="getUser('#reg_mb_center',2);"
@@ -696,28 +707,28 @@ if ($_GET['recom_referral']){
 					</div>
 				</section>
 				<i style="color:rgba(255,255,255,0.4)">※센터정보 검색후 선택해주세요.</i> -->
-				<em class="info_text">※추천회원 검색후 선택해주세요.</em>
+			<em class="info_text">※추천회원 검색후 선택해주세요.</em>
 			<!-- <p class="check_appear_title mt40"><span data-i18n='signUp.일반정보'>General Information</span></p> -->
 			<p class="check_appear_title mt30"><span>개인 정보 & 인증</span></p>
 			<div>
-				<input type="text" minlength="5" maxlength="20" name="mb_name" id="reg_mb_name" required placeholder="이름"  />
+				<input type="text" minlength="5" maxlength="20" name="mb_name" id="reg_mb_name" required placeholder="이름" />
 				<!-- <div class='in_btn_ly'><input type="button" id='name_check' class='btn_round check' value="중복확인"></div> -->
 
-				<input type="text" minlength="5" maxlength="20" name="mb_id" class='cabinet' id="reg_mb_id" required placeholder="아이디"/>
+				<input type="text" minlength="5" maxlength="20" name="mb_id" class='cabinet' id="reg_mb_id" required placeholder="아이디" />
 				<span class='cabinet_inner' style=''>※영문+숫자조합 6자리 이상 입력해주세요</span>
 				<div class='in_btn_ly'><input type="button" id='id_check' class='btn_round check' value="중복확인"></div>
 
-				<input type="email"  id="reg_mb_email" name="mb_email" class='cabinet' required placeholder="이메일 주소" />
+				<input type="email" id="reg_mb_email" name="mb_email" class='cabinet' required placeholder="이메일 주소" />
 				<span class='cabinet_inner' style=''>※수신가능한 이메일주소를 직접 입력해주세요</span>
 				<div class='in_btn_ly'><input type="button" id='EmailChcek' class='btn_round check' value="이메일 전송"></div>
-				
-				<input type="text" name="mb_hp"  id="reg_mb_hp" class='cabinet'  pattern="[0-9]*" required  placeholder="휴대폰번호"/>
+
+				<input type="text" name="mb_hp" id="reg_mb_hp" class='cabinet' pattern="[0-9]*" required placeholder="휴대폰번호" />
 				<span class='cabinet_inner' style=''>※'-'를 제외한 숫자만 입력해주세요</span>
 				<!-- <label class='prev_icon'><i class="ri-smartphone-line"></i></label> -->
-				
+
 			</div>
 
-			
+
 
 			<ul class="pw_ul mt20">
 				<li>
@@ -726,20 +737,20 @@ if ($_GET['recom_referral']){
 
 					<strong><span class='mb10' style='display:block;font-size:13px;'>비밀번호 설정 조건</span></strong>
 					<ul>
-						<li class="x_li" id="pm_1" >4자 이상 8자 이하</li>
-						<li class="x_li" id="pm_3" >숫자+영문 혹은 특수문자</li>
-						<li class="x_li" id="pm_5" >비밀번호 비교</li>
+						<li class="x_li" id="pm_1">4자 이상 8자 이하</li>
+						<li class="x_li" id="pm_3">숫자+영문 혹은 특수문자</li>
+						<li class="x_li" id="pm_5">비밀번호 비교</li>
 					</ul>
 				</li>
 				<li style='margin-left:5px'>
 					<input type="password" minlength="6" maxlength="6" id="reg_tr_password" name="reg_tr_password" placeholder="출금비밀번호(핀코드)" />
 					<input type="password" minlength="6" maxlength="6" id="reg_tr_password_re" name="reg_tr_password_re" placeholder="출금비밀번호(핀코드) 확인" />
 
-					<strong><span class='mb10' style='display:block;font-size:13px;' >핀코드 설정 조건</span></strong>
+					<strong><span class='mb10' style='display:block;font-size:13px;'>핀코드 설정 조건</span></strong>
 					<ul>
-						<li class="x_li" id="pt_1" >6 자리</li>
-						<li class="x_li" id="pt_3" >숫자</li>
-						<li class="x_li" id="pt_2" >핀코드 비교</li>
+						<li class="x_li" id="pt_1">6 자리</li>
+						<li class="x_li" id="pt_3">숫자</li>
+						<li class="x_li" id="pt_2">핀코드 비교</li>
 					</ul>
 				</li>
 			</ul>
@@ -752,7 +763,7 @@ if ($_GET['recom_referral']){
 					<input type="text" name="mb_hp"  id="reg_mb_hp"  pattern="[09]*" placeholder="Phone number" value='' data-i18n='[placeholder]signUp.핸드폰 번호'/>
 					<label class='phone_num'><i class="ri-smartphone-line"></i></label>
 				</div>
-					<?if($phone_auth > 1){?>
+					<? if ($phone_auth > 1) { ?>
 					<div class="clear_fix ecode_div">
 					<div class="verify_phone">
 						<input type="text" placeholder="Enter Phone Authtication Code"/>
@@ -762,7 +773,7 @@ if ($_GET['recom_referral']){
 						</a>
 						</div>
 					</div>
-					<?}?>
+					<? } ?>
 			</section>
 			-->
 
@@ -771,16 +782,16 @@ if ($_GET['recom_referral']){
 			<div class="agreement_btn"> <button type="button" class="agreeement_show btn"><span data-i18n='register.회원가입 약관보기'>Read Terms and Conditions</span></button></div>
 			-->
 
-			<p class="check_appear_title mt40"><span >회원가입 약관동의 </span></p>
+			<p class="check_appear_title mt40"><span>회원가입 약관동의 </span></p>
 			<div class="mt20">
 				<div class="term_space">
-					<input type="checkbox" id="service_checkbox" class="term_none" name="term_required" >
+					<input type="checkbox" id="service_checkbox" class="term_none" name="term_required">
 					<label for="service_checkbox">
 						<span><?= $service_term['wr_subject'] ?> 및 서약서 동의 (필수)</span>
 						<a id="service" href="javascript:collapse('#service');" style="width:25px;height:25px;position:absolute;right:0;"><i class="fas fa-angle-down"></i></a>
 					</label>
 				</div>
-				
+
 				<textarea id="service_term" class="term_textarea term_none"><?= $service_term['wr_content'] ?></textarea>
 
 				<div class="term_space">
@@ -792,7 +803,7 @@ if ($_GET['recom_referral']){
 				</div>
 				<textarea id="private_term" class="term_textarea term_none"><?= $private_term['wr_content'] ?></textarea>
 			</div>
-			
+
 
 			<div class="btn2_wrap mb40" style='width:100%;height:60px'>
 				<input class="btn btn_double enroll_cancel_pop_open btn_cancle pop_open" type="button" value="취소">
@@ -806,9 +817,9 @@ if ($_GET['recom_referral']){
 </div>
 
 <div class='footer' style="position:relative;bottom:25px;">
-		<p class='company mb10'> <?=CONFIG_SUB_TITLE?> <br>이메일 : <?=$config['cf_admin_email']?>
-		<p class='copyright'>Copyright ⓒ 2023. <?=CONFIG_TITLE?> Co. ALL right reserved.</p>
-	</div>
+	<p class='company mb10'> <?= CONFIG_SUB_TITLE ?> <br>이메일 : <?= $config['cf_admin_email'] ?>
+	<p class='copyright'>Copyright ⓒ 2023. <?= CONFIG_TITLE ?> Co. ALL right reserved.</p>
+</div>
 </section>
 
 <div class="gnb_dim"></div>
@@ -820,15 +831,15 @@ if ($_GET['recom_referral']){
 		$(".top_title h3").html("<span style='font-size:16px;margin-left:20px'>신규 회원등록</span>");
 
 		$("#reg_mb_email").on("click", function() {
-			if(check_id != 1){
+			if (check_id != 1) {
 				dialogModal('ID 중복확인', '<strong>아이디 중복확인을 해주세요. </strong>', 'warning');
 				return false;
 			}
 		});
-		
+
 	});
 
-	
+
 	function collapse(id) {
 		if ($(id + "_term").css("display") == "none") {
 			$(id + "_term").css("display", "block");
@@ -846,6 +857,4 @@ if ($_GET['recom_referral']){
 			});
 		}
 	}
-
-
 </script>

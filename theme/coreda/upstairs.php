@@ -50,6 +50,9 @@ $result = sql_query($sql);
 $coin = get_coins_price();
 $coin['core_KRW'] = $coin['core_usdt'] *  $coin['usdt_krw'];
 
+$staking_rate_sql = sql_query("SELECT rate FROM {$g5['bonus_config']} WHERE code = 'staking'");
+$staking_rate = sql_fetch_array($staking_rate_sql);
+
 ?>
 
 <link rel="stylesheet" href="<?= G5_THEME_URL ?>/css/default.css">
@@ -165,7 +168,7 @@ $coin['core_KRW'] = $coin['core_usdt'] *  $coin['usdt_krw'];
 												<div class=" text_wrap">
 
 													<span class="it_price"><?= shift_auto($row[$i - 1]['it_price'] / shift_auto($coin['core_KRW'], KRW_NUMBER_POINT), COIN_NUMBER_POINT) ?></span><span style="font-size: 16px"> <?= $curencys[1] ?></span>
-													<!-- <div class='origin_price' style="font-size:14px;">수익률 : <?= shift_auto($coin['core_KRW'], 'krw') ?> %</div> -->
+													<div class='origin_price' style="font-size:14px;">채굴량 : <?= $staking_rate['rate'] ?>%/일</div>
 												</div>
 											</div>
 										</div>
