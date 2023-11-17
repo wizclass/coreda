@@ -101,6 +101,10 @@ $rank_note_price = sql_fetch("SELECT it_price FROM {$g5['g5_item_table']} a JOIN
 
 
 $title = 'Dashboard';
+
+$staking_rate_sql = sql_query("SELECT rate FROM {$g5['bonus_config']} WHERE code = 'staking'");
+$staking_rate = sql_fetch_array($staking_rate_sql);
+
 ?>
 
 <section class='breadcrumb'>
@@ -149,6 +153,22 @@ $title = 'Dashboard';
 		<!-- 회원상세정보 -->
 		<div class="total_view_wrap">
 			<div class="total_view_top">
+				<ul class="row">
+					<li class="col-4">
+						<dt class="title"></dt>
+						<dd class="value" style='font-size:15px;'></dd>
+					</li>
+					<li class="col-4">
+						<dt class="title"></dt>
+						<dd class="value" style='font-size:15px;'></dd>
+					</li>
+					<li class="col-4">
+						<dt class="title">1일 예상 이자</dt>
+						<dd class="value" style='font-size:15px;'>
+							<?= shift_auto($member['mb_save_point'], $curencys[1]) > 0 ? shift_auto($member['mb_save_point'] * 0.01 * $staking_rate['rate'], $curencys[1]) . " " . $curencys[1] : "15% ÷ 365 = 0.00041%" ?>
+						</dd>
+					</li>
+				</ul>
 
 				<ul class="row top">
 					<li class="col-4">
