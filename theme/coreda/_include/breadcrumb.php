@@ -163,24 +163,24 @@ $staking_rate = sql_fetch_array($staking_rate_sql);
 						<dd class="value" style='font-size:15px;'></dd>
 					</li>
 					<li class="col-4">
-						<dt class="title">1일 예상 이자</dt>
+						<dt class="title"><?= $curencys[1] ?> 채굴 리워드</dt>
 						<dd class="value" style='font-size:15px;'>
-							<?= shift_auto($member['mb_save_point'], $curencys[1]) > 0 ? shift_auto($member['mb_save_point'] * 0.01 * $staking_rate['rate'], $curencys[1]) . " " . $curencys[1] : "15% ÷ 365 = 0.00041%" ?>
+							<?= shift_auto($member['mb_save_point'], $curencys[1]) > 0 ? shift_auto($member['mb_save_point'] * 0.01 * $staking_rate['rate'], $curencys[1]) . " " . $curencys[1] : "(MEXC+5%)÷365" ?>
 						</dd>
 					</li>
 				</ul>
 
 				<ul class="row top">
 					<li class="col-4">
-						<dt class="title">총 누적 보너스</dt>
+						<dt class="title">채굴한 코어코인</dt>
 						<dd class="value" style='font-size:15px;'><?= shift_auto($total_bonus, $curencys[1]) ?><span class='currency'><?= $curencys[1] ?></span></dd>
 					</li>
 					<li class="col-4">
-						<dt class="title">구매 가능 <?= $curencys[1] ?> </dt>
+						<dt class="title">위임한 코어코인</dt>
 						<dd class="value" style='font-size:15px;'><?= shift_auto($available_fund, $curencys[1]) ?><span class='currency'><?= $curencys[1] ?></span></dd>
 					</li>
 					<li class="col-4">
-						<dt class="title">출금 가능 <?= $curencys[1] ?> </dt>
+						<dt class="title">합산된 코어코인</dt>
 						<dd class="value" style='font-size:15px;'><?= shift_auto($total_withraw, $curencys[1]) ?><span class='currency'><?= $curencys[1] ?></span></dd>
 					</li>
 					<!-- <li class="col-4">
