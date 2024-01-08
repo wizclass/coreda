@@ -11,7 +11,7 @@ $boner_per_tx = ($limited_per * ($bonus_per)) * 100;
 $next_rate_time = next_exchange_rate_time();
 
 //내 직추천인
-$direct_reffer_sql = "SELECT count(mb_id) as cnt from g5_member WHERE mb_recommend = '{$member['mb_id']}' AND mb_level = 1";
+$direct_reffer_sql = "SELECT count(mb_id) as cnt from g5_member WHERE mb_recommend = '{$member['mb_id']}'";
 $direct_reffer_result = sql_fetch($direct_reffer_sql);
 $direct_reffer = $direct_reffer_result['cnt'];
 
@@ -163,25 +163,26 @@ $staking_rate = sql_fetch_array($staking_rate_sql);
 						<dd class="value" style='font-size:15px;'></dd>
 					</li>
 					<li class="col-4">
-						<dt class="title"><?= $curencys[1] ?> 채굴 리워드</dt>
+						<!-- <dt class="title"><?= $curencys[1] ?> 채굴 리워드</dt> -->
+						<dt class="title">채굴 리워드(MECX+5%)</dt>
 						<dd class="value" style='font-size:15px;'>
-							<?= shift_auto($member['mb_save_point'], $curencys[1]) > 0 ? shift_auto($member['mb_save_point'] * 0.01 * $staking_rate['rate'], $curencys[1]) . " " . $curencys[1] : "(MEXC+5%)÷365" ?>
+							<?= shift_auto($member['mb_balance'], $curencys[1]) > 0 ? shift_auto($total_withraw, $curencys[1]) . " " . $curencys[1] : "(MEXC+5%)÷365" ?>
 						</dd>
 					</li>
 				</ul>
 
 				<ul class="row top">
 					<li class="col-4">
-						<dt class="title">채굴한 코어코인</dt>
-						<dd class="value" style='font-size:15px;'><?= shift_auto($total_bonus, $curencys[1]) ?><span class='currency'><?= $curencys[1] ?></span></dd>
+						<dt class="title">채굴 코어코인</dt>
+						<dd class="value" style='font-size:15px;'><?= shift_auto(($member['mb_save_point'] + $total_withraw) * 0.15, $curencys[1]) ?><span class='currency'><?= $curencys[1] ?></span></dd>
 					</li>
 					<li class="col-4">
-						<dt class="title">위임한 코어코인</dt>
+						<dt class="title">추천 리워드</dt>
 						<dd class="value" style='font-size:15px;'><?= shift_auto($available_fund, $curencys[1]) ?><span class='currency'><?= $curencys[1] ?></span></dd>
 					</li>
 					<li class="col-4">
-						<dt class="title">합산된 코어코인</dt>
-						<dd class="value" style='font-size:15px;'><?= shift_auto($total_withraw, $curencys[1]) ?><span class='currency'><?= $curencys[1] ?></span></dd>
+						<dt class="title">위임 코어코인</dt>
+						<dd class="value" style='font-size:15px;'><?= shift_auto($member['mb_save_point'], $curencys[1]) ?><span class='currency'><?= $curencys[1] ?></span></dd>
 					</li>
 					<!-- <li class="col-4">
 							<dt class="title">출금 가능 코인</dt>
@@ -215,8 +216,8 @@ $staking_rate = sql_fetch_array($staking_rate_sql);
 						</li> -->
 
 					<li class="col-4">
-						<dt class="title">총 스테이킹 수량</dt>
-						<dd class="value"><?= shift_auto($member['mb_save_point'], $curencys[1]) ?> <?= $curencys[1] ?></dd>
+						<dt class="title">합산 코어코인</dt>
+						<dd class="value"><?= shift_auto($member['mb_save_point'] + $total_withraw, $curencys[1]) ?> <?= $curencys[1] ?></dd>
 					</li>
 
 				</ul>

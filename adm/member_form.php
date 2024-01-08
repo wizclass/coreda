@@ -266,8 +266,8 @@ $rank_result = sql_fetch($rank_sql);
 	a.btn,
 	span.btn {
 		display: inline-block;
-		*display: inline;
-		*zoom: 1;
+		display: inline;
+		zoom: 1;
 		padding: 0 10px;
 		height: 24px;
 		line-height: 24px;
@@ -434,7 +434,7 @@ $rank_result = sql_fetch($rank_sql);
 	</tr> -->
 
 
-	<tr>
+	<!-- <tr>
 		<th scope="row">센터지정</th>
 		<td colspan="1">
 			<input type="checkbox" style='width:24px;height:24px' name="center_use" id="center_use" value=" <?= $mb['center_use'] ?> " class="frm_input" <? if ($mb['center_use'] == '1') {
@@ -457,7 +457,7 @@ $rank_result = sql_fetch($rank_sql);
 		<td colspan="1">
 			<input type="text" name="mb_center" id="mb_center" value="<?= $mb['mb_center'] ?>" class="frm_input wide" />
 		</td>
-	</tr>
+	</tr> -->
 
 
 
@@ -545,10 +545,10 @@ $rank_result = sql_fetch($rank_sql);
 		<th scope="row">보유 잔고</th>
 
 		<td colspan="1">
-			<?php $sql = "SELECT SUM(amt) as amt FROM {$g5['deposit']} WHERE mb_id = '{$mb['mb_id']}' AND status = 1";
+			<?php $sql = "SELECT SUM(in_amt) as in_amt FROM {$g5['deposit']} WHERE mb_id = '{$mb['mb_id']}' AND status = 1";
 			$deposit_sum = sql_fetch($sql);
 			?>
-			<strong><?= shift_auto($mb['mb_deposit_point'] + $mb['mb_deposit_calc'] + $mb['mb_balance'] - $mb['mb_shift_amt'], $curencys[1]) ?></strong> <?= $curencys[1] ?> &nbsp&nbsp (총 입금액 : <?= shift_auto($deposit_sum['amt']) ?> <?= $curencys[1] ?>)
+			<strong><?= shift_auto($mb['mb_deposit_point'] + $mb['mb_deposit_calc'] + $mb['mb_balance'] - $mb['mb_shift_amt'], $curencys[1]) ?></strong> <?= $curencys[1] ?> &nbsp&nbsp (총 입금액 : <?= shift_auto($deposit_sum['in_amt']) ?> <?= $curencys[1] ?>)
 		</td>
 		<th></th>
 		<!-- <td>
@@ -600,12 +600,9 @@ $rank_result = sql_fetch($rank_sql);
 		<th scope="row">누적 매출 합계 (PV)</th>
 		<td colspan="1"><span class='strong soodang'><?= shift_auto($mb['mb_save_point'], $curencys[1]) ?> </span><?= $curencys[1] ?></td>
 
-		<th scope="row">수당제한비율</th>
+		<th scope="row">추천 리워드</th>
 		<td colspan="1">
-			<span style="margin-right: 20px;">
-				<input type="checkbox" name="b_autopack" value="1" <?= $mb['b_autopack'] ? "checked" : "" ?> />
-			</span>
-			<input type="text" value="<?= $mb['q_autopack'] ? $mb['q_autopack'] : $limited ?>" class="frm_input wide" name="q_autopack" /> % <span style="color:red;">(제한 : <?= shift_auto($mb['mb_index'], $curencys[0]) ?>)</span>
+			<span class='strong amt'><?= shift_auto($mb['mb_shop_point'], $curencys[1]) ?></span> <?= $curencys[1] ?>
 		</td>
 	</tr>
 

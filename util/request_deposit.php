@@ -28,7 +28,7 @@ if ($debug == 1) {
 } else {
   $mb_id = $_POST['mb_id'];
   $txhash = $_POST['hash'];
-  $coin = $_POST['coin'];
+  $coin = strtolower($_POST['coin']);
   $d_price = $_POST['d_price'];
   $mb_name = $member['mb_name'];
   $calc_coin = $_POST['calc_coin'];
@@ -63,35 +63,24 @@ if ($pre_result['cnt'] < $limit_cnt) {
 
   $get_coins_price = get_coins_price();
 
-  if ($coin == '원' || $coin == 'krw') {
-    // $usdt = shift_coin($get_coins_price['usdt_krw'],2);
-    // $point = shift_coin($d_price/$usdt,2);
-    $point = $calc_coin;
-    $bank_account = $tx_hash;
-    $tx_hash = '';
+
+  if ($coin == 'etc') {
+    $usdt = $get_coins_price['usdt_etc'];
+  } else if ($coin == 'hja') {
+    $result = sql_fetch("SELECT current_cost, used FROM wallet_coin_price WHERE idx = '1'");
+    $usdt = $result['used'] == '1' ? $result['current_cost'] : 1;
+  } else if ($coin == 'usdt') {
     $usdt = 1;
-    $d_price = round($d_price / ($get_coins_price['core_usdt'] * $get_coins_price['usdt_krw']), 4);
-  } else {
-
-    if ($coin == 'etc') {
-      $usdt = $get_coins_price['usdt_etc'];
-    } else if ($coin == 'hja') {
-      $result = sql_fetch("SELECT current_cost, used FROM wallet_coin_price WHERE idx = '1'");
-      $usdt = $result['used'] == '1' ? $result['current_cost'] : 1;
-    } else if ($coin == 'eth') {
-      $usdt = $get_coins_price['usdt_eth'];
-    } else if ($coin == 'usdt') {
-      $usdt = 1;
-    } else if ($coin = 'core') {
-      $usdt = shift_coin($get_coins_price['usdt_krw'], 2);
-    } else {
-      $usdt = null;
-    }
-
-    // $point = $usdt * $d_price;
+  } else if ($coin == 'core' || $coin == 'eth') {
+    $usdt = shift_coin($get_coins_price['core_usdt'], COIN_NUMBER_POINT);
     $point = $calc_coin;
-    $bank_account = '';
+  } else {
+    $usdt = null;
   }
+
+  // $point = $usdt * $d_price;
+
+  $bank_account = '';
 
   $sql = "INSERT INTO wallet_deposit_request(mb_id,od_id, txhash, bank_account, create_dt,create_d,status,coin,cost,amt,in_amt) 
   VALUES('$mb_id','','{$txhash}','{$bank_account}','$now_datetime','$now_date',0,'$coin', {$usdt},{$d_price},{$point})";

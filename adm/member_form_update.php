@@ -108,9 +108,9 @@ $mb_no_sql = "select count(mb_no) as cnt, mb_no from g5_member where mb_id = '{$
 $mb_no_row = sql_fetch($mb_no_sql);
 
 if ($mb_no_row['cnt'] <= 0) {
-	alert($mb_no_sql);
+	// alert($mb_no_sql);
 
-	// alert('존재하지 않는 추천인 정보 입니다.');
+	alert('존재하지 않는 추천인 정보 입니다.');
 }
 
 if ($_POST['reg_tr_password']) {

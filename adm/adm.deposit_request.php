@@ -284,7 +284,7 @@ $result = sql_query($sql);
                 <th scope="col" width='5%'>입금요청금액</th>
                 <th scope="col" width='4%'>입금종류</th>
                 <th scope="col" width='5%'>입금처리금액(<?= $curencys[1] ?>)</th>
-                <th scope="col" width='5%'>시세(<?= $curencys[0] ?>)</th>
+                <th scope="col" width='5%'>시세(<?= $curencys[1] ?>)</th>
                 <th scope="col" width='10%'>승인여부</th>
                 <th scope="col" width='8%'>요청시간</th>
                 <th scope="col" width='8%'>상태변경일</th>
@@ -334,8 +334,8 @@ $result = sql_query($sql);
                         } else echo shift_auto($row['amt'], COIN_NUMBER_POINT);
                         ?></td>
                     <td class='coin'><?= $row['coin'] ?></td>
-                    <td><input type='text' class='reg_text input_amt_val' style='font-weight:600;color:blue;text-align:right' value='<?= shift_auto($row['amt'], $curencys[0]) ?>'></td>
-                    <td><?= shift_auto($row['cost'], 'krw') ?></td>
+                    <td><input type='text' class='reg_text input_amt_val' style='font-weight:600;color:blue;text-align:right' value='<?= shift_auto($row['in_amt'], $curencys[0]) ?>'></td>
+                    <td><?= shift_auto($row['cost'], COIN_NUMBER_POINT) ?></td>
                     <td>
                         <!-- <?= status($row['status']) ?> -->
                         <select name="status" uid="<?= $row['uid'] ?>" class='sel_<?= $row['status'] ?>' <?= $row['status'] == 1 ? 'disabled' : ''; ?>>

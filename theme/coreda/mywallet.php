@@ -599,7 +599,7 @@ function curency_txt($value, $kind = 'deposit')
                     break;
                 }
                 ?>
-                <span class="hist_value"><?= $row['amt'] == '0' ? '' : shift_auto($row['amt']) . ' ' . $curencys[1]; ?></span>
+                <span class="hist_value"><?= $row['amt'] == '0' ? '' : shift_auto($row['in_amt']) . ' ' . $curencys[1]; ?></span>
 
                 <!-- <span class="curency_value">
                   <? if ($row['coin'] != '원') {
@@ -1426,23 +1426,22 @@ function curency_txt($value, $kind = 'deposit')
 
       let symbol = $('#deposit-currency-right').text(); // 원화 수동처리
 
-      if (symbol == '원') {
+      if (symbol == 'eth') {
         // swap_coin_price = deposit_amount/<?= $withdrawal_price ?>;
         let deposit_amount = Number(e.target.value);
-        let swap_coin_price = deposit_amount / <?= shift_coin($coin['core_KRW'], COIN_NUMBER_POINT) ?>;
-        fixed_amt = swap_coin_price.toFixed(4);
-        $('.in_coin').css('display', 'block');
-        $('#active_in').text(`${fixed_amt} core`);
+        swap_coin_price = (deposit_amount * <?= shift_coin($coin['usdt_eth'], COIN_NUMBER_POINT) ?>) / <?= shift_coin($coin['core_usdt'], COIN_NUMBER_POINT) ?>;
+        console.log(swap_coin_price);
 
       } else {
 
         let deposit_amount = parseFloat(e.target.value);
-        let swap_coin_price = deposit_amount * <?= shift_coin($coin['core_KRW'], COIN_NUMBER_POINT) ?>;
-        fixed_amt = Number(swap_coin_price).toFixed(0);
-        $('.in_coin').css('display', 'block');
-        $('#active_in').text(`${number_with_commas(fixed_amt)} 원`);
+        swap_coin_price = deposit_amount;
 
       }
+
+      fixed_amt = swap_coin_price.toFixed(4);
+      $('.in_coin').css('display', 'block');
+      $('#active_in').text(`${fixed_amt} core`);
 
     });
 
@@ -1526,9 +1525,7 @@ function curency_txt($value, $kind = 'deposit')
       // var d_name = selected_account_card.no;
       var d_price = conv_number($('#deposit_value').val()); // 입금액
       var coin = $(this).data('currency');
-      if (coin == "원") {
-        fixed_amt = conv_number($('#deposit_value').val());
-      }
+
       // 입금설정
       var in_fee = (<?= $deposit_fee ?> * 0.01);
 
@@ -1538,7 +1535,7 @@ function curency_txt($value, $kind = 'deposit')
       var in_max_limit = <?= $deposit_max_limit ?> * <?= shift_coin($withdrawal_price, KRW_NUMBER_POINT) ?>;
       var in_day_limit = '<?= $deposit_day_limit ?>';
 
-      console.log(` in_min_limit : ${in_min_limit}\n in_max_limit:${in_max_limit}\n in_day_limit:${in_day_limit}\n in_fee: ${in_fee}`);
+      // console.log(` in_min_limit : ${in_min_limit}\n in_max_limit:${in_max_limit}\n in_day_limit:${in_day_limit}\n in_fee: ${in_fee}`);
       console.log(' 선택계좌 : ' + selected_account_card.bank_account + ' || 통화 : ' + coin + '입금액 :' + d_price + ' || ' + fixed_amt);
 
 
@@ -1547,18 +1544,13 @@ function curency_txt($value, $kind = 'deposit')
         return false;
       }
 
-      if (coin.toLowerCase() == 'core' && d_name.length < 5) {
+      if ((coin.toLowerCase() == 'core' || coin.toLowerCase() == 'eth') && d_name.length < 5) {
         dialogModal('<p>TXID 입력값 확인 </p>', '<p> 전송후 받은 TX Hash 값을 정확하게 입력해주세요</p>', 'warning');
         return false;
       }
 
-      if (coin == '원' && d_name.length < 2) {
-        dialogModal('<p>TXID 입력값 확인 </p>', '<p> 입금자명을 정확하게 입력해주세요</p>', 'warning');
-        return false;
-      }
-
       // 입금액 fixed_amt d_price
-      if (in_min_limit > 0 && Number(fixed_amt) < Number(in_min_limit)) {
+      if (coin === "CORE" && in_min_limit > 0 && Number(fixed_amt) < <?= $withdrawal_price ?>) {
         dialogModal('<p>최소 입금액 확인</p>', '<p>최소 입금 확인 금액은 ' + Price(min_limit_core) + ' core (' + Price(Number(in_min_limit)) + ' 원) 입니다. </p>', 'warning');
         return false;
       }
