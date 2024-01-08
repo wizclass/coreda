@@ -408,6 +408,12 @@ function curency_txt($value, $kind = 'deposit')
   #active_in {
     font-weight: bold
   }
+
+  @media screen and (max-width: 768px) {
+    .bank_account_num {
+      font-size: 12px;
+    }
+  }
 </style>
 
 <main>
